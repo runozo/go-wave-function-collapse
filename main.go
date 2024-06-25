@@ -25,8 +25,6 @@ const (
 	ruleLEFT     = 3
 )
 
-var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
-
 type Tile struct {
 	collapsed bool
 	image     *ebiten.Image
@@ -309,6 +307,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
+
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 
 func main() {
 	flag.Parse()
