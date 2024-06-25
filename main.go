@@ -157,13 +157,13 @@ func resetTilesOptions(tiles *[]Tile) {
 	}
 }
 
-// getLeastEntropyIndexes returns a slice of integers representing the indexes of the tiles with the minimum entropy.
+// getLeastEntropyIndexes returns a slice of integers representing the indexes of the tiles with the least entropy.
 //
 // Parameters:
 // - tiles: a pointer to a slice of Tile structs representing the tiles.
 //
 // Return:
-// - []int: a slice of integers representing the indexes of the tiles with the minimum entropy.
+// - []int: a slice of integers representing the indexes of the tiles with the least entropy.
 func getLeastEntropyIndexes(tiles *[]Tile) []int {
 	minEntropy := 32767
 	minEntropyIndexes := make([]int, 0)
