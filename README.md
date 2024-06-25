@@ -10,4 +10,5 @@ Use spacebar to generate a new map.
 
 ## Credits
 
-Spritesheet by [Kenney](https://kenney.nl)
+- Algorithm inspired by [The Coding Train](https://thecodingtrain.com/challenges/171-wave-function-collapse)
+- Spritesheet by [Kenney](https://kenney.nl)
