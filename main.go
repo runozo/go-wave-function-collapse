@@ -2,17 +2,15 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	_ "image/png"
 	"log"
-	"log/slog"
 	"math/rand"
 	"os"
 	"runtime/pprof"
-	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/runozo/go-wave-function-collapse/assets"
 )
 
@@ -104,9 +102,14 @@ func filterOptions(orig, options []string) []string {
 	return filtered
 }
 
-// stringInSlice checks if a string is present in a slice of strings.
+// stringInSlice checks if a given string is present in a slice of strings.
 //
-// It takes a string to search for and a slice of strings to search in and returns a boolean.
+// Parameters:
+// - a: the string to search for.
+// - slice: the slice of strings to search in.
+//
+// Returns:
+// - bool: true if the string is found in the slice, false otherwise.
 func stringInSlice(a string, slice []string) bool {
 	for _, b := range slice {
 		if b == a {
@@ -116,11 +119,14 @@ func stringInSlice(a string, slice []string) bool {
 	return false
 }
 
-// intInSlice checks if an integer is in a slice of integers.
+// intInSlice checks if a given integer is present in a slice of integers.
 //
-// a int - the integer to check for in the slice
-// list []int - the slice of integers to search
-// bool - true if the integer is found in the slice, false otherwise
+// Parameters:
+// - a: the integer to search for.
+// - slice: the slice of integers to search in.
+//
+// Returns:
+// - bool: true if the integer is found in the slice, false otherwise.
 func intInSlice(a int, slice []int) bool {
 	for _, b := range slice {
 		if b == a {
@@ -130,6 +136,9 @@ func intInSlice(a int, slice []int) bool {
 	return false
 }
 
+// resetTilesOptions resets the options of each Tile in the provided slice to all available options.
+//
+// tiles: a pointer to a slice of Tiles that need their options reset.
 func resetTilesOptions(tiles *[]Tile) {
 	// create a slice of all the options available
 	initialOptions := make([]string, len(tileOptions))
@@ -140,64 +149,69 @@ func resetTilesOptions(tiles *[]Tile) {
 	}
 
 	// setup tiles with all the options enabled and a black square as image
+	black_square := ebiten.NewImage(tileWidth, tileHeight)
 	for i := 0; i < len(*tiles); i++ {
-		(*tiles)[i].options = initialOptions
-		(*tiles)[i].image = ebiten.NewImage(tileWidth, tileHeight)
-		(*tiles)[i].collapsed = false
+		(*tiles)[i] = Tile{
+			image:     black_square,
+			collapsed: false,
+			options:   initialOptions,
+		}
 	}
 }
 
-// getMinEntropyIndexes returns the indexes of cells with the minimum entropy.
-//
-// It takes a pointer to a 2D slice of strings, cells, as input.
-// The function iterates through each cell in the cells slice and checks if the length of the cell is greater than 1 and less than the current minimum entropy.
-// If so, it updates the minimum entropy and resets the minEntropyIndexes slice to contain only the current index.
-// If the length of the cell is equal to the current minimum entropy, the index is appended to the minEntropyIndexes slice.
-// Finally, the function returns the minEntropyIndexes slice.
+// getLeastEntropyIndexes returns a slice of integers representing the indexes of the tiles with the minimum entropy.
 //
 // Parameters:
-// - cells: a pointer to a 2D slice of strings representing the cells
+// - tiles: a pointer to a slice of Tile structs representing the tiles.
 //
-// Return type:
-// - []int: a slice of integers representing the indexes of cells with the minimum entropy
-func getMinEntropyIndexes(tiles *[]Tile) []int {
+// Return:
+// - []int: a slice of integers representing the indexes of the tiles with the minimum entropy.
+func getLeastEntropyIndexes(tiles *[]Tile) []int {
 	minEntropy := 32767
 	minEntropyIndexes := make([]int, 0)
-	for i, tile := range *tiles {
+	for index, tile := range *tiles {
 		if !tile.collapsed {
 			cellEntropy := len(tile.options)
-			// slog.Info("Entropy", "index", i, "entropy", cellEntropy)
 			if cellEntropy > 1 && cellEntropy < minEntropy {
 				minEntropy = cellEntropy
-				minEntropyIndexes = []int{i}
+				minEntropyIndexes = []int{index}
 			} else if cellEntropy > 1 && cellEntropy == minEntropy {
-				minEntropyIndexes = append(minEntropyIndexes, i)
+				minEntropyIndexes = append(minEntropyIndexes, index)
 			}
 		}
 	}
 	return minEntropyIndexes
 }
 
-// collapseRandomCellWithMinEntropy collapses a random cell with the minimum entropy.
+// collapseRandomCellWithLeastEntropy collapses a random cell with the least entropy.
 //
 // Parameters:
-// - tiles: a pointer to a slice of Tile representing the game tiles
-// - minEntropyIndexes: a pointer to a slice of integers representing the indexes of cells with the minimum entropy
+// - tiles: a pointer to a slice of Tile structs representing the tiles.
+// - minEntropyIndexes: a pointer to a slice of integers representing the indexes of the tiles with the minimum entropy.
 //
-// Return type:
-// - int: the index of the collapsed cell
-func collapseRandomCellWithMinEntropy(tiles *[]Tile, minEntropyIndexes *[]int) int {
+// Returns:
+// - int: the index of the collapsed tile.
+func collapseRandomCellWithLeastEntropy(game *Game, minEntropyIndexes *[]int) {
 	// collapse random cell with least entropy
-	index := (*minEntropyIndexes)[rand.Intn(len(*minEntropyIndexes))]
-
-	(*tiles)[index].options = []string{(*tiles)[index].options[rand.Intn(len((*tiles)[index].options))]}
-	return index
+	randomIndex := (*minEntropyIndexes)[rand.Intn(len(*minEntropyIndexes))]
+	randomOption := game.tiles[randomIndex].options[rand.Intn(len(game.tiles[randomIndex].options))]
+	game.tiles[randomIndex] = Tile{
+		options:   []string{randomOption},
+		image:     game.assets.GetSprite(randomOption),
+		collapsed: true,
+	}
 }
 
-// lookAndFilter applies a rule-based filtering to the optionsToProcess slice
+// lookAndFilter filters options based on a set of rules.
 //
-// It takes two integer rule indexes, two slices of strings (optionsToProcess and optionsToWatch) as parameters
-// Returns a slice of strings
+// Parameters:
+// - ruleIndexToProcess: the index of the rule to process.
+// - ruleIndexToWatch: the index of the rule to watch.
+// - optionsToProcess: the options to process.
+// - optionsToWatch: the options to watch.
+//
+// Returns:
+// - []string: the filtered options.
 func lookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, optionsToWatch []string) []string {
 	rules := make([]int, 0, 5) // random capacity
 	for _, optname := range optionsToWatch {
@@ -215,20 +229,13 @@ func lookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, o
 	return filterOptions(optionsToProcess, newoptions)
 }
 
-func renderPlayfield(game *Game) {
-	startTime := time.Now()
-	defer func() {
-		endTime := time.Now()
-		duration := endTime.Sub(startTime)
-		slog.Info("Rendering of playfield took", "duration", duration)
-	}()
-
-	for !game.isRendered {
+func iterateWaveFunctionCollapse(game *Game) {
+	if !game.isRendered {
 		// pick the minimum entropy indexes
-		minEntropyIndexes := getMinEntropyIndexes(&game.tiles)
+		leastEntropyIndexes := getLeastEntropyIndexes(&game.tiles)
 
-		if len(minEntropyIndexes) <= 0 {
-			slog.Info("Playfiled is rendered. No more collapsable cells.", "tiles", len(game.tiles))
+		if len(leastEntropyIndexes) == 0 {
+			// collapse last remaining cells
 			for i := 0; i < len(game.tiles); i++ {
 				if !game.tiles[i].collapsed {
 					game.tiles[i].image = game.assets.GetSprite(game.tiles[i].options[0])
@@ -236,17 +243,16 @@ func renderPlayfield(game *Game) {
 				}
 			}
 			game.isRendered = true
+			log.Println("Playfiled is rendered. No more collapsable cells.", "tiles", len(game.tiles))
 		} else {
-			collapsedIndex := collapseRandomCellWithMinEntropy(&game.tiles, &minEntropyIndexes)
-			game.tiles[collapsedIndex].image = game.assets.GetSprite(game.tiles[collapsedIndex].options[0])
-			game.tiles[collapsedIndex].collapsed = true
-
+			collapseRandomCellWithLeastEntropy(game, &leastEntropyIndexes)
+			// scan all the cells to filter the corresponding options
 			for y := 0; y < game.numOfTilesY; y++ {
 				for x := 0; x < game.numOfTilesX; x++ {
 					index := y*game.numOfTilesX + x
 					if len(game.tiles[index].options) == 0 {
-						// we did not found any options, let's restart
-						slog.Info("Restarting!")
+						// we did not found any option, let's restart
+						log.Println("No more options found.. restarting!")
 						resetTilesOptions(&game.tiles)
 					}
 
@@ -275,7 +281,12 @@ func renderPlayfield(game *Game) {
 }
 
 func (g *Game) Update() error {
-	renderPlayfield(g)
+	if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		resetTilesOptions(&(g.tiles))
+		g.isRendered = false
+	}
+	iterateWaveFunctionCollapse(g)
+
 	return nil
 }
 
@@ -283,7 +294,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	var i int
 	for y := 0; y < screenHeight; y += tileHeight {
 		for x := 0; x < screenWidth; x += tileWidth {
-			if x%tileWidth == 0 && y%tileHeight == 0 && i < len(g.tiles) {
+			if i < len(g.tiles) {
 				ops := &ebiten.DrawImageOptions{}
 				ops.GeoM.Translate(float64(x), float64(y))
 				screen.DrawImage(g.tiles[i].image, ops)
@@ -292,8 +303,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 	}
 
-	// text.Draw(screen, fmt.Sprintf("CURSOR KEYS: move tank. SPACE: shoot. T: new random tank"), nil, 10, 10, color.Black)
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("SPACEBAR: generate new map"))
+	ebitenutil.DebugPrint(screen, "SPACEBAR: generate new map")
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -330,5 +340,4 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 }
