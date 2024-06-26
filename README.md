@@ -1,6 +1,6 @@
 # go-wave-function-collapse
 
-Wave function collapse algorithm, implemented in [Go](https://golang.org), with [ebiten](https://github.com/hajimehoshi/ebiten) game library.
+Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with [ebiten](https://github.com/hajimehoshi/ebiten) game library.
 
 ![GIF animation of WFC algorithm](gifs/gowfc.gif)
 
