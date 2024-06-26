@@ -8,7 +8,7 @@ Wave function collapse algorithm, implemented in [Go](https://golang.org), with 
 
 ```go run main.go```
 
-Use spacebar to generate a new map.
+Press ```spacebar``` to generate a new map.
 
 ## Credits
 
