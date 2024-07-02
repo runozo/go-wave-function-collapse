@@ -6,11 +6,13 @@ Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with 
 
 ## Usage
 
+```go mod tidy```
+
 ```go run main.go```
 
 Press ```spacebar``` to generate a new map.
 
 ## Credits
 
-- Algorithm inspired by [The Coding Train](https://thecodingtrain.com/challenges/171-wave-function-collapse)
+- Algorithm by [The Coding Train](https://thecodingtrain.com/challenges/171-wave-function-collapse)
 - Spritesheet by [Kenney](https://kenney.nl)
