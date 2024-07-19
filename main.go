@@ -229,46 +229,46 @@ func lookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, o
 }
 
 func iterateWaveFunctionCollapse(game *Game) bool {
-	if !game.isRendered {
-		// pick the minimum entropy indexes
-		leastEntropyIndexes := getLeastEntropyIndexes(&game.tiles)
 
-		if len(leastEntropyIndexes) == 0 {
-			game.isRendered = true
-			log.Println("Playfiled is rendered. No more collapsable cells.", "tiles", len(game.tiles))
-		} else {
-			collapseRandomCellWithLeastEntropy(game, &leastEntropyIndexes)
-			// scan all the cells to filter the corresponding options
-			for y := 0; y < game.numOfTilesY; y++ {
-				for x := 0; x < game.numOfTilesX; x++ {
-					index := y*game.numOfTilesX + x
-					if len(game.tiles[index].options) == 0 {
-						// we did not found any option, let's restart
-						log.Println("No more options found.. restarting!")
-						resetTilesOptions(&game.tiles)
+	// pick the minimum entropy indexes
+	leastEntropyIndexes := getLeastEntropyIndexes(&game.tiles)
+
+	if len(leastEntropyIndexes) == 0 {
+		game.isRendered = true
+		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles", len(game.tiles))
+	} else {
+		collapseRandomCellWithLeastEntropy(game, &leastEntropyIndexes)
+		// scan all the cells to filter the corresponding options
+		for y := 0; y < game.numOfTilesY; y++ {
+			for x := 0; x < game.numOfTilesX; x++ {
+				index := y*game.numOfTilesX + x
+				if len(game.tiles[index].options) == 0 {
+					// we did not found any option, let's restart
+					log.Println("No more options found.. restarting!")
+					resetTilesOptions(&game.tiles)
+				}
+
+				if !game.tiles[index].collapsed {
+					// Look UP
+					if y > 0 {
+						game.tiles[index].options = lookAndFilter(ruleUP, ruleDOWN, game.tiles[index].options, game.tiles[(y-1)*game.numOfTilesX+x].options)
 					}
-
-					if !game.tiles[index].collapsed {
-						// Look UP
-						if y > 0 {
-							game.tiles[index].options = lookAndFilter(ruleUP, ruleDOWN, game.tiles[index].options, game.tiles[(y-1)*game.numOfTilesX+x].options)
-						}
-						// Look RIGHT
-						if x < game.numOfTilesX-1 {
-							game.tiles[index].options = lookAndFilter(ruleRIGHT, ruleLEFT, game.tiles[index].options, game.tiles[y*game.numOfTilesX+x+1].options)
-						}
-						// Look DOWN
-						if y < game.numOfTilesY-1 {
-							game.tiles[index].options = lookAndFilter(ruleDOWN, ruleUP, game.tiles[index].options, game.tiles[(y+1)*game.numOfTilesX+x].options)
-						}
-						// Look LEFT
-						if x > 0 {
-							game.tiles[index].options = lookAndFilter(ruleLEFT, ruleRIGHT, game.tiles[index].options, game.tiles[y*game.numOfTilesX+x-1].options)
-						}
+					// Look RIGHT
+					if x < game.numOfTilesX-1 {
+						game.tiles[index].options = lookAndFilter(ruleRIGHT, ruleLEFT, game.tiles[index].options, game.tiles[y*game.numOfTilesX+x+1].options)
+					}
+					// Look DOWN
+					if y < game.numOfTilesY-1 {
+						game.tiles[index].options = lookAndFilter(ruleDOWN, ruleUP, game.tiles[index].options, game.tiles[(y+1)*game.numOfTilesX+x].options)
+					}
+					// Look LEFT
+					if x > 0 {
+						game.tiles[index].options = lookAndFilter(ruleLEFT, ruleRIGHT, game.tiles[index].options, game.tiles[y*game.numOfTilesX+x-1].options)
 					}
 				}
 			}
 		}
+
 	}
 	return !game.isRendered
 }
