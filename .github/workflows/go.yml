@@ -24,7 +24,7 @@ jobs:
           cache: true
       - uses: alpine/action/install@v3
         with:
-          packages: libxrandr-dev
+          packages: alsa-lib-dev libx11-dev libxrandr-dev libxcursor-dev libxinerama-dev libxi-dev mesa-dev pkgconf
       #- run: |
       #    sudo apt install libasound2-dev
       - uses: goreleaser/goreleaser-action@v4
