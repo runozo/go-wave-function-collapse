@@ -182,7 +182,7 @@ func getLeastEntropyIndexes(tiles *[]Tile) []int {
 	return minEntropyIndexes
 }
 
-// collapseRandomCellWithLeastEntropy collapses a random cell with the least entropy.
+// collapseCell collapses a random cell with the least entropy.
 //
 // Parameters:
 // - game: a pointer to a game instance.
@@ -190,9 +190,8 @@ func getLeastEntropyIndexes(tiles *[]Tile) []int {
 //
 // Returns:
 // - int: the index of the collapsed tile.
-func collapseRandomCellWithLeastEntropy(game *Game, minEntropyIndexes *[]int) {
+func collapseCell(game *Game, randomIndex int) {
 	// collapse random cell with least entropy
-	randomIndex := (*minEntropyIndexes)[rand.Intn(len(*minEntropyIndexes))]
 	randomOption := game.tiles[randomIndex].options[rand.Intn(len(game.tiles[randomIndex].options))]
 	game.tiles[randomIndex] = Tile{
 		options:   []string{randomOption},
@@ -237,7 +236,7 @@ func iterateWaveFunctionCollapse(game *Game) bool {
 		game.isRendered = true
 		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles", len(game.tiles))
 	} else {
-		collapseRandomCellWithLeastEntropy(game, &leastEntropyIndexes)
+		collapseCell(game, leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))])
 		// scan all the cells to filter the corresponding options
 		for y := 0; y < game.numOfTilesY; y++ {
 			for x := 0; x < game.numOfTilesX; x++ {
