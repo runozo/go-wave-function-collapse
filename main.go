@@ -165,19 +165,20 @@ func resetTilesOptions(tiles *[]Tile) {
 // Return:
 // - []int: a slice of integers representing the indexes of the tiles with the least entropy.
 func getLeastEntropyIndexes(tiles *[]Tile) []int {
-	minEntropy := 32767
-	minEntropyIndexes := make([]int, 0)
+	minEntropy := len(tileOptions)
+	minEntropyIndexes := make([]int, 0, 10)
 	for index, tile := range *tiles {
 		if !tile.collapsed {
 			cellEntropy := len(tile.options)
-			if cellEntropy > 1 && cellEntropy < minEntropy {
+			if cellEntropy < minEntropy {
 				minEntropy = cellEntropy
 				minEntropyIndexes = []int{index}
-			} else if cellEntropy > 1 && cellEntropy == minEntropy {
+			} else if cellEntropy == minEntropy {
 				minEntropyIndexes = append(minEntropyIndexes, index)
 			}
 		}
 	}
+	log.Println("minEntropyIndexes", len(minEntropyIndexes), "minEntropy", minEntropy)
 	return minEntropyIndexes
 }
 
@@ -233,13 +234,6 @@ func iterateWaveFunctionCollapse(game *Game) {
 		leastEntropyIndexes := getLeastEntropyIndexes(&game.tiles)
 
 		if len(leastEntropyIndexes) == 0 {
-			// collapse last remaining cells
-			for i := 0; i < len(game.tiles); i++ {
-				if !game.tiles[i].collapsed {
-					game.tiles[i].image = game.assets.GetSprite(game.tiles[i].options[0])
-					game.tiles[i].collapsed = true
-				}
-			}
 			game.isRendered = true
 			log.Println("Playfiled is rendered. No more collapsable cells.", "tiles", len(game.tiles))
 		} else {
