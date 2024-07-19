@@ -91,7 +91,7 @@ var tileOptions = map[string][]int{
 // - options []string: the options to filter by
 // Returns []string: the filtered options slice
 func filterOptions(orig, options []string) []string {
-	var filtered []string
+	filtered := make([]string, 0, len(orig))
 	for _, o := range orig {
 		if stringInSlice(o, options) {
 			filtered = append(filtered, o)
