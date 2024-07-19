@@ -283,6 +283,11 @@ func (g *Game) Update() error {
 		resetTilesOptions(&(g.tiles))
 		g.isRendered = false
 	}
+
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+		os.Exit(0)
+	}
+
 	iterateWaveFunctionCollapse(g)
 
 	return nil
@@ -301,7 +306,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 	}
 
-	ebitenutil.DebugPrint(screen, "SPACEBAR: generate new map")
+	ebitenutil.DebugPrint(screen, "SPACEBAR: generate new map  ESC: quit")
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
