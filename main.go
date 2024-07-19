@@ -295,14 +295,13 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	var i int
+
 	for y := 0; y < screenHeight; y += tileHeight {
 		for x := 0; x < screenWidth; x += tileWidth {
-			if i < len(g.tiles) {
-				ops := &ebiten.DrawImageOptions{}
-				ops.GeoM.Translate(float64(x), float64(y))
-				screen.DrawImage(g.tiles[i].image, ops)
-				i++
-			}
+			ops := &ebiten.DrawImageOptions{}
+			ops.GeoM.Translate(float64(x), float64(y))
+			screen.DrawImage(g.tiles[i].image, ops)
+			i++
 		}
 	}
 
