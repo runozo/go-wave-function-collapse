@@ -277,7 +277,7 @@ func iterateWaveFunctionCollapse(game *Game) bool {
 }
 
 func (g *Game) Update() error {
-	if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+	if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) && g.isRendered {
 		resetTilesOptions(&(g.tiles))
 		g.isRendered = false
 		go func() {
