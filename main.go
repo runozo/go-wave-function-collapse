@@ -191,7 +191,7 @@ func getLeastEntropyIndexes(tiles *[]Tile) []int {
 // Returns:
 // - int: the index of the collapsed tile.
 func collapseCell(game *Game, randomIndex int) {
-	// collapse random cell with least entropy
+	// collapse a cell with least entropy
 	randomOption := game.tiles[randomIndex].options[rand.Intn(len(game.tiles[randomIndex].options))]
 	game.tiles[randomIndex] = Tile{
 		options:   []string{randomOption},
@@ -227,6 +227,13 @@ func lookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, o
 	return filterOptions(optionsToProcess, newoptions)
 }
 
+// iterateWaveFunctionCollapse iterates the wave function collapse algorithm.
+//
+// Parameters:
+// - game: a pointer to a Game instance.
+//
+// Returns:
+// - bool: true if the game is not rendered, false otherwise.
 func iterateWaveFunctionCollapse(game *Game) bool {
 
 	// pick the minimum entropy indexes
@@ -234,7 +241,7 @@ func iterateWaveFunctionCollapse(game *Game) bool {
 
 	if len(leastEntropyIndexes) == 0 {
 		game.isRendered = true
-		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles", len(game.tiles))
+		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(game.tiles))
 	} else {
 		collapseCell(game, leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))])
 		// scan all the cells to filter the corresponding options
@@ -285,8 +292,6 @@ func (g *Game) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		os.Exit(0)
 	}
-
-	// iterateWaveFunctionCollapse(g)
 
 	return nil
 }
