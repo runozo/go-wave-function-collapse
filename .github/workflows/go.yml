@@ -12,19 +12,18 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: git fetch --force --tags
+      - run: | 
+          git fetch --force --tags 
+          apt-get install -y libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config
       - uses: actions/setup-go@v3
         with:
           go-version: '>=1.21.3'
           cache: true
-      - uses: alpine/action/install@v3
-        with:
-          packages: alsa-lib-dev libx11-dev libxrandr-dev libxcursor-dev libxinerama-dev libxi-dev mesa-dev pkgconf
       #- run: |
       #    sudo apt install libasound2-dev
       - uses: goreleaser/goreleaser-action@v4

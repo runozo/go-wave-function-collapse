@@ -1,5 +1,7 @@
 # go-wave-function-collapse
 
+[![goreleaser](https://github.com/runozo/go-wave-function-collapse/actions/workflows/go.yml/badge.svg)](https://github.com/runozo/go-wave-function-collapse/actions/workflows/go.yml)
+
 Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with [ebiten](https://github.com/hajimehoshi/ebiten) game library.
 
 ![GIF animation of WFC algorithm](gifs/gowfc.gif)
