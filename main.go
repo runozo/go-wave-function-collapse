@@ -147,10 +147,10 @@ func resetTilesOptions(tiles *[]Tile) {
 	}
 
 	// setup tiles with all the options enabled and a black square as image
-	black_square := ebiten.NewImage(tileWidth, tileHeight)
+	blackSquare := ebiten.NewImage(tileWidth, tileHeight)
 	for i := 0; i < len(*tiles); i++ {
 		(*tiles)[i] = Tile{
-			image:     black_square,
+			image:     blackSquare,
 			collapsed: false,
 			options:   initialOptions,
 		}
@@ -228,7 +228,7 @@ func lookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, o
 	return filterOptions(optionsToProcess, newoptions)
 }
 
-func iterateWaveFunctionCollapse(game *Game) {
+func iterateWaveFunctionCollapse(game *Game) bool {
 	if !game.isRendered {
 		// pick the minimum entropy indexes
 		leastEntropyIndexes := getLeastEntropyIndexes(&game.tiles)
@@ -270,19 +270,24 @@ func iterateWaveFunctionCollapse(game *Game) {
 			}
 		}
 	}
+	return !game.isRendered
 }
 
 func (g *Game) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 		resetTilesOptions(&(g.tiles))
 		g.isRendered = false
+		go func() {
+			for iterateWaveFunctionCollapse(g) {
+			}
+		}()
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		os.Exit(0)
 	}
 
-	iterateWaveFunctionCollapse(g)
+	// iterateWaveFunctionCollapse(g)
 
 	return nil
 }
@@ -334,7 +339,14 @@ func main() {
 
 	// init screen
 	ebiten.SetFullscreen(true)
+
+	go func() {
+		for iterateWaveFunctionCollapse(g) {
+		}
+	}()
+
 	err := ebiten.RunGame(g)
+
 	if err != nil {
 		panic(err)
 	}

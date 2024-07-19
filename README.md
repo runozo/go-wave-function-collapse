@@ -4,11 +4,18 @@ Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with 
 
 ![GIF animation of WFC algorithm](gifs/gowfc.gif)
 
-## Usage
+## Features
+
+- Fast
+- Concurrent
+
+## Run with Go
 
 ```go mod tidy```
 
 ```go run main.go```
+
+## Usage
 
 Press ```Spacebar``` to generate a new map. 
 
