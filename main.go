@@ -182,14 +182,11 @@ func getLeastEntropyIndexes(tiles *[]Tile) []int {
 	return minEntropyIndexes
 }
 
-// collapseCell collapses a random cell with the least entropy.
+// collapseCell collapses a cell with the least entropy.
 //
 // Parameters:
-// - game: a pointer to a game instance.
-// - minEntropyIndexes: a pointer to a slice of integers representing the indexes of the tiles with the minimum entropy.
-//
-// Returns:
-// - int: the index of the collapsed tile.
+// - game: a pointer to a Game instance.
+// - randomIndex: an integer representing the index of the cell to collapse.
 func collapseCell(game *Game, randomIndex int) {
 	// collapse a cell with least entropy
 	randomOption := game.tiles[randomIndex].options[rand.Intn(len(game.tiles[randomIndex].options))]
