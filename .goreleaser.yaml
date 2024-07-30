@@ -22,10 +22,10 @@ builds:
     goos:
       - linux
       - windows
-      - darwin
+      # - darwin
     goarch:
       - amd64
-      # - arm64
+      - arm64
 
 archives:
   - format: tar.gz
