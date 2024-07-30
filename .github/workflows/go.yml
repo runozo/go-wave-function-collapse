@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - run: | 
           git fetch --force --tags 
-          sudo apt-get install -y libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config gcc-aarch64-linux-gnu build-essential libc6-dev-i386
+          sudo apt-get install -y libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config gcc-aarch64-linux-gnu
       - uses: actions/setup-go@v3
         with:
           go-version: stable
