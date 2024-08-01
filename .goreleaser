@@ -24,6 +24,8 @@ builds:
       - amd64
       #- arm64
       #- arm
+ignore:
+    - goarch: 386
 
 changelog:
   sort: asc
