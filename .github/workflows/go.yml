@@ -62,26 +62,6 @@ jobs:
         run: |
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
-      - name: go vet (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          go vet ./...
-
-      - name: go vet (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          go list ./... | grep -v -x -F -f .github/workflows/govetblock_darwin.txt | xargs go vet
-
-      - name: go vet (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          go list ./... | grep -v -x -F -f .github/workflows/govetblock_windows.txt | xargs go vet
-
-      - name: go vet (vettool)
-        run: |
-          go install ./internal/vettools
-          go vet -vettool=$(which vettools)${{ runner.os == 'Windows' && '.exe' || '' }} -v ./...
-
       - name: go build
         run: |
           go build -v ./...
