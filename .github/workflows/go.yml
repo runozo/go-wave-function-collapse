@@ -49,14 +49,6 @@ jobs:
           mv $(go env GOPATH)/bin/wasmbrowsertest${{ runner.os == 'Windows' && '.exe' || '' }} $(go env GOPATH)/bin/go_js_wasm_exec${{ runner.os == 'Windows' && '.exe' || '' }}
           go install github.com/agnivade/wasmbrowsertest/cmd/cleanenv@${wasmbrowsertest_version}
 
-      - name: Prepare ebitenmobile test
-        run: |
-          cd /tmp
-          git clone --depth=1 https://github.com/hajimehoshi/go-inovation
-          cd go-inovation
-          go mod edit -replace=github.com/hajimehoshi/ebiten/v2=$GITHUB_WORKSPACE
-          go mod tidy
-
       - name: Xvfb
         if: runner.os == 'Linux'
         run: |
@@ -129,17 +121,3 @@ jobs:
           # Wasm tests don't work on Windows well due to mysterious timeouts (#2982).
           env GOOS=js GOARCH=wasm cleanenv -remove-prefix GITHUB_ -remove-prefix JAVA_ -remove-prefix PSModulePath -remove-prefix STATS_ -remove-prefix RUNNER_ -- go test -shuffle=on -v ./...
 
-      - name: Install ebitenmobile
-        run: |
-          go install ./cmd/ebitenmobile
-
-      - name: ebitenmobile bind (Android)
-        run: |
-          cd /tmp/go-inovation
-          ebitenmobile bind -target android -androidapi 23 -javapkg com.hajimehoshi.goinovation -o inovation.aar -v github.com/hajimehoshi/go-inovation/mobile
-
-      - name: ebitenmobile bind (iOS)
-        if: runner.os == 'macOS'
-        run: |
-          cd /tmp/go-inovation
-          ebitenmobile bind -target ios -o Inovation.xcframework -v github.com/hajimehoshi/go-inovation/mobile
