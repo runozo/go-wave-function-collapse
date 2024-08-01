@@ -6,7 +6,7 @@
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
-version: 6
+version: 2
 
 before:
   hooks:
@@ -22,7 +22,7 @@ builds:
       # - darwin
     goarch:
       - amd64
-      - arm64
+      - x86
       - arm
 
 changelog:

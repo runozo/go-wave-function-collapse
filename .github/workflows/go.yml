@@ -3,7 +3,7 @@ name: goreleaser
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 permissions:
   contents: write
@@ -19,8 +19,10 @@ jobs:
           fetch-depth: 0
       - run: | 
           git fetch --force --tags 
+          sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install -y libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config gcc-aarch64-linux-gnu
+          sudo apt-get install gcc-multilib
+          sudo apt-get install -y libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config gcc-aarch64-linux-gnu ibasound2-dev:i386 libgl1-mesa-dev:i386 libxcursor-dev:i386 libxi-dev:i386 libxinerama-dev:i386 libxrandr-dev:i386 libxxf86vm-dev:i386
       - uses: actions/setup-go@v3
         with:
           go-version: stable
