@@ -117,7 +117,7 @@ func stringInSlice(a string, slice []string) bool {
 	return false
 }
 
-// intInSlice checks if a given integer is present in a slice of integers.
+// IntInSlice checks if a given integer is present in a slice of integers.
 //
 // Parameters:
 // - a: the integer to search for.
@@ -125,7 +125,7 @@ func stringInSlice(a string, slice []string) bool {
 //
 // Returns:
 // - bool: true if the integer is found in the slice, false otherwise.
-func intInSlice(a int, slice []int) bool {
+func IntInSlice(a int, slice []int) bool {
 	for _, b := range slice {
 		if b == a {
 			return true
@@ -134,12 +134,13 @@ func intInSlice(a int, slice []int) bool {
 	return false
 }
 
-// resetTilesOptions resets the options of each Tile in the provided slice to all available options.
+// ResetTilesOptions resets the options of each Tile in the provided slice to all available options.
 //
 // tiles: a pointer to a slice of Tiles that need their options reset.
-func resetTilesOptions(tiles *[]Tile) {
+func ResetTilesOptions(tiles []Tile) []Tile {
 	// create a slice of all the options available
 	initialOptions := make([]string, len(tileOptions))
+	t := make([]Tile, len(tiles))
 	i := 0
 	for k := range tileOptions {
 		initialOptions[i] = k
@@ -148,13 +149,14 @@ func resetTilesOptions(tiles *[]Tile) {
 
 	// setup tiles with all the options enabled and a black square as image
 	blackSquare := ebiten.NewImage(tileWidth, tileHeight)
-	for i := 0; i < len(*tiles); i++ {
-		(*tiles)[i] = Tile{
+	for i := 0; i < len(tiles); i++ {
+		t[i] = Tile{
 			image:     blackSquare,
 			collapsed: false,
 			options:   initialOptions,
 		}
 	}
+	return t
 }
 
 // getLeastEntropyIndexes returns a slice of integers representing the indexes of the tiles with the least entropy.
@@ -216,7 +218,7 @@ func lookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, o
 
 	newoptions := make([]string, 0, 5) // random capacity
 	for k, v := range tileOptions {
-		if intInSlice(v[ruleIndexToProcess], rules) {
+		if IntInSlice(v[ruleIndexToProcess], rules) {
 			newoptions = append(newoptions, k)
 		}
 	}
@@ -224,19 +226,19 @@ func lookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, o
 	return filterOptions(optionsToProcess, newoptions)
 }
 
-// iterateWaveFunctionCollapse iterates the wave function collapse algorithm.
+// IterateWaveFunctionCollapse iterates the wave function collapse algorithm.
 //
 // Parameters:
 // - game: a pointer to a Game instance.
 //
 // Returns:
 // - bool: true if the game is not rendered, false otherwise.
-func iterateWaveFunctionCollapse(game *Game) bool {
+func IterateWaveFunctionCollapse(game *Game) bool {
 
 	// pick the minimum entropy indexes
 	leastEntropyIndexes := getLeastEntropyIndexes(&game.tiles)
 
-	if len(leastEntropyIndexes) == 0 {
+	if len(leastEntropyIndexes) == 0 || game.isRendered {
 		game.isRendered = true
 		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(game.tiles))
 	} else {
@@ -248,7 +250,7 @@ func iterateWaveFunctionCollapse(game *Game) bool {
 				if len(game.tiles[index].options) == 0 {
 					// we did not found any option, let's restart
 					log.Println("No more options found.. restarting!")
-					resetTilesOptions(&game.tiles)
+					game.tiles = ResetTilesOptions(game.tiles)
 				}
 
 				if !game.tiles[index].collapsed {
@@ -278,10 +280,10 @@ func iterateWaveFunctionCollapse(game *Game) bool {
 
 func (g *Game) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) && g.isRendered {
-		resetTilesOptions(&(g.tiles))
+		g.tiles = ResetTilesOptions(g.tiles)
 		g.isRendered = false
 		go func() {
-			for iterateWaveFunctionCollapse(g) {
+			for IterateWaveFunctionCollapse(g) {
 			}
 		}()
 	}
@@ -332,17 +334,14 @@ func main() {
 		isRendered:  false,
 		numOfTilesX: screenWidth/tileWidth + 1,
 		numOfTilesY: screenHeight/tileHeight + 1,
-		tiles:       make([]Tile, (screenWidth/tileWidth+1)*(screenHeight/tileHeight+1)),
+		tiles:       ResetTilesOptions(make([]Tile, (screenWidth/tileWidth+1)*(screenHeight/tileHeight+1))),
 	}
-
-	// init tiles
-	resetTilesOptions(&(g.tiles))
 
 	// init screen
 	ebiten.SetFullscreen(true)
 
 	go func() {
-		for iterateWaveFunctionCollapse(g) {
+		for IterateWaveFunctionCollapse(g) {
 		}
 	}()
 
