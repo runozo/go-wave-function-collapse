@@ -253,9 +253,19 @@ func IterateWaveFunctionCollapse(tiles *[]Tile, numOfTilesX, numOfTilesY int) bo
 	return true
 }
 
-func StartProcessing(tiles *[]Tile, numOfTilesX, numOfTilesY int, isDoneChan chan<- bool) {
+var isWfcRunning bool = false
+
+func StartRendering(tiles *[]Tile, numOfTilesX, numOfTilesY int, isDoneChan chan<- bool) {
+	if isWfcRunning {
+		log.Println("wfc is already running")
+		return
+	}
+	isWfcRunning = true
+	defer func() {
+		isWfcRunning = false
+		isDoneChan <- true
+	}()
 	ResetTilesOptions(tiles)
 	for IterateWaveFunctionCollapse(tiles, numOfTilesX, numOfTilesY) {
 	}
-	isDoneChan <- true
 }

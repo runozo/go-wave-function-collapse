@@ -37,11 +37,7 @@ type Game struct {
 
 func (g *Game) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-		g.isRendered = make(chan bool)
-		go wfc.StartProcessing(&g.tiles, g.numOfTilesX, g.numOfTilesY, g.isRendered)
-		for range g.isRendered {
-			log.Println("rendered")
-		}
+		go wfc.StartRendering(&g.tiles, g.numOfTilesX, g.numOfTilesY, g.isRendered)
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
@@ -100,7 +96,7 @@ func main() {
 	// init screen
 	ebiten.SetFullscreen(true)
 
-	go wfc.StartProcessing(&g.tiles, g.numOfTilesX, g.numOfTilesY, g.isRendered)
+	go wfc.StartRendering(&g.tiles, g.numOfTilesX, g.numOfTilesY, g.isRendered)
 
 	err := ebiten.RunGame(g)
 
