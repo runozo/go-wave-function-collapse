@@ -35,7 +35,7 @@ jobs:
           # either 'goreleaser' (default) or 'goreleaser-pro':
           distribution: goreleaser
           version: latest
-          args: release --skip=publish --config .goreleaser-linux.yaml
+          args: release --skip=publish --config .goreleaser-linux.yml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       - name: Upload
@@ -63,7 +63,7 @@ jobs:
           # either 'goreleaser' (default) or 'goreleaser-pro':
           distribution: goreleaser
           version: latest
-          args: release --skip=publish --config .goreleaser-darwin.yaml
+          args: release --skip=publish --config .goreleaser-darwin.yml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}    
       - name: Upload
@@ -113,6 +113,6 @@ jobs:
       - name: Release
         uses: goreleaser/goreleaser-action@v4
         with:
-          args: release --clean --config .goreleaser-release.yaml
+          args: release --clean --config .goreleaser-release.yml
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} 
