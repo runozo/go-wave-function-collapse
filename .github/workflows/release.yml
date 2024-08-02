@@ -36,8 +36,8 @@ jobs:
         with:
           name: go-wave-function-collapse
           path: |
-            dist/go-wave-function-collapse*
-            dist/checksums.txt
+            ./dist/go-wave-function-collapse*
+            ./dist/checksums.txt
   
   build-linux-binary:
     runs-on: ubuntu-latest
@@ -69,8 +69,8 @@ jobs:
         with:
           name: go-wave-function-collapse
           path: |
-            dist/go-wave-function-collapse*
-            dist/checksums.txt
+            ./dist/go-wave-function-collapse*
+            ./dist/checksums.txt
 
   build-darwin-binary:
     runs-on: macos-latest
@@ -97,8 +97,8 @@ jobs:
         with:
           name: go-wave-function-collapse
           path: |
-            dist/go-wave-function-collapse* 
-            dist/checksums.txt 
+            ./dist/go-wave-function-collapse* 
+            ./dist/checksums.txt 
   merge-and-release:
     needs: [build-linux-binary, build-darwin-binary, build-windows-binary]
     runs-on: ubuntu-latest
@@ -134,10 +134,12 @@ jobs:
       - name: Merge checksum file
         run: |
           cd ./dist/
-          cat ./darwin/checksums.txt >> checksums.txt
+          cat ./darwin/checksums.txt > checksums.txt
           cat ./linux/checksums.txt >> checksums.txt
+          cat ./windows/checksums.txt >> checksums.txt
           rm ./darwin/checksums.txt
           rm ./linux/checksums.txt
+          rm ./windows/checksums.txt
       - name: Check git status
         run: |
           tree
