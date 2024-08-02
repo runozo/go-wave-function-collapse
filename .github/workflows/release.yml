@@ -38,6 +38,7 @@ jobs:
           path: |
             dist/go-wave-function-collapse*
             dist/checksums.txt
+  
   build-linux-binary:
     runs-on: ubuntu-latest
     steps:
@@ -99,7 +100,7 @@ jobs:
             dist/go-wave-function-collapse* 
             dist/checksums.txt 
   merge-and-release:
-    needs: [build-linux-binary, build-darwin-binary]
+    needs: [build-linux-binary, build-darwin-binary, build-windows-binary]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -118,17 +119,17 @@ jobs:
       - name: Download linux binaries
         uses: actions/download-artifact@v3
         with:
-          name: go-wave-function-collapse-linux
+          name: go-wave-function-collapse
           path: ./go-wave-function-collapse-build/linux
       - name: Download darwin binaries
         uses: actions/download-artifact@v3
         with:
-          name: go-wave-function-collapse-darwin
+          name: go-wave-function-collapse
           path: ./go-wave-function-collapse-build/darwin
       - name: Download windows binaries
         uses: actions/download-artifact@v3
         with:
-          name: go-wave-function-collapse-windows
+          name: go-wave-function-collapse
           path: ./go-wave-function-collapse-build/windows
       - name: Merge checksum file
         run: |
