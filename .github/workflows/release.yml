@@ -10,6 +10,34 @@ permissions:
   contents: write
 
 jobs:
+  build-windows-binary:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: git fetch --force --tags
+      
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.22
+          cache: true
+
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          # either 'goreleaser' (default) or 'goreleaser-pro':
+          distribution: goreleaser
+          version: latest
+          args: release --skip=publish --config .goreleaser-windows.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-wave-function-collapse
+          path: |
+            dist/go-wave-function-collapse*
+            dist/checksums.txt
   build-linux-binary:
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +62,7 @@ jobs:
           version: latest
           args: release --skip=publish --config .goreleaser-linux.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
@@ -62,7 +90,7 @@ jobs:
           version: latest
           args: release --skip=publish --config .goreleaser-darwin.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}    
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
@@ -86,6 +114,7 @@ jobs:
         run: |
           mkdir -p ./go-wave-function-collapse-build/linux
           mkdir -p ./go-wave-function-collapse-build/darwin
+          mkdir -p ./go-wave-function-collapse-build/windows
       - name: Download linux binaries
         uses: actions/download-artifact@v3
         with:
@@ -95,7 +124,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: go-wave-function-collapse-darwin
-          path: ./go-wave-function-collapse-build/darwin          
+          path: ./go-wave-function-collapse-build/darwin
+      - name: Download windows binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: go-wave-function-collapse-windows
+          path: ./go-wave-function-collapse-build/windows
       - name: Merge checksum file
         run: |
           cd ./go-wave-function-collapse-build
