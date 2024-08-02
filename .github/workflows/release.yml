@@ -87,6 +87,6 @@ jobs:
           # either 'goreleaser' (default) or 'goreleaser-pro':
           distribution: goreleaser
           version: latest
-          args: release --skip=build --config .goreleaser-release.yml --clean --merge
+          args: release --skip=build --clean --merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
