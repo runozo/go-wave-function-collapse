@@ -120,20 +120,20 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: go-wave-function-collapse
-          path: ./go-wave-function-collapse-build/linux
+          path: /dist/linux
       - name: Download darwin binaries
         uses: actions/download-artifact@v3
         with:
           name: go-wave-function-collapse
-          path: ./go-wave-function-collapse-build/darwin
+          path: /dist/darwin
       - name: Download windows binaries
         uses: actions/download-artifact@v3
         with:
           name: go-wave-function-collapse
-          path: ./go-wave-function-collapse-build/windows
+          path: /dist/windows
       - name: Merge checksum file
         run: |
-          cd ./go-wave-function-collapse-build
+          cd /dist
           cat ./darwin/checksums.txt >> checksums.txt
           cat ./linux/checksums.txt >> checksums.txt
           rm ./darwin/checksums.txt

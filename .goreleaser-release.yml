@@ -11,8 +11,8 @@ release:
   draft: true
   mode: append
   extra_files:
-    - glob: ./go-wave-function-collapse-build/**/*.tar.gz
-    - glob: ./go-wave-function-collapse-build/checksums.txt
+    - glob: /dist/**/*.tar.gz
+    - glob: /dist/checksums.txt
   name_template: "Release {{.Tag}}"
   header: |
     # What's Changed
