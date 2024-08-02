@@ -123,6 +123,6 @@ jobs:
       - name: Release
         uses: goreleaser/goreleaser-action@v6
         with:
-          args: release --clean --config .goreleaser-release.yml
+          args: release --skip=build --skip=announce
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
