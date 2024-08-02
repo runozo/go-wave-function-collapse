@@ -125,7 +125,10 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
-      run: gh release edit "${{ steps.tag.outputs.tag }}" --draft=false
+      run: |
+        gh release create "${{ steps.tag.outputs.tag }}" ./dist/*.zip ./dist/*.tar.gz
+        gh release edit "${{ steps.tag.outputs.tag }}" --draft=false
+        gh release upload "${{ steps.tag.outputs.tag }}" ./dist/*.zip ./dist/*.tar.gz
     - uses: eregon/keep-last-n-releases@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
