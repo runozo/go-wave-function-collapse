@@ -114,14 +114,14 @@ jobs:
       with:
         name: go-wave-function-collapse
         path: ./dist/
-    - name: Check directory tree
-      run: tree
     - name: Generate checksums
       uses: jmgilman/actions-generate-checksum@v1
       with:
         patterns: |
           dist/*.zip
           dist/*.tar.gz
+    - name: Check directory tree
+      run: tree
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
