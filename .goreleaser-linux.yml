@@ -22,7 +22,7 @@ builds:
         env:
           - CC=gcc
     ldflags:
-      - -s -w -v -extldflags "-static"
+      - -s -w -v
 archives:
   - format: tar.gz
     # this name template makes the OS and Arch compatible with the results of uname.
