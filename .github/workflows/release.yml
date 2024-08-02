@@ -111,6 +111,11 @@ jobs:
         with:
           go-version: 1.22
           cache: true
+      - name: Download binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: go-wave-function-collapse
+          path: ./dist/
       - name: Check git status
         run: |
           tree
