@@ -115,4 +115,4 @@ jobs:
         with:
           args: release --clean --config .goreleaser-release.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
