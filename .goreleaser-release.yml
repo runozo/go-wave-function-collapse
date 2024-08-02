@@ -1,4 +1,4 @@
-version: "2"
+version: 2
 builds:
   - skip: true
 changelog:
