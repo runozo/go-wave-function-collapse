@@ -99,30 +99,33 @@ jobs:
           path: |
             ./dist/go-wave-function-collapse* 
             ./dist/checksums.txt 
+  
   merge-and-release:
     needs: [build-linux-binary, build-darwin-binary, build-windows-binary]
+    name: Publish Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - run: git fetch --force --tags
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.22
-          cache: true
-      - name: Download binaries
-        uses: actions/download-artifact@v3
-        with:
-          name: go-wave-function-collapse
-          path: ./dist/
-      - name: Check git status
-        run: |
-          tree
-          git status
-      - name: Release
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          args: release --config .goreleaser-release.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+    - name: Check git status
+      run: |
+        tree
+        git status
+    - name: Set tag name
+      id: tag
+      run: |
+        if [[ "${{ github.event_name }}" != "push" ]]; then
+          tag=v$(date +%Y%m%d.%H%M%S)
+        else
+          tag=$(basename "${{ github.ref }}")
+        fi
+        echo "tag=$tag" >> $GITHUB_OUTPUT
+    - name: Publish Release
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+      run: gh release edit "${{ steps.tag.outputs.tag }}" --draft=false
+    - uses: eregon/keep-last-n-releases@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        n: 3
+        remove_tags_without_release: true
