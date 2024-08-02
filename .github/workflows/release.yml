@@ -131,6 +131,8 @@ jobs:
           dist/*.tar.gz
 
     - uses: eregon/keep-last-n-releases@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         n: 3
         remove_tags_without_release: false
