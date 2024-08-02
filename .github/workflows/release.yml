@@ -125,15 +125,12 @@ jobs:
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
         files: |
           checksum.txt
           dist/*.zip
           dist/*.tar.gz
 
     - uses: eregon/keep-last-n-releases@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         n: 3
-        remove_tags_without_release: true
+        remove_tags_without_release: false
