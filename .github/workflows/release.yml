@@ -19,11 +19,9 @@ jobs:
       - run: git fetch --force --tags
       - name: Install dependencies
         run: |
-          sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install -y libasound2-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libx11-xcb-dev libxcb-randr0-dev
-          sudo apt-get install -y gcc-multilib
-          sudo apt-get install -y libasound2-dev:i386 libgl1-mesa-dev:i386 libxcursor-dev:i386 libxi-dev:i386 libxinerama-dev:i386 libxrandr-dev:i386 libxxf86vm-dev:i386
+          sudo apt-get install -y libasound2-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libx11-dev xserver-xorg-dev xorg-dev libx11-xcb-dev libxcb-randr0-dev libxcb1-dev 
+      
       - uses: actions/setup-go@v3
         with:
           go-version: 1.22
