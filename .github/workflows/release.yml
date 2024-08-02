@@ -37,7 +37,6 @@ jobs:
           name: go-wave-function-collapse
           path: |
             ./dist/go-wave-function-collapse*
-            ./dist/checksums.txt
   
   build-linux-binary:
     runs-on: ubuntu-latest
@@ -70,7 +69,6 @@ jobs:
           name: go-wave-function-collapse
           path: |
             ./dist/go-wave-function-collapse*
-            ./dist/checksums.txt
 
   build-darwin-binary:
     runs-on: macos-latest
@@ -98,7 +96,6 @@ jobs:
           name: go-wave-function-collapse
           path: |
             ./dist/go-wave-function-collapse* 
-            ./dist/checksums.txt 
   
   merge-and-release:
     needs: [build-linux-binary, build-darwin-binary, build-windows-binary]
