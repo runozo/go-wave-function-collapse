@@ -105,6 +105,10 @@ jobs:
     name: Publish Release
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - run: git fetch --force --tags
     - name: Download binaries
       uses: actions/download-artifact@v3
       with:
@@ -112,23 +116,21 @@ jobs:
         path: ./dist/
     - name: Check directory tree
       run: tree
-    - name: Set tag name
-      id: tag
-      run: |
-        if [[ "${{ github.event_name }}" != "push" ]]; then
-          tag=v$(date +%Y%m%d.%H%M%S)
-        else
-          tag=$(basename "${{ github.ref }}")
-        fi
-        echo "tag=$tag" >> $GITHUB_OUTPUT
-    - name: Publish Release
-      env:
-        GH_TOKEN: ${{ github.token }}
-        GH_REPO: ${{ github.repository }}
-      run: |
-        gh release create "${{ steps.tag.outputs.tag }}" ./dist/*.zip ./dist/*.tar.gz
-        gh release edit "${{ steps.tag.outputs.tag }}" --draft=false
-        gh release upload "${{ steps.tag.outputs.tag }}" ./dist/*.zip ./dist/*.tar.gz
+    
+    - name: Generate checksums
+      uses: jmgilman/actions-generate-checksum@v1
+      with:
+        patterns: |
+          dist/*.zip
+          dist/*.tar.gz
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          checksum.txt
+          dist/*.zip
+          dist/*.tar.gz
+
     - uses: eregon/keep-last-n-releases@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
