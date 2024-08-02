@@ -11,8 +11,7 @@ release:
   draft: true
   mode: append
   extra_files:
-    - glob: ./dist/**/*.tar.gz
-    - glob: ./dist/checksums.txt
+    - glob: ./dist/**/*
   name_template: "Release {{.Tag}}"
   header: |
     # What's Changed

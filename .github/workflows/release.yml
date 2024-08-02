@@ -28,9 +28,16 @@ jobs:
           # either 'goreleaser' (default) or 'goreleaser-pro':
           distribution: goreleaser
           version: latest
-          args: release --skip=publish --config .goreleaser-windows.yml --split
+          args: release --skip=publish --config .goreleaser-windows.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-wave-function-collapse
+          path: |
+            ./dist/go-wave-function-collapse*
+            ./dist/checksums.txt
   
   build-linux-binary:
     runs-on: ubuntu-latest
@@ -54,9 +61,16 @@ jobs:
           # either 'goreleaser' (default) or 'goreleaser-pro':
           distribution: goreleaser
           version: latest
-          args: release --skip=publish --config .goreleaser-linux.yml --split
+          args: release --skip=publish --config .goreleaser-linux.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-wave-function-collapse
+          path: |
+            ./dist/go-wave-function-collapse*
+            ./dist/checksums.txt
 
   build-darwin-binary:
     runs-on: macos-latest
@@ -75,18 +89,62 @@ jobs:
           # either 'goreleaser' (default) or 'goreleaser-pro':
           distribution: goreleaser
           version: latest
-          args: release --skip=publish --config .goreleaser-darwin.yml --clean --split
+          args: release --skip=publish --config .goreleaser-darwin.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-wave-function-collapse
+          path: |
+            ./dist/go-wave-function-collapse* 
+            ./dist/checksums.txt 
   merge-and-release:
     needs: [build-linux-binary, build-darwin-binary, build-windows-binary]
     runs-on: ubuntu-latest
     steps:
-      - uses: goreleaser/goreleaser-action@v6
+      - uses: actions/checkout@v3
         with:
-          # either 'goreleaser' (default) or 'goreleaser-pro':
-          distribution: goreleaser
-          version: latest
-          args: continue --merge
+          fetch-depth: 0
+      - run: git fetch --force --tags
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.22
+          cache: true
+      - name: Make directories
+        run: |
+          mkdir -p ./dist/linux
+          mkdir -p ./dist/darwin
+          mkdir -p ./dist/windows
+      - name: Download linux binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: go-wave-function-collapse
+          path: ./dist/linux
+      - name: Download darwin binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: go-wave-function-collapse
+          path: ./dist/darwin
+      - name: Download windows binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: go-wave-function-collapse
+          path: ./dist/windows
+      - name: Merge checksum file
+        run: |
+          cd ./dist/
+          cat ./darwin/checksums.txt > checksums.txt
+          cat ./linux/checksums.txt >> checksums.txt
+          rm ./darwin/checksums.txt
+          rm ./linux/checksums.txt
+      - name: Check git status
+        run: |
+          tree
+          git status
+      - name: Release
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          args: release --clean --config .goreleaser-release.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
