@@ -116,7 +116,6 @@ jobs:
         path: ./dist/
     - name: Check directory tree
       run: tree
-    
     - name: Generate checksums
       uses: jmgilman/actions-generate-checksum@v1
       with:
@@ -126,6 +125,7 @@ jobs:
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         files: |
           checksum.txt
           dist/*.zip
