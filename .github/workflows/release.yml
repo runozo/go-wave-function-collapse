@@ -1,135 +1,19 @@
-name: Release
-
 on:
-  push:
-    tags:
-      - 'v*'
-  workflow_dispatch:
+  release:
+    types: [created]
 
 permissions:
-  contents: write
+    contents: write
+    packages: write
 
 jobs:
-  build-windows-binary:
-    runs-on: windows-2019
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - run: git fetch --force --tags
-      
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.22
-          cache: true
-
-      - uses: goreleaser/goreleaser-action@v6
-        with:
-          # either 'goreleaser' (default) or 'goreleaser-pro':
-          distribution: goreleaser
-          version: latest
-          args: release --skip=publish --config .goreleaser-windows.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload
-        uses: actions/upload-artifact@v3
-        with:
-          name: go-wave-function-collapse
-          path: |
-            ./dist/go-wave-function-collapse*
-  
-  build-linux-binary:
+  release-linux-amd64:
+    name: release linux/amd64
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - run: git fetch --force --tags
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libasound2-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libx11-dev xserver-xorg-dev xorg-dev libx11-xcb-dev libxcb-randr0-dev libxcb1-dev 
-      
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.22
-          cache: true
-
-      - uses: goreleaser/goreleaser-action@v6
-        with:
-          # either 'goreleaser' (default) or 'goreleaser-pro':
-          distribution: goreleaser
-          version: latest
-          args: release --skip=publish --config .goreleaser-linux.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload
-        uses: actions/upload-artifact@v3
-        with:
-          name: go-wave-function-collapse
-          path: |
-            ./dist/go-wave-function-collapse*
-
-  build-darwin-binary:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - run: git fetch --force --tags
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.22
-          cache: true
-
-      - uses: goreleaser/goreleaser-action@v6
-        with:
-          # either 'goreleaser' (default) or 'goreleaser-pro':
-          distribution: goreleaser
-          version: latest
-          args: release --skip=publish --config .goreleaser-darwin.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
-      - name: Upload
-        uses: actions/upload-artifact@v3
-        with:
-          name: go-wave-function-collapse
-          path: |
-            ./dist/go-wave-function-collapse* 
-  
-  merge-and-release:
-    needs: [build-linux-binary, build-darwin-binary, build-windows-binary]
-    name: Publish Release
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+    - uses: wangyoucao577/go-release-action@v1
       with:
-        fetch-depth: 0
-    - run: git fetch --force --tags
-    - name: Download binaries
-      uses: actions/download-artifact@v3
-      with:
-        name: go-wave-function-collapse
-        path: ./dist/
-    - name: Generate checksums
-      uses: jmgilman/actions-generate-checksum@v1
-      with:
-        patterns: |
-          dist/*.zip
-          dist/*.tar.gz
-    - name: Check directory tree
-      run: tree
-    - name: Create release
-      uses: softprops/action-gh-release@v2
-      with:
-        files: |
-          checksum.txt
-          dist/*.zip
-          dist/*.tar.gz
-
-    - uses: eregon/keep-last-n-releases@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        n: 3
-        remove_tags_without_release: false
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: linux
+        goarch: amd64
