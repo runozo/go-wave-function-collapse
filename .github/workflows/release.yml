@@ -80,7 +80,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create ${{ steps.release.outputs.tag_name }} ./dist/go-wave-function-collapse*
+          gh release create ${{ needs.details.outputs.tag_name }} ./dist/go-wave-function-collapse*
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
