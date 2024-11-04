@@ -25,12 +25,13 @@ jobs:
       - name: Extract tag and details
         run: |
           if [ "${{ github.ref_type }}" == "tag" ]; then
-            TAG_NAME=${GITHUB_REF#refs/tags/}
+            TAG_NAME=${GITHUB_REF_NAME}
             NEW_VERSION=$(echo $TAG_NAME | awk -F'-' '{print $1}')
             SUFFIX=$(echo $TAG_NAME | grep -oP '[a-z]+[0-9]+' || echo "")
             echo "new_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
             echo "suffix=$SUFFIX" >> "$GITHUB_OUTPUT"
             echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+            echo "Tag found: $TAG_NAME"
           else
             echo "No tag found"
             exit 1
