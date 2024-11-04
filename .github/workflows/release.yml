@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Extract tag and details
         run: |
-          if [ "${{ github.ref_type }}" == "Tag" ]; then
+          if [ "${{ github.ref_type }}" == "tag" ]; then
             TAG_NAME=${GITHUB_REF#refs/tags/}
             NEW_VERSION=$(echp $TAG_NAME | awk -F'-' '{print $1}')
             SUFFIX=$(echo $TAG_NAME | grep -oP '[a-z]+[0-9]+' || echo "")
