@@ -182,7 +182,7 @@ func GetLeastEntropyIndexes(tiles *[]Tile) []int {
 			}
 		}
 	}
-	log.Println("minEntropyIndexes", len(minEntropyIndexes), "minEntropy", minEntropy)
+	// log.Println("minEntropyIndexes", len(minEntropyIndexes), "minEntropy", minEntropy)
 	return minEntropyIndexes
 }
 

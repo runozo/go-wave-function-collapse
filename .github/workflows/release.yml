@@ -15,10 +15,6 @@ permissions:
 jobs:
   details:
     runs-on: ubuntu-latest
-    outputs:
-      new_version: ${{ steps.release.outputs.new_version }}
-      suffix: ${{ steps.release.outputs.suffix }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - name: Git
         uses: actions/checkout@v4
