@@ -133,46 +133,46 @@
 	<SubTexture name="tank_huge.png" x="320" y="255" width="62" height="76"/>
 	<SubTexture name="tank_red.png" x="474" y="48" width="38" height="46"/>
 	<SubTexture name="tank_sand.png" x="437" y="471" width="42" height="46"/>
-	<SubTexture name="tileGrass1.png" x="192" y="384" width="64" height="64"/>
-	<SubTexture name="tileGrass2.png" x="192" y="320" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadCornerLL.png" x="64" y="320" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadCornerLR.png" x="64" y="384" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadCornerUL.png" x="0" y="64" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadCornerUR.png" x="192" y="256" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadCrossing.png" x="0" y="319" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadCrossingRound.png" x="64" y="0" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadEast.png" x="64" y="128" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadNorth.png" x="192" y="192" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadSplitE.png" x="192" y="64" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadSplitN.png" x="192" y="128" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadSplitS.png" x="64" y="64" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadSplitW.png" x="64" y="256" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadTransitionE.png" x="192" y="0" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadTransitionE_dirt.png" x="320" y="64" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadTransitionN.png" x="320" y="0" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadTransitionN_dirt.png" x="256" y="448" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadTransitionS.png" x="256" y="384" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadTransitionS_dirt.png" x="256" y="320" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadTransitionW.png" x="256" y="256" width="64" height="64"/>
-	<SubTexture name="tileGrass_roadTransitionW_dirt.png" x="256" y="192" width="64" height="64"/>
-	<SubTexture name="tileGrass_transitionE.png" x="256" y="128" width="64" height="64"/>
-	<SubTexture name="tileGrass_transitionN.png" x="256" y="64" width="64" height="64"/>
-	<SubTexture name="tileGrass_transitionS.png" x="256" y="0" width="64" height="64"/>
-	<SubTexture name="tileGrass_transitionW.png" x="192" y="448" width="64" height="64"/>
-	<SubTexture name="tileSand1.png" x="128" y="0" width="64" height="64"/>
-	<SubTexture name="tileSand2.png" x="64" y="448" width="64" height="64"/>
-	<SubTexture name="tileSand_roadCornerLL.png" x="0" y="255" width="64" height="64"/>
-	<SubTexture name="tileSand_roadCornerLR.png" x="0" y="191" width="64" height="64"/>
-	<SubTexture name="tileSand_roadCornerUL.png" x="0" y="0" width="64" height="64"/>
-	<SubTexture name="tileSand_roadCornerUR.png" x="0" y="383" width="64" height="64"/>
-	<SubTexture name="tileSand_roadCrossing.png" x="320" y="128" width="64" height="64"/>
-	<SubTexture name="tileSand_roadCrossingRound.png" x="128" y="448" width="64" height="64"/>
-	<SubTexture name="tileSand_roadEast.png" x="128" y="384" width="64" height="64"/>
-	<SubTexture name="tileSand_roadNorth.png" x="128" y="320" width="64" height="64"/>
-	<SubTexture name="tileSand_roadSplitE.png" x="128" y="256" width="64" height="64"/>
-	<SubTexture name="tileSand_roadSplitN.png" x="128" y="192" width="64" height="64"/>
-	<SubTexture name="tileSand_roadSplitS.png" x="128" y="128" width="64" height="64"/>
-	<SubTexture name="tileSand_roadSplitW.png" x="128" y="64" width="64" height="64"/>
+	<SubTexture name="tileGrass1.png" x="192" y="384" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass2.png" x="192" y="320" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadCornerLL.png" x="64" y="320" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadCornerLR.png" x="64" y="384" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadCornerUL.png" x="0" y="64" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadCornerUR.png" x="192" y="256" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadCrossing.png" x="0" y="319" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadCrossingRound.png" x="64" y="0" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadEast.png" x="64" y="128" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadNorth.png" x="192" y="192" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadSplitE.png" x="192" y="64" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadSplitN.png" x="192" y="128" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadSplitS.png" x="64" y="64" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadSplitW.png" x="64" y="256" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadTransitionE.png" x="192" y="0" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadTransitionE_dirt.png" x="320" y="64" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadTransitionN.png" x="320" y="0" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadTransitionN_dirt.png" x="256" y="448" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadTransitionS.png" x="256" y="384" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadTransitionS_dirt.png" x="256" y="320" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadTransitionW.png" x="256" y="256" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_roadTransitionW_dirt.png" x="256" y="192" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_transitionE.png" x="256" y="128" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_transitionN.png" x="256" y="64" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_transitionS.png" x="256" y="0" width="64" height="64" weight="20"/>
+	<SubTexture name="tileGrass_transitionW.png" x="192" y="448" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand1.png" x="128" y="0" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand2.png" x="64" y="448" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadCornerLL.png" x="0" y="255" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadCornerLR.png" x="0" y="191" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadCornerUL.png" x="0" y="0" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadCornerUR.png" x="0" y="383" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadCrossing.png" x="320" y="128" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadCrossingRound.png" x="128" y="448" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadEast.png" x="128" y="384" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadNorth.png" x="128" y="320" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadSplitE.png" x="128" y="256" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadSplitN.png" x="128" y="192" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadSplitS.png" x="128" y="128" width="64" height="64" weight="20"/>
+	<SubTexture name="tileSand_roadSplitW.png" x="128" y="64" width="64" height="64" weight="20"/>
 	<SubTexture name="tracksDouble.png" x="438" y="403" width="41" height="52"/>
 	<SubTexture name="tracksLarge.png" x="439" y="231" width="41" height="52"/>
 	<SubTexture name="tracksSmall.png" x="476" y="319" width="37" height="52"/>

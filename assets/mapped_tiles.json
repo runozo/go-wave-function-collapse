@@ -1,0 +1,4793 @@
+[
+    {
+        "name": "tileGrass1",
+        "image_name": "tileGrass1.png",
+        "options": {
+            "up": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_transitionN"
+            ],
+            "right": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_transitionE"
+            ],
+            "down": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitS",
+                "tileGrass_transitionS"
+            ],
+            "left": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitW",
+                "tileGrass_transitionW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 192,
+        "y": 384,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass2",
+        "image_name": "tileGrass2.png",
+        "options": {
+            "up": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_transitionN"
+            ],
+            "right": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_transitionE"
+            ],
+            "down": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitS",
+                "tileGrass_transitionS"
+            ],
+            "left": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitW",
+                "tileGrass_transitionW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 192,
+        "y": 320,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadCornerLL",
+        "image_name": "tileGrass_roadCornerLL.png",
+        "options": {
+            "up": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_transitionN"
+            ],
+            "right": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_transitionE"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 64,
+        "y": 320,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadCornerLR",
+        "image_name": "tileGrass_roadCornerLR.png",
+        "options": {
+            "up": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_transitionN"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitW",
+                "tileGrass_transitionW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 64,
+        "y": 384,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadCornerUL",
+        "image_name": "tileGrass_roadCornerUL.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_transitionE"
+            ],
+            "down": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitS",
+                "tileGrass_transitionS"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 0,
+        "y": 64,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadCornerUR",
+        "image_name": "tileGrass_roadCornerUR.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitS",
+                "tileGrass_transitionS"
+            ],
+            "left": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitW",
+                "tileGrass_transitionW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 192,
+        "y": 256,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadCrossing",
+        "image_name": "tileGrass_roadCrossing.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 0,
+        "y": 319,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadCrossingRound",
+        "image_name": "tileGrass_roadCrossingRound.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 64,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadEast",
+        "image_name": "tileGrass_roadEast.png",
+        "options": {
+            "up": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_transitionN"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitS",
+                "tileGrass_transitionS"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 64,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadNorth",
+        "image_name": "tileGrass_roadNorth.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_transitionE"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitW",
+                "tileGrass_transitionW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 192,
+        "y": 192,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadSplitE",
+        "image_name": "tileGrass_roadSplitE.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitW",
+                "tileGrass_transitionW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 192,
+        "y": 64,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadSplitN",
+        "image_name": "tileGrass_roadSplitN.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitS",
+                "tileGrass_transitionS"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 192,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadSplitS",
+        "image_name": "tileGrass_roadSplitS.png",
+        "options": {
+            "up": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_transitionN"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 64,
+        "y": 64,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadSplitW",
+        "image_name": "tileGrass_roadSplitW.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_transitionE"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 64,
+        "y": 256,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadTransitionE",
+        "image_name": "tileGrass_roadTransitionE.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileGrass_transitionE"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileGrass_transitionE"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 192,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadTransitionE_dirt",
+        "image_name": "tileGrass_roadTransitionE_dirt.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileGrass_transitionE"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileGrass_transitionE"
+            ],
+            "left": [
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 320,
+        "y": 64,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadTransitionN",
+        "image_name": "tileGrass_roadTransitionN.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileGrass_transitionN"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileGrass_transitionN"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 320,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadTransitionN_dirt",
+        "image_name": "tileGrass_roadTransitionN_dirt.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileGrass_transitionN"
+            ],
+            "down": [
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt"
+            ],
+            "left": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileGrass_transitionN"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 256,
+        "y": 448,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadTransitionS",
+        "image_name": "tileGrass_roadTransitionS.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileGrass_transitionS"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileGrass_transitionS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 256,
+        "y": 384,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadTransitionS_dirt",
+        "image_name": "tileGrass_roadTransitionS_dirt.png",
+        "options": {
+            "up": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt"
+            ],
+            "right": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileGrass_transitionS"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileGrass_transitionS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 256,
+        "y": 320,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadTransitionW",
+        "image_name": "tileGrass_roadTransitionW.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileGrass_transitionW"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileGrass_transitionW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 256,
+        "y": 256,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_roadTransitionW_dirt",
+        "image_name": "tileGrass_roadTransitionW_dirt.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileGrass_transitionW"
+            ],
+            "right": [
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCrossing",
+                "tileGrass_roadCrossingRound",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_roadSplitS",
+                "tileGrass_roadSplitW",
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt"
+            ],
+            "down": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileGrass_transitionW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 256,
+        "y": 192,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_transitionE",
+        "image_name": "tileGrass_transitionE.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileGrass_transitionE"
+            ],
+            "right": [
+                "tileGrass_transitionW",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE"
+            ],
+            "down": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileGrass_transitionE"
+            ],
+            "left": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitW",
+                "tileGrass_transitionW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 256,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_transitionN",
+        "image_name": "tileGrass_transitionN.png",
+        "options": {
+            "up": [
+                "tileGrass_transitionS",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN"
+            ],
+            "right": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileGrass_transitionN"
+            ],
+            "down": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLL",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitS",
+                "tileGrass_transitionS"
+            ],
+            "left": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileGrass_transitionN"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 256,
+        "y": 64,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_transitionS",
+        "image_name": "tileGrass_transitionS.png",
+        "options": {
+            "up": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerUL",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadEast",
+                "tileGrass_roadSplitN",
+                "tileGrass_transitionN"
+            ],
+            "right": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileGrass_transitionS"
+            ],
+            "down": [
+                "tileGrass_transitionN",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitS"
+            ],
+            "left": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileGrass_transitionS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 256,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileGrass_transitionW",
+        "image_name": "tileGrass_transitionW.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileGrass_transitionW"
+            ],
+            "right": [
+                "tileGrass1",
+                "tileGrass2",
+                "tileGrass_roadCornerLR",
+                "tileGrass_roadCornerUR",
+                "tileGrass_roadNorth",
+                "tileGrass_roadSplitE",
+                "tileGrass_transitionE"
+            ],
+            "down": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileGrass_transitionW"
+            ],
+            "left": [
+                "tileGrass_transitionE",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 192,
+        "y": 448,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand1",
+        "image_name": "tileSand1.png",
+        "options": {
+            "up": [
+                "tileGrass_transitionS",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN"
+            ],
+            "right": [
+                "tileGrass_transitionW",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE"
+            ],
+            "down": [
+                "tileGrass_transitionN",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitS"
+            ],
+            "left": [
+                "tileGrass_transitionE",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 128,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand2",
+        "image_name": "tileSand2.png",
+        "options": {
+            "up": [
+                "tileGrass_transitionS",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN"
+            ],
+            "right": [
+                "tileGrass_transitionW",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE"
+            ],
+            "down": [
+                "tileGrass_transitionN",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitS"
+            ],
+            "left": [
+                "tileGrass_transitionE",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 64,
+        "y": 448,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadCornerLL",
+        "image_name": "tileSand_roadCornerLL.png",
+        "options": {
+            "up": [
+                "tileGrass_transitionS",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN"
+            ],
+            "right": [
+                "tileGrass_transitionW",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 0,
+        "y": 255,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadCornerLR",
+        "image_name": "tileSand_roadCornerLR.png",
+        "options": {
+            "up": [
+                "tileGrass_transitionS",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_transitionE",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 0,
+        "y": 191,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadCornerUL",
+        "image_name": "tileSand_roadCornerUL.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_transitionW",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE"
+            ],
+            "down": [
+                "tileGrass_transitionN",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitS"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadCornerUR",
+        "image_name": "tileSand_roadCornerUR.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_transitionN",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitS"
+            ],
+            "left": [
+                "tileGrass_transitionE",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 0,
+        "y": 383,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadCrossing",
+        "image_name": "tileSand_roadCrossing.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 320,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadCrossingRound",
+        "image_name": "tileSand_roadCrossingRound.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 128,
+        "y": 448,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadEast",
+        "image_name": "tileSand_roadEast.png",
+        "options": {
+            "up": [
+                "tileGrass_transitionS",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_transitionN",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitS"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 128,
+        "y": 384,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadNorth",
+        "image_name": "tileSand_roadNorth.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_transitionW",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_transitionE",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 128,
+        "y": 320,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadSplitE",
+        "image_name": "tileSand_roadSplitE.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_transitionE",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitW"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 128,
+        "y": 256,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadSplitN",
+        "image_name": "tileSand_roadSplitN.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_transitionN",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitS"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 128,
+        "y": 192,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadSplitS",
+        "image_name": "tileSand_roadSplitS.png",
+        "options": {
+            "up": [
+                "tileGrass_transitionS",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN"
+            ],
+            "right": [
+                "tileGrass_roadTransitionW",
+                "tileGrass_roadTransitionW_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 128,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "tileSand_roadSplitW",
+        "image_name": "tileSand_roadSplitW.png",
+        "options": {
+            "up": [
+                "tileGrass_roadTransitionS",
+                "tileGrass_roadTransitionS_dirt",
+                "tileSand_roadCornerLL",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitS",
+                "tileSand_roadSplitW"
+            ],
+            "right": [
+                "tileGrass_transitionW",
+                "tileSand1",
+                "tileSand2",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE"
+            ],
+            "down": [
+                "tileGrass_roadTransitionN",
+                "tileGrass_roadTransitionN_dirt",
+                "tileSand_roadCornerUL",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadNorth",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitW"
+            ],
+            "left": [
+                "tileGrass_roadTransitionE",
+                "tileGrass_roadTransitionE_dirt",
+                "tileSand_roadCornerLR",
+                "tileSand_roadCornerUR",
+                "tileSand_roadCrossing",
+                "tileSand_roadCrossingRound",
+                "tileSand_roadEast",
+                "tileSand_roadSplitE",
+                "tileSand_roadSplitN",
+                "tileSand_roadSplitS"
+            ],
+            "above": [],
+            "below": []
+        },
+        "type": "ground",
+        "x": 128,
+        "y": 64,
+        "width": 64,
+        "height": 64,
+        "weight": 20
+    },
+    {
+        "name": "barrelBlack_side",
+        "image_name": "barrelBlack_side.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 513,
+        "y": 407,
+        "width": 20,
+        "height": 28,
+        "weight": 100,
+        "type": "random"
+    },
+    {
+        "name": "barrelBlack_top",
+        "image_name": "barrelBlack_top.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 507,
+        "y": 515,
+        "width": 24,
+        "height": 24,
+        "weight": 54,
+        "type": "random"
+    },
+    {
+        "name": "barrelGreen_side",
+        "image_name": "barrelGreen_side.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 513,
+        "y": 319,
+        "width": 20,
+        "height": 28,
+        "weight": 56,
+        "type": "random"
+    },
+    {
+        "name": "barrelGreen_top",
+        "image_name": "barrelGreen_top.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 507,
+        "y": 443,
+        "width": 24,
+        "height": 24,
+        "weight": 12,
+        "type": "random"
+    },
+    {
+        "name": "barrelRed_side",
+        "image_name": "barrelRed_side.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 414,
+        "y": 371,
+        "width": 20,
+        "height": 28,
+        "weight": 30,
+        "type": "random"
+    },
+    {
+        "name": "barrelRed_top",
+        "image_name": "barrelRed_top.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 507,
+        "y": 491,
+        "width": 24,
+        "height": 24,
+        "weight": 88,
+        "type": "random"
+    },
+    {
+        "name": "barrelRust_side",
+        "image_name": "barrelRust_side.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 512,
+        "y": 40,
+        "width": 20,
+        "height": 28,
+        "weight": 85,
+        "type": "random"
+    },
+    {
+        "name": "barrelRust_top",
+        "image_name": "barrelRust_top.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 507,
+        "y": 467,
+        "width": 24,
+        "height": 24,
+        "weight": 17,
+        "type": "random"
+    },
+    {
+        "name": "barricadeMetal",
+        "image_name": "barricadeMetal.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 479,
+        "y": 499,
+        "width": 28,
+        "height": 28,
+        "weight": 70,
+        "type": "random"
+    },
+    {
+        "name": "barricadeWood",
+        "image_name": "barricadeWood.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 479,
+        "y": 527,
+        "width": 28,
+        "height": 28,
+        "weight": 38,
+        "type": "random"
+    },
+    {
+        "name": "bulletBlue1",
+        "image_name": "bulletBlue1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 356,
+        "y": 555,
+        "width": 4,
+        "height": 10,
+        "weight": 54,
+        "type": "random"
+    },
+    {
+        "name": "bulletBlue1_outline",
+        "image_name": "bulletBlue1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 544,
+        "y": 26,
+        "width": 8,
+        "height": 14,
+        "weight": 100,
+        "type": "random"
+    },
+    {
+        "name": "bulletBlue2",
+        "image_name": "bulletBlue2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 532,
+        "y": 48,
+        "width": 8,
+        "height": 12,
+        "weight": 84,
+        "type": "random"
+    },
+    {
+        "name": "bulletBlue2_outline",
+        "image_name": "bulletBlue2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 438,
+        "y": 455,
+        "width": 12,
+        "height": 16,
+        "weight": 36,
+        "type": "random"
+    },
+    {
+        "name": "bulletBlue3",
+        "image_name": "bulletBlue3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 500,
+        "y": 130,
+        "width": 4,
+        "height": 14,
+        "weight": 89,
+        "type": "random"
+    },
+    {
+        "name": "bulletBlue3_outline",
+        "image_name": "bulletBlue3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 513,
+        "y": 202,
+        "width": 8,
+        "height": 18,
+        "weight": 69,
+        "type": "random"
+    },
+    {
+        "name": "bulletDark1",
+        "image_name": "bulletDark1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 386,
+        "y": 393,
+        "width": 4,
+        "height": 10,
+        "weight": 7,
+        "type": "random"
+    },
+    {
+        "name": "bulletDark1_outline",
+        "image_name": "bulletDark1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 462,
+        "y": 455,
+        "width": 8,
+        "height": 14,
+        "weight": 65,
+        "type": "random"
+    },
+    {
+        "name": "bulletDark2",
+        "image_name": "bulletDark2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 470,
+        "y": 455,
+        "width": 8,
+        "height": 12,
+        "weight": 57,
+        "type": "random"
+    },
+    {
+        "name": "bulletDark2_outline",
+        "image_name": "bulletDark2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 196,
+        "y": 544,
+        "width": 12,
+        "height": 16,
+        "weight": 27,
+        "type": "random"
+    },
+    {
+        "name": "bulletDark3",
+        "image_name": "bulletDark3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 435,
+        "y": 231,
+        "width": 4,
+        "height": 14,
+        "weight": 30,
+        "type": "random"
+    },
+    {
+        "name": "bulletDark3_outline",
+        "image_name": "bulletDark3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 531,
+        "y": 517,
+        "width": 8,
+        "height": 18,
+        "weight": 54,
+        "type": "random"
+    },
+    {
+        "name": "bulletGreen1",
+        "image_name": "bulletGreen1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 435,
+        "y": 245,
+        "width": 4,
+        "height": 10,
+        "weight": 62,
+        "type": "random"
+    },
+    {
+        "name": "bulletGreen1_outline",
+        "image_name": "bulletGreen1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 532,
+        "y": 160,
+        "width": 8,
+        "height": 14,
+        "weight": 98,
+        "type": "random"
+    },
+    {
+        "name": "bulletGreen2",
+        "image_name": "bulletGreen2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 521,
+        "y": 202,
+        "width": 8,
+        "height": 12,
+        "weight": 63,
+        "type": "random"
+    },
+    {
+        "name": "bulletGreen2_outline",
+        "image_name": "bulletGreen2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 172,
+        "y": 544,
+        "width": 12,
+        "height": 16,
+        "weight": 48,
+        "type": "random"
+    },
+    {
+        "name": "bulletGreen3",
+        "image_name": "bulletGreen3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 471,
+        "y": 283,
+        "width": 4,
+        "height": 14,
+        "weight": 6,
+        "type": "random"
+    },
+    {
+        "name": "bulletGreen3_outline",
+        "image_name": "bulletGreen3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 492,
+        "y": 130,
+        "width": 8,
+        "height": 18,
+        "weight": 81,
+        "type": "random"
+    },
+    {
+        "name": "bulletRed1",
+        "image_name": "bulletRed1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 382,
+        "y": 393,
+        "width": 4,
+        "height": 10,
+        "weight": 63,
+        "type": "random"
+    },
+    {
+        "name": "bulletRed1_outline",
+        "image_name": "bulletRed1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 344,
+        "y": 551,
+        "width": 8,
+        "height": 14,
+        "weight": 43,
+        "type": "random"
+    },
+    {
+        "name": "bulletRed2",
+        "image_name": "bulletRed2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 336,
+        "y": 551,
+        "width": 8,
+        "height": 12,
+        "weight": 45,
+        "type": "random"
+    },
+    {
+        "name": "bulletRed2_outline",
+        "image_name": "bulletRed2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 184,
+        "y": 544,
+        "width": 12,
+        "height": 16,
+        "weight": 64,
+        "type": "random"
+    },
+    {
+        "name": "bulletRed3",
+        "image_name": "bulletRed3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 206,
+        "y": 528,
+        "width": 4,
+        "height": 14,
+        "weight": 11,
+        "type": "random"
+    },
+    {
+        "name": "bulletRed3_outline",
+        "image_name": "bulletRed3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 484,
+        "y": 130,
+        "width": 8,
+        "height": 18,
+        "weight": 89,
+        "type": "random"
+    },
+    {
+        "name": "bulletSand1",
+        "image_name": "bulletSand1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 352,
+        "y": 555,
+        "width": 4,
+        "height": 10,
+        "weight": 0,
+        "type": "random"
+    },
+    {
+        "name": "bulletSand1_outline",
+        "image_name": "bulletSand1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 320,
+        "y": 551,
+        "width": 8,
+        "height": 14,
+        "weight": 9,
+        "type": "random"
+    },
+    {
+        "name": "bulletSand2",
+        "image_name": "bulletSand2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 312,
+        "y": 551,
+        "width": 8,
+        "height": 12,
+        "weight": 78,
+        "type": "random"
+    },
+    {
+        "name": "bulletSand2_outline",
+        "image_name": "bulletSand2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 450,
+        "y": 455,
+        "width": 12,
+        "height": 16,
+        "weight": 75,
+        "type": "random"
+    },
+    {
+        "name": "bulletSand3",
+        "image_name": "bulletSand3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 471,
+        "y": 297,
+        "width": 4,
+        "height": 14,
+        "weight": 27,
+        "type": "random"
+    },
+    {
+        "name": "bulletSand3_outline",
+        "image_name": "bulletSand3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 476,
+        "y": 130,
+        "width": 8,
+        "height": 18,
+        "weight": 27,
+        "type": "random"
+    },
+    {
+        "name": "crateMetal",
+        "image_name": "crateMetal.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 479,
+        "y": 471,
+        "width": 28,
+        "height": 28,
+        "weight": 7,
+        "type": "random"
+    },
+    {
+        "name": "crateMetal_side",
+        "image_name": "crateMetal_side.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 479,
+        "y": 443,
+        "width": 28,
+        "height": 28,
+        "weight": 45,
+        "type": "random"
+    },
+    {
+        "name": "crateWood",
+        "image_name": "crateWood.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 480,
+        "y": 221,
+        "width": 28,
+        "height": 28,
+        "weight": 21,
+        "type": "random"
+    },
+    {
+        "name": "crateWood_side",
+        "image_name": "crateWood_side.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 480,
+        "y": 249,
+        "width": 28,
+        "height": 28,
+        "weight": 56,
+        "type": "random"
+    },
+    {
+        "name": "explosion1",
+        "image_name": "explosion1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 320,
+        "y": 403,
+        "width": 60,
+        "height": 60,
+        "weight": 14,
+        "type": "random"
+    },
+    {
+        "name": "explosion2",
+        "image_name": "explosion2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 380,
+        "y": 471,
+        "width": 57,
+        "height": 56,
+        "weight": 3,
+        "type": "random"
+    },
+    {
+        "name": "explosion3",
+        "image_name": "explosion3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 0,
+        "y": 128,
+        "width": 64,
+        "height": 63,
+        "weight": 89,
+        "type": "random"
+    },
+    {
+        "name": "explosion4",
+        "image_name": "explosion4.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 430,
+        "y": 104,
+        "width": 46,
+        "height": 45,
+        "weight": 13,
+        "type": "random"
+    },
+    {
+        "name": "explosion5",
+        "image_name": "explosion5.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 53,
+        "y": 512,
+        "width": 53,
+        "height": 52,
+        "weight": 76,
+        "type": "random"
+    },
+    {
+        "name": "explosionSmoke1",
+        "image_name": "explosionSmoke1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 320,
+        "y": 463,
+        "width": 60,
+        "height": 60,
+        "weight": 78,
+        "type": "random"
+    },
+    {
+        "name": "explosionSmoke2",
+        "image_name": "explosionSmoke2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 382,
+        "y": 255,
+        "width": 57,
+        "height": 56,
+        "weight": 31,
+        "type": "random"
+    },
+    {
+        "name": "explosionSmoke3",
+        "image_name": "explosionSmoke3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 320,
+        "y": 192,
+        "width": 63,
+        "height": 63,
+        "weight": 22,
+        "type": "random"
+    },
+    {
+        "name": "explosionSmoke4",
+        "image_name": "explosionSmoke4.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 384,
+        "y": 104,
+        "width": 46,
+        "height": 45,
+        "weight": 71,
+        "type": "random"
+    },
+    {
+        "name": "explosionSmoke5",
+        "image_name": "explosionSmoke5.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 0,
+        "y": 512,
+        "width": 53,
+        "height": 52,
+        "weight": 47,
+        "type": "random"
+    },
+    {
+        "name": "fenceRed",
+        "image_name": "fenceRed.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 158,
+        "y": 528,
+        "width": 48,
+        "height": 16,
+        "weight": 63,
+        "type": "random"
+    },
+    {
+        "name": "fenceYellow",
+        "image_name": "fenceYellow.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 158,
+        "y": 512,
+        "width": 52,
+        "height": 16,
+        "weight": 23,
+        "type": "random"
+    },
+    {
+        "name": "oilSpill_large",
+        "image_name": "oilSpill_large.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 262,
+        "y": 512,
+        "width": 50,
+        "height": 50,
+        "weight": 5,
+        "type": "random"
+    },
+    {
+        "name": "oilSpill_small",
+        "image_name": "oilSpill_small.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 158,
+        "y": 544,
+        "width": 14,
+        "height": 14,
+        "weight": 78,
+        "type": "random"
+    },
+    {
+        "name": "sandbagBeige",
+        "image_name": "sandbagBeige.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 382,
+        "y": 371,
+        "width": 32,
+        "height": 22,
+        "weight": 29,
+        "type": "random"
+    },
+    {
+        "name": "sandbagBeige_open",
+        "image_name": "sandbagBeige_open.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 354,
+        "y": 527,
+        "width": 42,
+        "height": 28,
+        "weight": 32,
+        "type": "random"
+    },
+    {
+        "name": "sandbagBrown",
+        "image_name": "sandbagBrown.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 439,
+        "y": 283,
+        "width": 32,
+        "height": 22,
+        "weight": 87,
+        "type": "random"
+    },
+    {
+        "name": "sandbagBrown_open",
+        "image_name": "sandbagBrown_open.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 312,
+        "y": 523,
+        "width": 42,
+        "height": 28,
+        "weight": 94,
+        "type": "random"
+    },
+    {
+        "name": "shotLarge",
+        "image_name": "shotLarge.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 507,
+        "y": 539,
+        "width": 20,
+        "height": 25,
+        "weight": 97,
+        "type": "random"
+    },
+    {
+        "name": "shotOrange",
+        "image_name": "shotOrange.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 514,
+        "y": 289,
+        "width": 16,
+        "height": 28,
+        "weight": 27,
+        "type": "random"
+    },
+    {
+        "name": "shotRed",
+        "image_name": "shotRed.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 508,
+        "y": 221,
+        "width": 21,
+        "height": 38,
+        "weight": 82,
+        "type": "random"
+    },
+    {
+        "name": "shotThin",
+        "image_name": "shotThin.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 546,
+        "y": 160,
+        "width": 8,
+        "height": 26,
+        "weight": 40,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel1",
+        "image_name": "specialBarrel1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 530,
+        "y": 0,
+        "width": 14,
+        "height": 22,
+        "weight": 60,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel1_outline",
+        "image_name": "specialBarrel1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 527,
+        "y": 539,
+        "width": 18,
+        "height": 26,
+        "weight": 11,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel2",
+        "image_name": "specialBarrel2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 544,
+        "y": 108,
+        "width": 12,
+        "height": 24,
+        "weight": 36,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel2_outline",
+        "image_name": "specialBarrel2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 513,
+        "y": 174,
+        "width": 16,
+        "height": 28,
+        "weight": 39,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel3",
+        "image_name": "specialBarrel3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 544,
+        "y": 132,
+        "width": 10,
+        "height": 28,
+        "weight": 8,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel3_outline",
+        "image_name": "specialBarrel3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 530,
+        "y": 244,
+        "width": 14,
+        "height": 32,
+        "weight": 66,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel4",
+        "image_name": "specialBarrel4.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 544,
+        "y": 244,
+        "width": 10,
+        "height": 32,
+        "weight": 64,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel4_outline",
+        "image_name": "specialBarrel4_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 530,
+        "y": 276,
+        "width": 14,
+        "height": 36,
+        "weight": 34,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel5",
+        "image_name": "specialBarrel5.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 531,
+        "y": 435,
+        "width": 12,
+        "height": 26,
+        "weight": 66,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel5_outline",
+        "image_name": "specialBarrel5_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 514,
+        "y": 98,
+        "width": 16,
+        "height": 30,
+        "weight": 90,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel6",
+        "image_name": "specialBarrel6.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 544,
+        "y": 276,
+        "width": 8,
+        "height": 26,
+        "weight": 68,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel6_outline",
+        "image_name": "specialBarrel6_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 533,
+        "y": 312,
+        "width": 12,
+        "height": 30,
+        "weight": 7,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel7",
+        "image_name": "specialBarrel7.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 544,
+        "y": 0,
+        "width": 8,
+        "height": 26,
+        "weight": 26,
+        "type": "random"
+    },
+    {
+        "name": "specialBarrel7_outline",
+        "image_name": "specialBarrel7_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 530,
+        "y": 68,
+        "width": 12,
+        "height": 30,
+        "weight": 56,
+        "type": "random"
+    },
+    {
+        "name": "tankBlue_barrel1",
+        "image_name": "tankBlue_barrel1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 531,
+        "y": 461,
+        "width": 12,
+        "height": 26,
+        "weight": 55,
+        "type": "random"
+    },
+    {
+        "name": "tankBlue_barrel1_outline",
+        "image_name": "tankBlue_barrel1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 514,
+        "y": 259,
+        "width": 16,
+        "height": 30,
+        "weight": 98,
+        "type": "random"
+    },
+    {
+        "name": "tankBlue_barrel2",
+        "image_name": "tankBlue_barrel2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 545,
+        "y": 302,
+        "width": 8,
+        "height": 26,
+        "weight": 30,
+        "type": "random"
+    },
+    {
+        "name": "tankBlue_barrel2_outline",
+        "image_name": "tankBlue_barrel2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 542,
+        "y": 48,
+        "width": 12,
+        "height": 30,
+        "weight": 88,
+        "type": "random"
+    },
+    {
+        "name": "tankBlue_barrel3",
+        "image_name": "tankBlue_barrel3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 545,
+        "y": 519,
+        "width": 8,
+        "height": 26,
+        "weight": 99,
+        "type": "random"
+    },
+    {
+        "name": "tankBlue_barrel3_outline",
+        "image_name": "tankBlue_barrel3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 543,
+        "y": 459,
+        "width": 12,
+        "height": 30,
+        "weight": 55,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_bigRed",
+        "image_name": "tankBody_bigRed.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 384,
+        "y": 56,
+        "width": 48,
+        "height": 48,
+        "weight": 85,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_bigRed_outline",
+        "image_name": "tankBody_bigRed_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 106,
+        "y": 512,
+        "width": 52,
+        "height": 52,
+        "weight": 80,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_blue",
+        "image_name": "tankBody_blue.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 396,
+        "y": 527,
+        "width": 38,
+        "height": 38,
+        "weight": 74,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_blue_outline",
+        "image_name": "tankBody_blue_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 426,
+        "y": 149,
+        "width": 42,
+        "height": 42,
+        "weight": 99,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_dark",
+        "image_name": "tankBody_dark.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 468,
+        "y": 149,
+        "width": 38,
+        "height": 36,
+        "weight": 74,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_darkLarge",
+        "image_name": "tankBody_darkLarge.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 384,
+        "y": 0,
+        "width": 48,
+        "height": 56,
+        "weight": 45,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_darkLarge_outline",
+        "image_name": "tankBody_darkLarge_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 382,
+        "y": 311,
+        "width": 52,
+        "height": 60,
+        "weight": 2,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_dark_outline",
+        "image_name": "tankBody_dark_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 384,
+        "y": 149,
+        "width": 42,
+        "height": 40,
+        "weight": 48,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_green",
+        "image_name": "tankBody_green.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 476,
+        "y": 283,
+        "width": 38,
+        "height": 36,
+        "weight": 16,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_green_outline",
+        "image_name": "tankBody_green_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 435,
+        "y": 191,
+        "width": 42,
+        "height": 40,
+        "weight": 15,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_huge",
+        "image_name": "tankBody_huge.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 380,
+        "y": 403,
+        "width": 58,
+        "height": 68,
+        "weight": 46,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_huge_outline",
+        "image_name": "tankBody_huge_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 320,
+        "y": 331,
+        "width": 62,
+        "height": 72,
+        "weight": 56,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_red",
+        "image_name": "tankBody_red.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 479,
+        "y": 407,
+        "width": 34,
+        "height": 36,
+        "weight": 50,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_red_outline",
+        "image_name": "tankBody_red_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 476,
+        "y": 0,
+        "width": 38,
+        "height": 40,
+        "weight": 29,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_sand",
+        "image_name": "tankBody_sand.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 476,
+        "y": 94,
+        "width": 38,
+        "height": 36,
+        "weight": 53,
+        "type": "random"
+    },
+    {
+        "name": "tankBody_sand_outline",
+        "image_name": "tankBody_sand_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 437,
+        "y": 517,
+        "width": 42,
+        "height": 40,
+        "weight": 33,
+        "type": "random"
+    },
+    {
+        "name": "tankDark_barrel1",
+        "image_name": "tankDark_barrel1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 543,
+        "y": 342,
+        "width": 12,
+        "height": 26,
+        "weight": 16,
+        "type": "random"
+    },
+    {
+        "name": "tankDark_barrel1_outline",
+        "image_name": "tankDark_barrel1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 514,
+        "y": 68,
+        "width": 16,
+        "height": 30,
+        "weight": 49,
+        "type": "random"
+    },
+    {
+        "name": "tankDark_barrel2",
+        "image_name": "tankDark_barrel2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 545,
+        "y": 398,
+        "width": 8,
+        "height": 26,
+        "weight": 47,
+        "type": "random"
+    },
+    {
+        "name": "tankDark_barrel2_outline",
+        "image_name": "tankDark_barrel2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 531,
+        "y": 373,
+        "width": 12,
+        "height": 30,
+        "weight": 42,
+        "type": "random"
+    },
+    {
+        "name": "tankDark_barrel3",
+        "image_name": "tankDark_barrel3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 553,
+        "y": 519,
+        "width": 8,
+        "height": 26,
+        "weight": 76,
+        "type": "random"
+    },
+    {
+        "name": "tankDark_barrel3_outline",
+        "image_name": "tankDark_barrel3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 543,
+        "y": 429,
+        "width": 12,
+        "height": 30,
+        "weight": 87,
+        "type": "random"
+    },
+    {
+        "name": "tankGreen_barrel1",
+        "image_name": "tankGreen_barrel1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 533,
+        "y": 403,
+        "width": 12,
+        "height": 26,
+        "weight": 18,
+        "type": "random"
+    },
+    {
+        "name": "tankGreen_barrel1_outline",
+        "image_name": "tankGreen_barrel1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 515,
+        "y": 377,
+        "width": 16,
+        "height": 30,
+        "weight": 60,
+        "type": "random"
+    },
+    {
+        "name": "tankGreen_barrel2",
+        "image_name": "tankGreen_barrel2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 553,
+        "y": 398,
+        "width": 8,
+        "height": 26,
+        "weight": 88,
+        "type": "random"
+    },
+    {
+        "name": "tankGreen_barrel2_outline",
+        "image_name": "tankGreen_barrel2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 530,
+        "y": 98,
+        "width": 12,
+        "height": 30,
+        "weight": 94,
+        "type": "random"
+    },
+    {
+        "name": "tankGreen_barrel3",
+        "image_name": "tankGreen_barrel3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 552,
+        "y": 276,
+        "width": 8,
+        "height": 26,
+        "weight": 82,
+        "type": "random"
+    },
+    {
+        "name": "tankGreen_barrel3_outline",
+        "image_name": "tankGreen_barrel3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 531,
+        "y": 487,
+        "width": 12,
+        "height": 30,
+        "weight": 30,
+        "type": "random"
+    },
+    {
+        "name": "tankRed_barrel1",
+        "image_name": "tankRed_barrel1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 531,
+        "y": 347,
+        "width": 12,
+        "height": 26,
+        "weight": 67,
+        "type": "random"
+    },
+    {
+        "name": "tankRed_barrel1_outline",
+        "image_name": "tankRed_barrel1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 514,
+        "y": 0,
+        "width": 16,
+        "height": 30,
+        "weight": 88,
+        "type": "random"
+    },
+    {
+        "name": "tankRed_barrel2",
+        "image_name": "tankRed_barrel2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 546,
+        "y": 212,
+        "width": 8,
+        "height": 26,
+        "weight": 24,
+        "type": "random"
+    },
+    {
+        "name": "tankRed_barrel2_outline",
+        "image_name": "tankRed_barrel2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 543,
+        "y": 368,
+        "width": 12,
+        "height": 30,
+        "weight": 74,
+        "type": "random"
+    },
+    {
+        "name": "tankRed_barrel3",
+        "image_name": "tankRed_barrel3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 553,
+        "y": 302,
+        "width": 8,
+        "height": 26,
+        "weight": 37,
+        "type": "random"
+    },
+    {
+        "name": "tankRed_barrel3_outline",
+        "image_name": "tankRed_barrel3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 532,
+        "y": 128,
+        "width": 12,
+        "height": 30,
+        "weight": 42,
+        "type": "random"
+    },
+    {
+        "name": "tankSand_barrel1",
+        "image_name": "tankSand_barrel1.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 532,
+        "y": 22,
+        "width": 12,
+        "height": 26,
+        "weight": 73,
+        "type": "random"
+    },
+    {
+        "name": "tankSand_barrel1_outline",
+        "image_name": "tankSand_barrel1_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 515,
+        "y": 347,
+        "width": 16,
+        "height": 30,
+        "weight": 97,
+        "type": "random"
+    },
+    {
+        "name": "tankSand_barrel2",
+        "image_name": "tankSand_barrel2.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 546,
+        "y": 186,
+        "width": 8,
+        "height": 26,
+        "weight": 45,
+        "type": "random"
+    },
+    {
+        "name": "tankSand_barrel2_outline",
+        "image_name": "tankSand_barrel2_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 542,
+        "y": 78,
+        "width": 12,
+        "height": 30,
+        "weight": 45,
+        "type": "random"
+    },
+    {
+        "name": "tankSand_barrel3",
+        "image_name": "tankSand_barrel3.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 552,
+        "y": 0,
+        "width": 8,
+        "height": 26,
+        "weight": 80,
+        "type": "random"
+    },
+    {
+        "name": "tankSand_barrel3_outline",
+        "image_name": "tankSand_barrel3_outline.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 543,
+        "y": 489,
+        "width": 12,
+        "height": 30,
+        "weight": 96,
+        "type": "random"
+    },
+    {
+        "name": "tank_bigRed",
+        "image_name": "tank_bigRed.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 210,
+        "y": 512,
+        "width": 52,
+        "height": 52,
+        "weight": 18,
+        "type": "random"
+    },
+    {
+        "name": "tank_blue",
+        "image_name": "tank_blue.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 432,
+        "y": 48,
+        "width": 42,
+        "height": 46,
+        "weight": 29,
+        "type": "random"
+    },
+    {
+        "name": "tank_dark",
+        "image_name": "tank_dark.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 434,
+        "y": 311,
+        "width": 42,
+        "height": 46,
+        "weight": 94,
+        "type": "random"
+    },
+    {
+        "name": "tank_darkLarge",
+        "image_name": "tank_darkLarge.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 383,
+        "y": 192,
+        "width": 52,
+        "height": 60,
+        "weight": 34,
+        "type": "random"
+    },
+    {
+        "name": "tank_green",
+        "image_name": "tank_green.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 434,
+        "y": 357,
+        "width": 42,
+        "height": 46,
+        "weight": 87,
+        "type": "random"
+    },
+    {
+        "name": "tank_huge",
+        "image_name": "tank_huge.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 320,
+        "y": 255,
+        "width": 62,
+        "height": 76,
+        "weight": 22,
+        "type": "random"
+    },
+    {
+        "name": "tank_red",
+        "image_name": "tank_red.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 474,
+        "y": 48,
+        "width": 38,
+        "height": 46,
+        "weight": 34,
+        "type": "random"
+    },
+    {
+        "name": "tank_sand",
+        "image_name": "tank_sand.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 437,
+        "y": 471,
+        "width": 42,
+        "height": 46,
+        "weight": 29,
+        "type": "random"
+    },
+    {
+        "name": "tracksDouble",
+        "image_name": "tracksDouble.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 438,
+        "y": 403,
+        "width": 41,
+        "height": 52,
+        "weight": 35,
+        "type": "random"
+    },
+    {
+        "name": "tracksLarge",
+        "image_name": "tracksLarge.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 439,
+        "y": 231,
+        "width": 41,
+        "height": 52,
+        "weight": 13,
+        "type": "random"
+    },
+    {
+        "name": "tracksSmall",
+        "image_name": "tracksSmall.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 476,
+        "y": 319,
+        "width": 37,
+        "height": 52,
+        "weight": 0,
+        "type": "random"
+    },
+    {
+        "name": "treeBrown_large",
+        "image_name": "treeBrown_large.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 64,
+        "y": 192,
+        "width": 64,
+        "height": 64,
+        "weight": 3,
+        "type": "random"
+    },
+    {
+        "name": "treeBrown_leaf",
+        "image_name": "treeBrown_leaf.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 312,
+        "y": 512,
+        "width": 8,
+        "height": 10,
+        "weight": 37,
+        "type": "random"
+    },
+    {
+        "name": "treeBrown_small",
+        "image_name": "treeBrown_small.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 479,
+        "y": 371,
+        "width": 36,
+        "height": 36,
+        "weight": 11,
+        "type": "random"
+    },
+    {
+        "name": "treeBrown_twigs",
+        "image_name": "treeBrown_twigs.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 506,
+        "y": 130,
+        "width": 26,
+        "height": 22,
+        "weight": 32,
+        "type": "random"
+    },
+    {
+        "name": "treeGreen_large",
+        "image_name": "treeGreen_large.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 0,
+        "y": 447,
+        "width": 64,
+        "height": 64,
+        "weight": 92,
+        "type": "random"
+    },
+    {
+        "name": "treeGreen_leaf",
+        "image_name": "treeGreen_leaf.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 328,
+        "y": 555,
+        "width": 8,
+        "height": 10,
+        "weight": 27,
+        "type": "random"
+    },
+    {
+        "name": "treeGreen_small",
+        "image_name": "treeGreen_small.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 477,
+        "y": 185,
+        "width": 36,
+        "height": 36,
+        "weight": 47,
+        "type": "random"
+    },
+    {
+        "name": "treeGreen_twigs",
+        "image_name": "treeGreen_twigs.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 506,
+        "y": 152,
+        "width": 26,
+        "height": 22,
+        "weight": 48,
+        "type": "random"
+    },
+    {
+        "name": "wireCrooked",
+        "image_name": "wireCrooked.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 432,
+        "y": 0,
+        "width": 44,
+        "height": 48,
+        "weight": 90,
+        "type": "random"
+    },
+    {
+        "name": "wireStraight",
+        "image_name": "wireStraight.png",
+        "options": {
+            "up": [],
+            "right": [],
+            "down": [],
+            "left": [],
+            "above": [],
+            "below": []
+        },
+        "x": 529,
+        "y": 174,
+        "width": 17,
+        "height": 70,
+        "weight": 27,
+        "type": "random"
+    }
+]
+

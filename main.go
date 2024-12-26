@@ -28,7 +28,7 @@ const (
 type Game struct {
 	width       int
 	height      int
-	assets      *assets.Assets
+	assets      *assets.AssetsJSON
 	isRendered  chan bool
 	numOfTilesX int
 	numOfTilesY int
@@ -55,7 +55,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			ops := &ebiten.DrawImageOptions{}
 			ops.GeoM.Translate(float64(x), float64(y))
 			if g.tiles[i].ImageName != "" {
-				screen.DrawImage(g.assets.GetSprite(g.tiles[i].ImageName), ops)
+				screen.DrawImage(g.assets.GetSpriteJSON(g.tiles[i].ImageName), ops)
 			} else {
 				screen.DrawImage(ebiten.NewImage(tileWidth, tileHeight), ops)
 			}
@@ -84,7 +84,7 @@ func main() {
 	}
 
 	g := &Game{
-		assets:      assets.NewAssets(),
+		assets:      assets.NewAssetsJSON(),
 		width:       screenWidth,
 		height:      screenHeight,
 		isRendered:  make(chan bool),
