@@ -19,7 +19,7 @@ const (
 	ruleLEFT  = 3
 )
 
-// TODO: use hashmap
+// TODO: use json file
 var tileOptions = map[string][]int{
 	"tileGrass1.png":                     {0, 0, 0, 0}, // 0 grass
 	"tileGrass2.png":                     {0, 0, 0, 0},

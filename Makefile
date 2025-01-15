@@ -1,15 +1,22 @@
 .PHONY: prod
 
+os != go env GOOS
+arch != go env GOARCH
+distdirname := ./dist
+distfilename := go-wave-function-collapse-${os}-${arch}
+distfullpath := ${distdirname}/${distfilename}
+
+
 prod:
-	go build -ldflags="-s -w -v" -o ./go-wave-function-collapse .
-	upx -9 ./go-wave-function-collapse
+	go build -ldflags="-s -w -v" -o ${distfullpath}
+	upx -9 ${distfullpath} -o ${distfullpath}-packed
 
 .PHONY: build
 
 build:
-	go build -o ./go-wave-function-collapse .
+	go build -o ${distfullpath} ./
 
 .PHONY: run
 
 run: build
-	./go-wave-function-collapse
+	${distfullpath}

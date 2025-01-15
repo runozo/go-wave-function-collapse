@@ -20,7 +20,7 @@
 # Go workspace file
 go.work
 go.work.sum
-dist/
+dist/*
 build/
 .vscode/
 go-wave-function-collapse
