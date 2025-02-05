@@ -26,18 +26,15 @@ const (
 )
 
 type Game struct {
-	width       int
-	height      int
-	assets      *assets.AssetsJSON
-	isRendered  chan bool
-	numOfTilesX int
-	numOfTilesY int
-	tiles       []wfc.Tile
+	width  int
+	height int
+	assets *assets.AssetsJSON
+	wfc    *wfc.Wfc
 }
 
 func (g *Game) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-		go wfc.StartRendering(&g.tiles, g.numOfTilesX, g.numOfTilesY, g.isRendered)
+		go g.wfc.StartRender()
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
@@ -49,13 +46,12 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	var i int
-
 	for y := 0; y < screenHeight; y += tileHeight {
 		for x := 0; x < screenWidth; x += tileWidth {
 			ops := &ebiten.DrawImageOptions{}
 			ops.GeoM.Translate(float64(x), float64(y))
-			if g.tiles[i].ImageName != "" {
-				screen.DrawImage(g.assets.GetSpriteJSON(g.tiles[i].ImageName), ops)
+			if g.wfc.Tiles[i].ImageName != "" {
+				screen.DrawImage(g.assets.GetSpriteJSON(g.wfc.Tiles[i].ImageName), ops)
 			} else {
 				screen.DrawImage(ebiten.NewImage(tileWidth, tileHeight), ops)
 			}
@@ -84,19 +80,16 @@ func main() {
 	}
 
 	g := &Game{
-		assets:      assets.NewAssetsJSON(),
-		width:       screenWidth,
-		height:      screenHeight,
-		isRendered:  make(chan bool),
-		numOfTilesX: screenWidth/tileWidth + 1,
-		numOfTilesY: screenHeight/tileHeight + 1,
-		tiles:       make([]wfc.Tile, (screenWidth/tileWidth+1)*(screenHeight/tileHeight+1)),
+		assets: assets.NewAssetsJSON(),
+		width:  screenWidth,
+		height: screenHeight,
+		wfc:    wfc.NewWfc(screenWidth/tileWidth+1, screenHeight/tileHeight+1),
 	}
 
 	// init screen
 	ebiten.SetFullscreen(true)
 
-	go wfc.StartRendering(&g.tiles, g.numOfTilesX, g.numOfTilesY, g.isRendered)
+	go g.wfc.StartRender()
 
 	err := ebiten.RunGame(g)
 

@@ -12,11 +12,9 @@ import (
 )
 
 const (
-	// xmlSpriteMap = "allSprites_default.xml"
 	jsonSpriteMap = "mapped_tiles.json"
 	spriteSheet   = "allSprites_default.png"
-	// xmlSpriteMap = "allSprites_default.xml"
-	xmlSpriteMap = "mapped_tiles.xml"
+	xmlSpriteMap  = "mapped_tiles.xml"
 )
 
 //go:embed allSprites_default.png

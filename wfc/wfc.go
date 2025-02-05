@@ -12,12 +12,27 @@ type Tile struct {
 	Options   []string
 }
 
+type Wfc struct {
+	Tiles       []Tile
+	IsRunning   bool
+	numOfTilesX int
+	numOfTilesY int
+}
+
 const (
 	ruleUP    = 0
 	ruleRIGHT = 1
 	ruleDOWN  = 2
 	ruleLEFT  = 3
 )
+
+func NewWfc(numOfTilesX, numOfTilesY int) *Wfc {
+	return &Wfc{
+		Tiles:       make([]Tile, numOfTilesX*numOfTilesY),
+		numOfTilesX: numOfTilesX,
+		numOfTilesY: numOfTilesY,
+	}
+}
 
 // TODO: use json file
 var tileOptions = map[string][]int{
@@ -71,7 +86,7 @@ var tileOptions = map[string][]int{
 //
 // Returns:
 // - bool: true if the integer is found in the slice, false otherwise.
-func IntInSlice(a int, slice []int) bool {
+func (wfc *Wfc) IntInSlice(a int, slice []int) bool {
 	for _, b := range slice {
 		if b == a {
 			return true
@@ -88,7 +103,7 @@ func IntInSlice(a int, slice []int) bool {
 //
 // Returns:
 // - bool: true if the string is found in the slice, false otherwise.
-func StringInSlice(a string, slice []string) bool {
+func (wfc *Wfc) StringInSlice(a string, slice []string) bool {
 	for _, b := range slice {
 		if b == a {
 			return true
@@ -103,10 +118,10 @@ func StringInSlice(a string, slice []string) bool {
 // - orig []string: the original options slice
 // - options []string: the options to filter by
 // Returns []string: the filtered options slice
-func FilterOptions(orig, options []string) []string {
+func (wfc *Wfc) FilterOptions(orig, options []string) []string {
 	filtered := make([]string, 0, len(orig))
 	for _, o := range orig {
-		if StringInSlice(o, options) {
+		if wfc.StringInSlice(o, options) {
 			filtered = append(filtered, o)
 		}
 	}
@@ -123,7 +138,7 @@ func FilterOptions(orig, options []string) []string {
 //
 // Returns:
 // - []string: the filtered options.
-func LookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, optionsToWatch []string) []string {
+func (wfc *Wfc) LookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, optionsToWatch []string) []string {
 	rules := make([]int, 0, 5) // random capacity
 	for _, optname := range optionsToWatch {
 		rule := tileOptions[optname][ruleIndexToWatch]
@@ -132,18 +147,20 @@ func LookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, o
 
 	newoptions := make([]string, 0, 5) // random capacity
 	for k, v := range tileOptions {
-		if IntInSlice(v[ruleIndexToProcess], rules) {
+		if wfc.IntInSlice(v[ruleIndexToProcess], rules) {
 			newoptions = append(newoptions, k)
 		}
 	}
 
-	return FilterOptions(optionsToProcess, newoptions)
+	return wfc.FilterOptions(optionsToProcess, newoptions)
 }
+
+// func LookAndFilter2(tileId, direction, adjacentTileId string)
 
 // ResetTilesOptions resets the options of each Tile in the provided slice to all available options.
 //
 // tiles: a pointer to a slice of Tiles that need their options reset.
-func ResetTilesOptions(tiles *[]Tile) {
+func (wfc *Wfc) Reset() {
 	// create a slice of all the options available
 	initialOptions := make([]string, len(tileOptions))
 	i := 0
@@ -153,8 +170,8 @@ func ResetTilesOptions(tiles *[]Tile) {
 	}
 
 	// setup tiles with all the options enabled and reset the image name
-	for i := 0; i < len(*tiles); i++ {
-		(*tiles)[i] = Tile{
+	for i := 0; i < len(wfc.Tiles); i++ {
+		wfc.Tiles[i] = Tile{
 			ImageName: "",
 			Collapsed: false,
 			Options:   initialOptions,
@@ -169,10 +186,10 @@ func ResetTilesOptions(tiles *[]Tile) {
 //
 // Return:
 // - []int: a slice of integers representing the indexes of the tiles with the least entropy.
-func GetLeastEntropyIndexes(tiles *[]Tile) []int {
+func (wfc *Wfc) LeastEntropyCells() []int {
 	minEntropy := len(tileOptions)
 	minEntropyIndexes := make([]int, 0, 10)
-	for index, tile := range *tiles {
+	for index, tile := range wfc.Tiles {
 		if !tile.Collapsed {
 			cellEntropy := len(tile.Options)
 			if cellEntropy < minEntropy {
@@ -192,59 +209,59 @@ func GetLeastEntropyIndexes(tiles *[]Tile) []int {
 // Parameters:
 // - game: a pointer to a Game instance.
 // - randomIndex: an integer representing the index of the cell to collapse.
-func CollapseCell(tiles *[]Tile, randomIndex int) {
+func (wfc *Wfc) CollapseCell(cellIndex int) {
 	// collapse a cell with least entropy
-	randomOption := (*tiles)[randomIndex].Options[rand.Intn(len((*tiles)[randomIndex].Options))]
-	(*tiles)[randomIndex] = Tile{
+	randomOption := wfc.Tiles[cellIndex].Options[rand.Intn(len(wfc.Tiles[cellIndex].Options))]
+	wfc.Tiles[cellIndex] = Tile{
 		Options:   []string{randomOption},
 		ImageName: randomOption,
 		Collapsed: true,
 	}
 }
 
-// IterateWaveFunctionCollapse iterates the wave function collapse algorithm.
+// Iterate iterates the wave function collapse algorithm.
 //
 // Parameters:
 // - game: a pointer to a Game instance.
 //
 // Returns:
 // - bool: true if the game is not rendered, false otherwise.
-func IterateWaveFunctionCollapse(tiles *[]Tile, numOfTilesX, numOfTilesY int) bool {
+func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 
 	// pick the minimum entropy indexes
-	leastEntropyIndexes := GetLeastEntropyIndexes(tiles)
+	leastEntropyIndexes := wfc.LeastEntropyCells()
 
 	if len(leastEntropyIndexes) == 0 {
-		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(*tiles))
+		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", wfc.Tiles)
 		return false
 	} else {
-		CollapseCell(tiles, leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))])
+		wfc.CollapseCell(leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))])
 		// scan all the cells to filter the corresponding options
 		for y := 0; y < numOfTilesY; y++ {
 			for x := 0; x < numOfTilesX; x++ {
 				index := y*numOfTilesX + x
-				if len((*tiles)[index].Options) == 0 {
+				if len(wfc.Tiles[index].Options) == 0 {
 					// we did not found any option, let's restart
 					log.Println("No more options found.. restarting!")
-					ResetTilesOptions(tiles)
+					wfc.Reset()
 				}
 
-				if !(*tiles)[index].Collapsed {
+				if !wfc.Tiles[index].Collapsed {
 					// Look UP
 					if y > 0 {
-						(*tiles)[index].Options = LookAndFilter(ruleUP, ruleDOWN, (*tiles)[index].Options, (*tiles)[(y-1)*numOfTilesX+x].Options)
+						wfc.Tiles[index].Options = wfc.LookAndFilter(ruleUP, ruleDOWN, wfc.Tiles[index].Options, wfc.Tiles[(y-1)*numOfTilesX+x].Options)
 					}
 					// Look RIGHT
 					if x < numOfTilesX-1 {
-						(*tiles)[index].Options = LookAndFilter(ruleRIGHT, ruleLEFT, (*tiles)[index].Options, (*tiles)[y*numOfTilesX+x+1].Options)
+						wfc.Tiles[index].Options = wfc.LookAndFilter(ruleRIGHT, ruleLEFT, wfc.Tiles[index].Options, wfc.Tiles[y*numOfTilesX+x+1].Options)
 					}
 					// Look DOWN
 					if y < numOfTilesY-1 {
-						(*tiles)[index].Options = LookAndFilter(ruleDOWN, ruleUP, (*tiles)[index].Options, (*tiles)[(y+1)*numOfTilesX+x].Options)
+						wfc.Tiles[index].Options = wfc.LookAndFilter(ruleDOWN, ruleUP, wfc.Tiles[index].Options, wfc.Tiles[(y+1)*numOfTilesX+x].Options)
 					}
 					// Look LEFT
 					if x > 0 {
-						(*tiles)[index].Options = LookAndFilter(ruleLEFT, ruleRIGHT, (*tiles)[index].Options, (*tiles)[y*numOfTilesX+x-1].Options)
+						wfc.Tiles[index].Options = wfc.LookAndFilter(ruleLEFT, ruleRIGHT, wfc.Tiles[index].Options, wfc.Tiles[y*numOfTilesX+x-1].Options)
 					}
 				}
 			}
@@ -256,7 +273,7 @@ func IterateWaveFunctionCollapse(tiles *[]Tile, numOfTilesX, numOfTilesY int) bo
 
 var isWfcRunning bool = false
 
-func StartRendering(tiles *[]Tile, numOfTilesX, numOfTilesY int, isDoneChan chan<- bool) {
+func (wfc *Wfc) StartRender() {
 	if isWfcRunning {
 		log.Println("wfc is already running")
 		return
@@ -264,9 +281,8 @@ func StartRendering(tiles *[]Tile, numOfTilesX, numOfTilesY int, isDoneChan chan
 	isWfcRunning = true
 	defer func() {
 		isWfcRunning = false
-		isDoneChan <- true
 	}()
-	ResetTilesOptions(tiles)
-	for IterateWaveFunctionCollapse(tiles, numOfTilesX, numOfTilesY) {
+	wfc.Reset()
+	for wfc.Iterate(wfc.numOfTilesX, wfc.numOfTilesY) {
 	}
 }
