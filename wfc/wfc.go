@@ -4,6 +4,8 @@ import (
 	"log"
 
 	"math/rand"
+
+	"github.com/runozo/go-wave-function-collapse/assets"
 )
 
 type Tile struct {
@@ -14,6 +16,7 @@ type Tile struct {
 
 type Wfc struct {
 	Tiles       []Tile
+	TileEntries map[string]assets.TileEntry
 	IsRunning   bool
 	numOfTilesX int
 	numOfTilesY int
@@ -26,56 +29,15 @@ const (
 	ruleLEFT  = 3
 )
 
-func NewWfc(numOfTilesX, numOfTilesY int) *Wfc {
-	return &Wfc{
+func NewWfc(numOfTilesX, numOfTilesY int, tileEntries map[string]assets.TileEntry) *Wfc {
+	wfc := &Wfc{
 		Tiles:       make([]Tile, numOfTilesX*numOfTilesY),
+		TileEntries: tileEntries,
 		numOfTilesX: numOfTilesX,
 		numOfTilesY: numOfTilesY,
 	}
-}
-
-// TODO: use json file
-var tileOptions = map[string][]int{
-	"tileGrass1.png":                     {0, 0, 0, 0}, // 0 grass
-	"tileGrass2.png":                     {0, 0, 0, 0},
-	"tileGrass_roadCornerLL.png":         {0, 0, 1, 1}, // 1 road with grass
-	"tileGrass_roadCornerLR.png":         {0, 1, 1, 0},
-	"tileGrass_roadCornerUL.png":         {1, 0, 0, 1},
-	"tileGrass_roadCornerUR.png":         {1, 1, 0, 0},
-	"tileGrass_roadCrossing.png":         {1, 1, 1, 1},
-	"tileGrass_roadCrossingRound.png":    {1, 1, 1, 1},
-	"tileGrass_roadEast.png":             {0, 1, 0, 1},
-	"tileGrass_roadNorth.png":            {1, 0, 1, 0},
-	"tileGrass_roadSplitE.png":           {1, 1, 1, 0},
-	"tileGrass_roadSplitN.png":           {1, 1, 0, 1},
-	"tileGrass_roadSplitS.png":           {0, 1, 1, 1},
-	"tileGrass_roadSplitW.png":           {1, 0, 1, 1},
-	"tileGrass_roadTransitionE.png":      {4, 3, 4, 1},
-	"tileGrass_roadTransitionE_dirt.png": {4, 3, 4, 1},
-	"tileGrass_roadTransitionN.png":      {3, 6, 1, 6},
-	"tileGrass_roadTransitionN_dirt.png": {3, 6, 1, 6},
-	"tileGrass_roadTransitionS.png":      {1, 8, 3, 8},
-	"tileGrass_roadTransitionS_dirt.png": {1, 8, 3, 8},
-	"tileGrass_roadTransitionW.png":      {5, 1, 5, 3},
-	"tileGrass_roadTransitionW_dirt.png": {5, 1, 5, 3},
-	"tileGrass_transitionE.png":          {4, 2, 4, 0},
-	"tileGrass_transitionN.png":          {2, 6, 0, 6},
-	"tileGrass_transitionS.png":          {0, 8, 2, 8},
-	"tileGrass_transitionW.png":          {5, 0, 5, 2},
-	"tileSand1.png":                      {2, 2, 2, 2},
-	"tileSand2.png":                      {2, 2, 2, 2},
-	"tileSand_roadCornerLL.png":          {2, 2, 3, 3},
-	"tileSand_roadCornerLR.png":          {2, 3, 3, 2},
-	"tileSand_roadCornerUL.png":          {3, 2, 2, 3},
-	"tileSand_roadCornerUR.png":          {3, 3, 2, 2},
-	"tileSand_roadCrossing.png":          {3, 3, 3, 3},
-	"tileSand_roadCrossingRound.png":     {3, 3, 3, 3},
-	"tileSand_roadEast.png":              {2, 3, 2, 3},
-	"tileSand_roadNorth.png":             {3, 2, 3, 2},
-	"tileSand_roadSplitE.png":            {3, 3, 3, 2},
-	"tileSand_roadSplitN.png":            {3, 3, 2, 3},
-	"tileSand_roadSplitS.png":            {2, 3, 3, 3},
-	"tileSand_roadSplitW.png":            {3, 2, 3, 3},
+	wfc.Reset()
+	return wfc
 }
 
 // IntInSlice checks if a given integer is present in a slice of integers.
@@ -128,45 +90,14 @@ func (wfc *Wfc) FilterOptions(orig, options []string) []string {
 	return filtered
 }
 
-// LookAndFilter filters options based on a set of rules.
-//
-// Parameters:
-// - ruleIndexToProcess: the index of the rule to process.
-// - ruleIndexToWatch: the index of the rule to watch.
-// - optionsToProcess: the options to process.
-// - optionsToWatch: the options to watch.
-//
-// Returns:
-// - []string: the filtered options.
-func (wfc *Wfc) LookAndFilter(ruleIndexToProcess, ruleIndexToWatch int, optionsToProcess, optionsToWatch []string) []string {
-	rules := make([]int, 0, 5) // random capacity
-	for _, optname := range optionsToWatch {
-		rule := tileOptions[optname][ruleIndexToWatch]
-		rules = append(rules, rule)
-	}
-
-	newoptions := make([]string, 0, 5) // random capacity
-	for k, v := range tileOptions {
-		if wfc.IntInSlice(v[ruleIndexToProcess], rules) {
-			newoptions = append(newoptions, k)
-		}
-	}
-
-	return wfc.FilterOptions(optionsToProcess, newoptions)
-}
-
-// func LookAndFilter2(tileId, direction, adjacentTileId string)
-
-// ResetTilesOptions resets the options of each Tile in the provided slice to all available options.
-//
-// tiles: a pointer to a slice of Tiles that need their options reset.
 func (wfc *Wfc) Reset() {
 	// create a slice of all the options available
-	initialOptions := make([]string, len(tileOptions))
-	i := 0
-	for k := range tileOptions {
-		initialOptions[i] = k
-		i++
+	initialOptions := []string{}
+	for k, v := range wfc.TileEntries {
+		if len(v.Options) >= 4 {
+			log.Println("appending", k)
+			initialOptions = append(initialOptions, k)
+		}
 	}
 
 	// setup tiles with all the options enabled and reset the image name
@@ -187,7 +118,7 @@ func (wfc *Wfc) Reset() {
 // Return:
 // - []int: a slice of integers representing the indexes of the tiles with the least entropy.
 func (wfc *Wfc) LeastEntropyCells() []int {
-	minEntropy := len(tileOptions)
+	minEntropy := len(wfc.TileEntries)
 	minEntropyIndexes := make([]int, 0, 10)
 	for index, tile := range wfc.Tiles {
 		if !tile.Collapsed {
@@ -249,19 +180,31 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 				if !wfc.Tiles[index].Collapsed {
 					// Look UP
 					if y > 0 {
-						wfc.Tiles[index].Options = wfc.LookAndFilter(ruleUP, ruleDOWN, wfc.Tiles[index].Options, wfc.Tiles[(y-1)*numOfTilesX+x].Options)
+						wfc.Tiles[index].Options = wfc.FilterOptions(
+							wfc.Tiles[index].Options,
+							wfc.TileEntries[wfc.Tiles[(y-1)*numOfTilesX+x].ImageName].Options["down"],
+						)
 					}
 					// Look RIGHT
 					if x < numOfTilesX-1 {
-						wfc.Tiles[index].Options = wfc.LookAndFilter(ruleRIGHT, ruleLEFT, wfc.Tiles[index].Options, wfc.Tiles[y*numOfTilesX+x+1].Options)
+						wfc.Tiles[index].Options = wfc.FilterOptions(
+							wfc.Tiles[index].Options,
+							wfc.TileEntries[wfc.Tiles[y*numOfTilesX+x+1].ImageName].Options["left"],
+						)
 					}
 					// Look DOWN
 					if y < numOfTilesY-1 {
-						wfc.Tiles[index].Options = wfc.LookAndFilter(ruleDOWN, ruleUP, wfc.Tiles[index].Options, wfc.Tiles[(y+1)*numOfTilesX+x].Options)
+						wfc.Tiles[index].Options = wfc.FilterOptions(
+							wfc.Tiles[index].Options,
+							wfc.TileEntries[wfc.Tiles[(y+1)*numOfTilesX+x].ImageName].Options["up"],
+						)
 					}
 					// Look LEFT
 					if x > 0 {
-						wfc.Tiles[index].Options = wfc.LookAndFilter(ruleLEFT, ruleRIGHT, wfc.Tiles[index].Options, wfc.Tiles[y*numOfTilesX+x-1].Options)
+						wfc.Tiles[index].Options = wfc.FilterOptions(
+							wfc.Tiles[index].Options,
+							wfc.TileEntries[wfc.Tiles[y*numOfTilesX+x-1].ImageName].Options["up"],
+						)
 					}
 				}
 			}

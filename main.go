@@ -78,12 +78,12 @@ func main() {
 		pprof.StartCPUProfile(f)
 		defer pprof.StopCPUProfile()
 	}
-
+	as := assets.NewAssetsJSON()
 	g := &Game{
-		assets: assets.NewAssetsJSON(),
+		assets: as,
 		width:  screenWidth,
 		height: screenHeight,
-		wfc:    wfc.NewWfc(screenWidth/tileWidth+1, screenHeight/tileHeight+1),
+		wfc:    wfc.NewWfc(screenWidth/tileWidth+1, screenHeight/tileHeight+1, as.TileEntries),
 	}
 
 	// init screen

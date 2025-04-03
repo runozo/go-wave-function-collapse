@@ -24,10 +24,10 @@ var assets embed.FS
 
 type AssetsJSON struct {
 	SpriteSheet *ebiten.Image
-	TileEntries map[string]tileEntry
+	TileEntries map[string]TileEntry
 }
 
-type tileEntry struct {
+type TileEntry struct {
 	Name        string              `json:"name"`
 	ImageName   string              `json:"image_name"`
 	Options     map[string][]string `json:"options"`
@@ -73,7 +73,7 @@ func (a *AssetsJSON) GetSpriteJSON(name string) *ebiten.Image {
 	return nil
 }
 
-func mustLoadJSONSpriteMap(name string) map[string]tileEntry {
+func mustLoadJSONSpriteMap(name string) map[string]TileEntry {
 	log.Println("Loading sprite map", "name", name)
 	byteValue, err := fs.ReadFile(assets, name)
 	if err != nil {
@@ -81,15 +81,17 @@ func mustLoadJSONSpriteMap(name string) map[string]tileEntry {
 	}
 
 	// json is a slice of TileEntry
-	var tileEntries []tileEntry
+	var tileEntries []TileEntry
 	if err := json.Unmarshal(byteValue, &tileEntries); err != nil {
 		log.Fatal(err)
 	}
 
 	// transform tileEntries in a map
-	tileEntriesMap := make(map[string]tileEntry)
+	tileEntriesMap := make(map[string]TileEntry)
 	for i := 0; i < len(tileEntries); i++ {
-		tileEntriesMap[tileEntries[i].ImageName] = tileEntries[i]
+		if tileEntries[i].ImageName[:len("tile")] == "tile" {
+			tileEntriesMap[tileEntries[i].ImageName] = tileEntries[i]
+		}
 	}
 
 	return tileEntriesMap
