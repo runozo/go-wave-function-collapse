@@ -51,7 +51,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			ops := &ebiten.DrawImageOptions{}
 			ops.GeoM.Translate(float64(x), float64(y))
 			if g.wfc.Tiles[i].ImageName != "" {
-				screen.DrawImage(g.assets.GetSpriteJSON(g.wfc.Tiles[i].ImageName), ops)
+				screen.DrawImage(g.assets.GetSpriteJSON(g.wfc.Tiles[i].Name), ops)
 			} else {
 				screen.DrawImage(ebiten.NewImage(tileWidth, tileHeight), ops)
 			}

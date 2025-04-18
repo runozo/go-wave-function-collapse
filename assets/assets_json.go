@@ -90,7 +90,7 @@ func mustLoadJSONSpriteMap(name string) map[string]TileEntry {
 	tileEntriesMap := make(map[string]TileEntry)
 	for i := 0; i < len(tileEntries); i++ {
 		if tileEntries[i].ImageName[:len("tile")] == "tile" {
-			tileEntriesMap[tileEntries[i].ImageName] = tileEntries[i]
+			tileEntriesMap[tileEntries[i].Name] = tileEntries[i]
 		}
 	}
 

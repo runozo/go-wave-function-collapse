@@ -11,6 +11,7 @@ import (
 type Tile struct {
 	Collapsed bool
 	ImageName string
+	Name      string
 	Options   []string
 }
 
@@ -21,13 +22,6 @@ type Wfc struct {
 	numOfTilesX int
 	numOfTilesY int
 }
-
-const (
-	ruleUP    = 0
-	ruleRIGHT = 1
-	ruleDOWN  = 2
-	ruleLEFT  = 3
-)
 
 func NewWfc(numOfTilesX, numOfTilesY int, tileEntries map[string]assets.TileEntry) *Wfc {
 	wfc := &Wfc{
@@ -145,7 +139,8 @@ func (wfc *Wfc) CollapseCell(cellIndex int) {
 	randomOption := wfc.Tiles[cellIndex].Options[rand.Intn(len(wfc.Tiles[cellIndex].Options))]
 	wfc.Tiles[cellIndex] = Tile{
 		Options:   []string{randomOption},
-		ImageName: randomOption,
+		ImageName: wfc.TileEntries[randomOption].ImageName,
+		Name:      randomOption,
 		Collapsed: true,
 	}
 }
@@ -180,30 +175,47 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 				if !wfc.Tiles[index].Collapsed {
 					// Look UP
 					if y > 0 {
+						var availableOptions []string
+						for _, o := range wfc.Tiles[(y-1)*numOfTilesX+x].Options {
+							availableOptions = append(availableOptions, wfc.TileEntries[o].Options["down"]...)
+						}
 						wfc.Tiles[index].Options = wfc.FilterOptions(
 							wfc.Tiles[index].Options,
-							wfc.TileEntries[wfc.Tiles[(y-1)*numOfTilesX+x].ImageName].Options["down"],
+							availableOptions,
 						)
 					}
 					// Look RIGHT
 					if x < numOfTilesX-1 {
+						var availableOptions []string
+						for _, o := range wfc.Tiles[y*numOfTilesX+x+1].Options {
+							availableOptions = append(availableOptions, wfc.TileEntries[o].Options["left"]...)
+						}
 						wfc.Tiles[index].Options = wfc.FilterOptions(
 							wfc.Tiles[index].Options,
-							wfc.TileEntries[wfc.Tiles[y*numOfTilesX+x+1].ImageName].Options["left"],
+							availableOptions,
 						)
+
 					}
 					// Look DOWN
 					if y < numOfTilesY-1 {
+						var availableOptions []string
+						for _, o := range wfc.Tiles[(y+1)*numOfTilesX+x].Options {
+							availableOptions = append(availableOptions, wfc.TileEntries[o].Options["up"]...)
+						}
 						wfc.Tiles[index].Options = wfc.FilterOptions(
 							wfc.Tiles[index].Options,
-							wfc.TileEntries[wfc.Tiles[(y+1)*numOfTilesX+x].ImageName].Options["up"],
+							availableOptions,
 						)
 					}
 					// Look LEFT
 					if x > 0 {
+						var availableOptions []string
+						for _, o := range wfc.Tiles[y*numOfTilesX+x-1].Options {
+							availableOptions = append(availableOptions, wfc.TileEntries[o].Options["right"]...)
+						}
 						wfc.Tiles[index].Options = wfc.FilterOptions(
 							wfc.Tiles[index].Options,
-							wfc.TileEntries[wfc.Tiles[y*numOfTilesX+x-1].ImageName].Options["up"],
+							availableOptions,
 						)
 					}
 				}
