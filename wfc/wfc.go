@@ -10,7 +10,6 @@ import (
 
 type Tile struct {
 	Collapsed bool
-	ImageName string
 	Name      string
 	Options   []string
 }
@@ -97,7 +96,6 @@ func (wfc *Wfc) Reset() {
 	// setup tiles with all the options enabled and reset the image name
 	for i := 0; i < len(wfc.Tiles); i++ {
 		wfc.Tiles[i] = Tile{
-			ImageName: "",
 			Collapsed: false,
 			Options:   initialOptions,
 		}
@@ -139,9 +137,61 @@ func (wfc *Wfc) CollapseCell(cellIndex int) {
 	randomOption := wfc.Tiles[cellIndex].Options[rand.Intn(len(wfc.Tiles[cellIndex].Options))]
 	wfc.Tiles[cellIndex] = Tile{
 		Options:   []string{randomOption},
-		ImageName: wfc.TileEntries[randomOption].ImageName,
 		Name:      randomOption,
 		Collapsed: true,
+	}
+}
+
+func (wfc *Wfc) ElaborateCell(x, y int) {
+	numOfTilesX := wfc.numOfTilesX
+	numOfTilesY := wfc.numOfTilesY
+	index := y*numOfTilesX + x
+	if !wfc.Tiles[index].Collapsed {
+		// Look UP
+		if y > 0 {
+			var availableOptions []string
+			for _, o := range wfc.Tiles[(y-1)*numOfTilesX+x].Options {
+				availableOptions = append(availableOptions, wfc.TileEntries[o].Options["down"]...)
+			}
+			wfc.Tiles[index].Options = wfc.FilterOptions(
+				wfc.Tiles[index].Options,
+				availableOptions,
+			)
+		}
+		// Look RIGHT
+		if x < numOfTilesX-1 {
+			var availableOptions []string
+			for _, o := range wfc.Tiles[y*numOfTilesX+x+1].Options {
+				availableOptions = append(availableOptions, wfc.TileEntries[o].Options["left"]...)
+			}
+			wfc.Tiles[index].Options = wfc.FilterOptions(
+				wfc.Tiles[index].Options,
+				availableOptions,
+			)
+
+		}
+		// Look DOWN
+		if y < numOfTilesY-1 {
+			var availableOptions []string
+			for _, o := range wfc.Tiles[(y+1)*numOfTilesX+x].Options {
+				availableOptions = append(availableOptions, wfc.TileEntries[o].Options["up"]...)
+			}
+			wfc.Tiles[index].Options = wfc.FilterOptions(
+				wfc.Tiles[index].Options,
+				availableOptions,
+			)
+		}
+		// Look LEFT
+		if x > 0 {
+			var availableOptions []string
+			for _, o := range wfc.Tiles[y*numOfTilesX+x-1].Options {
+				availableOptions = append(availableOptions, wfc.TileEntries[o].Options["right"]...)
+			}
+			wfc.Tiles[index].Options = wfc.FilterOptions(
+				wfc.Tiles[index].Options,
+				availableOptions,
+			)
+		}
 	}
 }
 
@@ -172,53 +222,7 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 					wfc.Reset()
 				}
 
-				if !wfc.Tiles[index].Collapsed {
-					// Look UP
-					if y > 0 {
-						var availableOptions []string
-						for _, o := range wfc.Tiles[(y-1)*numOfTilesX+x].Options {
-							availableOptions = append(availableOptions, wfc.TileEntries[o].Options["down"]...)
-						}
-						wfc.Tiles[index].Options = wfc.FilterOptions(
-							wfc.Tiles[index].Options,
-							availableOptions,
-						)
-					}
-					// Look RIGHT
-					if x < numOfTilesX-1 {
-						var availableOptions []string
-						for _, o := range wfc.Tiles[y*numOfTilesX+x+1].Options {
-							availableOptions = append(availableOptions, wfc.TileEntries[o].Options["left"]...)
-						}
-						wfc.Tiles[index].Options = wfc.FilterOptions(
-							wfc.Tiles[index].Options,
-							availableOptions,
-						)
-
-					}
-					// Look DOWN
-					if y < numOfTilesY-1 {
-						var availableOptions []string
-						for _, o := range wfc.Tiles[(y+1)*numOfTilesX+x].Options {
-							availableOptions = append(availableOptions, wfc.TileEntries[o].Options["up"]...)
-						}
-						wfc.Tiles[index].Options = wfc.FilterOptions(
-							wfc.Tiles[index].Options,
-							availableOptions,
-						)
-					}
-					// Look LEFT
-					if x > 0 {
-						var availableOptions []string
-						for _, o := range wfc.Tiles[y*numOfTilesX+x-1].Options {
-							availableOptions = append(availableOptions, wfc.TileEntries[o].Options["right"]...)
-						}
-						wfc.Tiles[index].Options = wfc.FilterOptions(
-							wfc.Tiles[index].Options,
-							availableOptions,
-						)
-					}
-				}
+				wfc.ElaborateCell(x, y)
 			}
 		}
 
