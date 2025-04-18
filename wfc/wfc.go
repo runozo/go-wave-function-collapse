@@ -2,6 +2,7 @@ package wfc
 
 import (
 	"log"
+	"sync"
 
 	"math/rand"
 
@@ -50,23 +51,6 @@ func (wfc *Wfc) IntInSlice(a int, slice []int) bool {
 	return false
 }
 
-// StringInSlice checks if a given string is present in a slice of strings.
-//
-// Parameters:
-// - a: the string to search for.
-// - slice: the slice of strings to search in.
-//
-// Returns:
-// - bool: true if the string is found in the slice, false otherwise.
-func (wfc *Wfc) StringInSlice(a string, slice []string) bool {
-	for _, b := range slice {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
-
 // FilterOptions filters the original options based on the provided options slice.
 //
 // It takes in two parameters:
@@ -76,8 +60,11 @@ func (wfc *Wfc) StringInSlice(a string, slice []string) bool {
 func (wfc *Wfc) FilterOptions(orig, options []string) []string {
 	filtered := make([]string, 0, len(orig))
 	for _, o := range orig {
-		if wfc.StringInSlice(o, options) {
-			filtered = append(filtered, o)
+		for _, b := range options {
+			if b == o {
+				filtered = append(filtered, o)
+				break
+			}
 		}
 	}
 	return filtered
@@ -212,20 +199,17 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 		return false
 	} else {
 		wfc.CollapseCell(leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))])
-		// scan all the cells to filter the corresponding options
+		var wg sync.WaitGroup
+		wg.Add(numOfTilesX * numOfTilesY)
 		for y := 0; y < numOfTilesY; y++ {
 			for x := 0; x < numOfTilesX; x++ {
-				index := y*numOfTilesX + x
-				if len(wfc.Tiles[index].Options) == 0 {
-					// we did not found any option, let's restart
-					log.Println("No more options found.. restarting!")
-					wfc.Reset()
-				}
-
-				wfc.ElaborateCell(x, y)
+				go func(x, y int) {
+					defer wg.Done()
+					wfc.ElaborateCell(x, y)
+				}(x, y)
 			}
 		}
-
+		wg.Wait()
 	}
 	return true
 }
