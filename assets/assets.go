@@ -22,7 +22,7 @@ const (
 //go:embed mapped_tiles.json
 var assets embed.FS
 
-type AssetsJSON struct {
+type Assets struct {
 	SpriteSheet *ebiten.Image
 	TileEntries map[string]TileEntry
 }
@@ -40,11 +40,11 @@ type TileEntry struct {
 	Weight      int                 `json:"weight"`
 }
 
-func NewAssetsJSON() *AssetsJSON {
+func NewAssets() *Assets {
 	var spriteSheet = mustLoadImage(spriteSheet)
 	var spriteMap = mustLoadJSONSpriteMap(jsonSpriteMap)
 
-	return &AssetsJSON{
+	return &Assets{
 		SpriteSheet: spriteSheet,
 		TileEntries: spriteMap,
 	}
@@ -56,7 +56,7 @@ func NewAssetsJSON() *AssetsJSON {
 // - name: the name of the sprite to retrieve.
 // Returns:
 // - *ebiten.Image: the sprite image corresponding to the given name.
-func (a *AssetsJSON) GetSpriteJSON(name string) *ebiten.Image {
+func (a *Assets) GetSprite(name string) *ebiten.Image {
 	// log.Println("Getting sprite", name)
 	subTexture, ok := a.TileEntries[name]
 	if ok {

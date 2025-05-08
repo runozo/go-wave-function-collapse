@@ -28,7 +28,7 @@ const (
 type Game struct {
 	width  int
 	height int
-	assets *assets.AssetsJSON
+	assets *assets.Assets
 	wfc    *wfc.Wfc
 }
 
@@ -51,7 +51,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			ops := &ebiten.DrawImageOptions{}
 			ops.GeoM.Translate(float64(x), float64(y))
 			if g.wfc.Tiles[i].Name != "" {
-				screen.DrawImage(g.assets.GetSpriteJSON(g.wfc.Tiles[i].Name), ops)
+				screen.DrawImage(g.assets.GetSprite(g.wfc.Tiles[i].Name), ops)
 			} else {
 				screen.DrawImage(ebiten.NewImage(tileWidth, tileHeight), ops)
 			}
@@ -78,7 +78,7 @@ func main() {
 		pprof.StartCPUProfile(f)
 		defer pprof.StopCPUProfile()
 	}
-	as := assets.NewAssetsJSON()
+	as := assets.NewAssets()
 	g := &Game{
 		assets: as,
 		width:  screenWidth,
