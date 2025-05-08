@@ -99,16 +99,13 @@ func (wfc *Wfc) Reset() {
 // - []int: a slice of integers representing the indexes of the tiles with the least entropy.
 func (wfc *Wfc) LeastEntropyCells() []int {
 	minEntropy := len(wfc.TileEntries)
-	minEntropyIndexes := make([]int, 0, 10)
+	minEntropyIndexes := []int{}
 	for index, tile := range wfc.Tiles {
-		if !tile.Collapsed {
-			cellEntropy := len(tile.Options)
-			if cellEntropy < minEntropy {
-				minEntropy = cellEntropy
-				minEntropyIndexes = []int{index}
-			} else if cellEntropy == minEntropy {
-				minEntropyIndexes = append(minEntropyIndexes, index)
-			}
+		if !tile.Collapsed && len(tile.Options) < minEntropy {
+			minEntropy = len(tile.Options)
+			minEntropyIndexes = []int{index}
+		} else if !tile.Collapsed && len(tile.Options) == minEntropy {
+			minEntropyIndexes = append(minEntropyIndexes, index)
 		}
 	}
 	// log.Println("minEntropyIndexes", len(minEntropyIndexes), "minEntropy", minEntropy)
@@ -130,6 +127,14 @@ func (wfc *Wfc) CollapseCell(cellIndex int) {
 	}
 }
 
+func (wfc *Wfc) GetAvailableOptions(cellIndex int, direction string) []string {
+	availableOptions := make([]string, 0, len(wfc.Tiles[cellIndex].Options))
+	for _, o := range wfc.Tiles[cellIndex].Options {
+		availableOptions = append(availableOptions, wfc.TileEntries[o].Options[direction]...)
+	}
+	return availableOptions
+}
+
 func (wfc *Wfc) ElaborateCell(x, y int) {
 	numOfTilesX := wfc.numOfTilesX
 	numOfTilesY := wfc.numOfTilesY
@@ -137,54 +142,37 @@ func (wfc *Wfc) ElaborateCell(x, y int) {
 	if !wfc.Tiles[index].Collapsed {
 		// Look UP
 		if y > 0 {
-			var availableOptions []string
-			for _, o := range wfc.Tiles[(y-1)*numOfTilesX+x].Options {
-				availableOptions = append(availableOptions, wfc.TileEntries[o].Options["down"]...)
-			}
 			wfc.Tiles[index].Options = wfc.FilterOptions(
 				wfc.Tiles[index].Options,
-				availableOptions,
+				wfc.GetAvailableOptions((y-1)*numOfTilesX+x, "down"),
 			)
 		}
 		// Look RIGHT
 		if x < numOfTilesX-1 {
-			var availableOptions []string
-			for _, o := range wfc.Tiles[y*numOfTilesX+x+1].Options {
-				availableOptions = append(availableOptions, wfc.TileEntries[o].Options["left"]...)
-			}
 			wfc.Tiles[index].Options = wfc.FilterOptions(
 				wfc.Tiles[index].Options,
-				availableOptions,
+				wfc.GetAvailableOptions(y*numOfTilesX+x+1, "left"),
 			)
-
 		}
 		// Look DOWN
 		if y < numOfTilesY-1 {
-			var availableOptions []string
-			for _, o := range wfc.Tiles[(y+1)*numOfTilesX+x].Options {
-				availableOptions = append(availableOptions, wfc.TileEntries[o].Options["up"]...)
-			}
 			wfc.Tiles[index].Options = wfc.FilterOptions(
 				wfc.Tiles[index].Options,
-				availableOptions,
+				wfc.GetAvailableOptions((y+1)*numOfTilesX+x, "up"),
 			)
 		}
 		// Look LEFT
 		if x > 0 {
-			var availableOptions []string
-			for _, o := range wfc.Tiles[y*numOfTilesX+x-1].Options {
-				availableOptions = append(availableOptions, wfc.TileEntries[o].Options["right"]...)
-			}
 			wfc.Tiles[index].Options = wfc.FilterOptions(
 				wfc.Tiles[index].Options,
-				availableOptions,
+				wfc.GetAvailableOptions(y*numOfTilesX+x-1, "right"),
 			)
 		}
 	}
 }
 
 func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
-	// pick the minimum entropy indexes
+	// pick the minimum entropy ind
 	leastEntropyIndexes := wfc.LeastEntropyCells()
 
 	if len(leastEntropyIndexes) == 0 {
@@ -192,7 +180,8 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 		wfc.IsRunning = false
 		return false
 	} else {
-		wfc.CollapseCell(leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))])
+		collapseIndex := leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))]
+		wfc.CollapseCell(collapseIndex)
 		var wg sync.WaitGroup
 		for y := 0; y < numOfTilesY; y++ {
 			wg.Add(numOfTilesX)
@@ -200,6 +189,7 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 				go func(x, y int) {
 					defer wg.Done()
 					wfc.ElaborateCell(x, y)
+
 				}(x, y)
 			}
 			wg.Wait()

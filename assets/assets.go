@@ -93,7 +93,7 @@ func mustLoadJSONSpriteMap(name string) map[string]TileEntry {
 			tileEntriesMap[tileEntries[i].Name] = tileEntries[i]
 		}
 	}
-
+	log.Println("Loaded sprite map", "len", len(tileEntriesMap))
 	return tileEntriesMap
 }
 
