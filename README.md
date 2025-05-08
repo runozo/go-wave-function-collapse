@@ -29,5 +29,5 @@ Press ```Esc``` to exit.
 
 ## Credits
 
-- Algorithm by [The Coding Train](https://thecodingtrain.com/challenges/171-wave-function-collapse)
+- Inspired by [The Coding Train](https://thecodingtrain.com/challenges/171-wave-function-collapse)
 - Spritesheet by [Kenney](https://kenney.nl)

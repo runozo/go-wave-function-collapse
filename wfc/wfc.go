@@ -97,7 +97,7 @@ func (wfc *Wfc) Reset() {
 //
 // Return:
 // - []int: a slice of integers representing the indexes of the tiles with the least entropy.
-func (wfc *Wfc) LeastEntropyCells() []int {
+func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 	minEntropy := len(wfc.TileEntries)
 	minEntropyIndexes := []int{}
 	for index, tile := range wfc.Tiles {
@@ -173,7 +173,7 @@ func (wfc *Wfc) ElaborateCell(x, y int) {
 
 func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 	// pick the minimum entropy ind
-	leastEntropyIndexes := wfc.LeastEntropyCells()
+	leastEntropyIndexes := wfc.LeastEntropyCellIndexes()
 
 	if len(leastEntropyIndexes) == 0 {
 		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(wfc.Tiles))
