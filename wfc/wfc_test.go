@@ -31,6 +31,15 @@ func TestFilterOptions(t *testing.T) {
 	}
 }
 
+func BenchmarkFilterOptions(b *testing.B) {
+	wfc := &Wfc{}
+	orig := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+	options := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+	for i := 0; i < b.N; i++ {
+		wfc.FilterOptions(orig, options)
+	}
+}
+
 func sliceEqual(a, b []string) bool {
 	if len(a) != len(b) {
 		return false

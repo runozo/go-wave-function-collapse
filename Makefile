@@ -15,6 +15,11 @@ prod:
 clean:
 	rm -rf ${distdirname}
 
+.PHONY: benchmark
+
+benchmark:
+	go test ./... -bench=.
+
 .PHONY: test
 
 test:
