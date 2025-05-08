@@ -10,6 +10,16 @@ prod:
 	go build -ldflags="-s -w -v" -o ${distfullpath}
 	upx -9 ${distfullpath} --force-overwrite -o ${distfullpath}-packed
 
+.PHONY: clean
+
+clean:
+	rm -rf ${distdirname}
+
+.PHONY: test
+
+test:
+	go test ./...
+
 .PHONY: run
 
 run:
