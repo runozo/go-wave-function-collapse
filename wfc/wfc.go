@@ -208,8 +208,6 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 	return true
 }
 
-var isWfcRunning bool = false
-
 func (wfc *Wfc) StartRender() {
 	if wfc.IsRunning {
 		log.Println("wfc is already running")
