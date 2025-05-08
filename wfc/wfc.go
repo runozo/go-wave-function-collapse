@@ -189,6 +189,7 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 
 	if len(leastEntropyIndexes) == 0 {
 		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(wfc.Tiles))
+		wfc.IsRunning = false
 		return false
 	} else {
 		wfc.CollapseCell(leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))])
@@ -210,15 +211,15 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 var isWfcRunning bool = false
 
 func (wfc *Wfc) StartRender() {
-	if isWfcRunning {
+	if wfc.IsRunning {
 		log.Println("wfc is already running")
 		return
 	}
-	isWfcRunning = true
-	defer func() {
-		isWfcRunning = false
-	}()
+	wfc.IsRunning = true
 	wfc.Reset()
 	for wfc.Iterate(wfc.numOfTilesX, wfc.numOfTilesY) {
+		if !wfc.IsRunning {
+			return
+		}
 	}
 }
