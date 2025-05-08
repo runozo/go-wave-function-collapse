@@ -176,7 +176,7 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 	leastEntropyIndexes := wfc.LeastEntropyCellIndexes()
 
 	if len(leastEntropyIndexes) == 0 {
-		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(wfc.Tiles))
+		// log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(wfc.Tiles))
 		wfc.IsRunning = false
 		return false
 	} else {

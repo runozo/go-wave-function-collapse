@@ -41,7 +41,7 @@ func (g *Game) Update() error {
 		if g.iterations == 0 {
 			os.Exit(0)
 		}
-	} else if g.iterations == -1 {
+	} else if g.iterations < 0 {
 		if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 			go g.wfc.StartRender()
 		}
