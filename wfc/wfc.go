@@ -59,6 +59,7 @@ func (wfc *Wfc) IntInSlice(a int, slice []int) bool {
 // Returns []string: the filtered options slice
 func (wfc *Wfc) FilterOptions(orig, options []string) []string {
 	filtered := make([]string, 0, len(orig))
+
 	for _, o := range orig {
 		for _, b := range options {
 			if b == o {
@@ -75,7 +76,7 @@ func (wfc *Wfc) Reset() {
 	initialOptions := []string{}
 	for k, v := range wfc.TileEntries {
 		if len(v.Options) >= 4 {
-			log.Println("appending", k)
+			// log.Println("appending", k)
 			initialOptions = append(initialOptions, k)
 		}
 	}
@@ -182,34 +183,26 @@ func (wfc *Wfc) ElaborateCell(x, y int) {
 	}
 }
 
-// Iterate iterates the wave function collapse algorithm.
-//
-// Parameters:
-// - game: a pointer to a Game instance.
-//
-// Returns:
-// - bool: true if the game is not rendered, false otherwise.
 func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
-
 	// pick the minimum entropy indexes
 	leastEntropyIndexes := wfc.LeastEntropyCells()
 
 	if len(leastEntropyIndexes) == 0 {
-		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", wfc.Tiles)
+		log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(wfc.Tiles))
 		return false
 	} else {
 		wfc.CollapseCell(leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))])
 		var wg sync.WaitGroup
-		wg.Add(numOfTilesX * numOfTilesY)
 		for y := 0; y < numOfTilesY; y++ {
+			wg.Add(numOfTilesX)
 			for x := 0; x < numOfTilesX; x++ {
 				go func(x, y int) {
 					defer wg.Done()
 					wfc.ElaborateCell(x, y)
 				}(x, y)
 			}
+			wg.Wait()
 		}
-		wg.Wait()
 	}
 	return true
 }

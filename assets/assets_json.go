@@ -57,7 +57,7 @@ func NewAssetsJSON() *AssetsJSON {
 // Returns:
 // - *ebiten.Image: the sprite image corresponding to the given name.
 func (a *AssetsJSON) GetSpriteJSON(name string) *ebiten.Image {
-	log.Println("Getting sprite", name)
+	// log.Println("Getting sprite", name)
 	subTexture, ok := a.TileEntries[name]
 	if ok {
 		return a.SpriteSheet.SubImage(
