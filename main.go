@@ -26,15 +26,26 @@ const (
 )
 
 type Game struct {
-	width  int
-	height int
-	assets *assets.Assets
-	wfc    *wfc.Wfc
+	width      int
+	height     int
+	assets     *assets.Assets
+	wfc        *wfc.Wfc
+	gif        *os.File
+	iterations int
 }
 
 func (g *Game) Update() error {
-	if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+	if g.iterations > 0 && !g.wfc.IsRunning {
 		go g.wfc.StartRender()
+		g.iterations--
+		if g.iterations == 0 {
+			os.Exit(0)
+		}
+	} else if g.iterations == -1 {
+		if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+			go g.wfc.StartRender()
+		}
+
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
@@ -67,6 +78,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
+var savegif = flag.String("gif", "", "render animation to a gif file")
+var iterations = flag.Int("iterations", -1, "number of iterations before exit")
 
 func main() {
 	flag.Parse()
@@ -78,12 +91,24 @@ func main() {
 		pprof.StartCPUProfile(f)
 		defer pprof.StopCPUProfile()
 	}
+
+	var gif *os.File
+	if *savegif != "" {
+		var err error
+		gif, err = os.Create(*savegif)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	as := assets.NewAssets()
 	g := &Game{
-		assets: as,
-		width:  screenWidth,
-		height: screenHeight,
-		wfc:    wfc.NewWfc(screenWidth/tileWidth+1, screenHeight/tileHeight+1, as.TileEntries),
+		assets:     as,
+		width:      screenWidth,
+		height:     screenHeight,
+		wfc:        wfc.NewWfc(screenWidth/tileWidth+1, screenHeight/tileHeight+1, as.TileEntries),
+		iterations: *iterations,
+		gif:        gif,
 	}
 
 	// init screen
