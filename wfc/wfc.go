@@ -83,7 +83,7 @@ func (wfc *Wfc) Reset() {
 		}
 	}
 
-	// setup tiles with all the options enabled and reset the image name
+	// setup tiles with all the options enabled
 	for i := 0; i < len(wfc.Tiles); i++ {
 		wfc.Tiles[i] = Tile{
 			Collapsed: false,
