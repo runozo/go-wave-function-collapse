@@ -71,6 +71,8 @@ func (wfc *Wfc) FilterOptions(orig, options []string) []string {
 	return filtered
 }
 
+// Reset resets all the tiles in the WFC to their initial state, with all options available.
+// It does not reset the TileEntries, so the same tile entries will be used as previously.
 func (wfc *Wfc) Reset() {
 	// create a slice of all the options available
 	initialOptions := []string{}
@@ -90,13 +92,16 @@ func (wfc *Wfc) Reset() {
 	}
 }
 
-// GetLeastEntropyIndexes returns a slice of integers representing the indexes of the tiles with the least entropy.
+// LeastEntropyCellIndexes returns the indexes of the cells with the least entropy.
 //
-// Parameters:
-// - tiles: a pointer to a slice of Tile structs representing the tiles.
+// This function iterates through all the tiles and identifies those that are not
+// collapsed and have the fewest available options, which represents the least entropy.
+// It returns a slice of indexes corresponding to these cells. If multiple cells have
+// the same minimum entropy, all their indexes are included in the result.
 //
-// Return:
-// - []int: a slice of integers representing the indexes of the tiles with the least entropy.
+// Returns:
+// - []int: a slice of integers representing the indexes of the cells with the least entropy.
+
 func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 	minEntropy := len(wfc.TileEntries)
 	minEntropyIndexes := []int{}
@@ -112,11 +117,14 @@ func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 	return minEntropyIndexes
 }
 
-// CollapseCell collapses a cell with the least entropy.
+// CollapseCell collapses a cell with least entropy.
 //
 // Parameters:
-// - game: a pointer to a Game instance.
-// - randomIndex: an integer representing the index of the cell to collapse.
+// - cellIndex: the index of the cell to collapse.
+//
+// Returns:
+//   - nothing. It modifies the cell at the given index to have a collapsed state
+//     with a randomly chosen option.
 func (wfc *Wfc) CollapseCell(cellIndex int) {
 	// collapse a cell with least entropy
 	randomOption := wfc.Tiles[cellIndex].Options[rand.Intn(len(wfc.Tiles[cellIndex].Options))]
@@ -135,6 +143,16 @@ func (wfc *Wfc) GetAvailableOptions(cellIndex int, direction string) []string {
 	return availableOptions
 }
 
+// ElaborateCell takes an x and y coordinate and elaborates a cell by filtering
+// its available options based on the options of its adjacent cells.
+//
+// Parameters:
+// - x: the x coordinate of the cell to elaborate.
+// - y: the y coordinate of the cell to elaborate.
+//
+// Returns:
+//   - nothing. It modifies the options of the cell at the given x and y
+//     coordinates.
 func (wfc *Wfc) ElaborateCell(x, y int) {
 	numOfTilesX := wfc.numOfTilesX
 	numOfTilesY := wfc.numOfTilesY
@@ -171,8 +189,12 @@ func (wfc *Wfc) ElaborateCell(x, y int) {
 	}
 }
 
+// Iterate collapses one cell with least entropy, then elaborates all cells.
+// The collapsing and elaboration is done concurrently, but the elaboration
+// of each row is done sequentially to avoid race conditions.
+// If all cells are collapsed, it sets IsRunning to false and returns false.
+// Otherwise, it returns true.
 func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
-	// pick the minimum entropy ind
 	leastEntropyIndexes := wfc.LeastEntropyCellIndexes()
 
 	if len(leastEntropyIndexes) == 0 {
@@ -189,7 +211,6 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 				go func(x, y int) {
 					defer wg.Done()
 					wfc.ElaborateCell(x, y)
-
 				}(x, y)
 			}
 			wg.Wait()
@@ -197,6 +218,13 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 	}
 	return true
 }
+
+// StartRender initializes and starts the rendering process using the Wave Function Collapse algorithm.
+//
+// This method first checks if the rendering is already running. If so, it logs a message and returns.
+// If not running, it sets the `IsRunning` flag to true and resets the state. Then, it iteratively
+// collapses cells with the least entropy until no more collapsable cells are available or the rendering
+// process is stopped.
 
 func (wfc *Wfc) StartRender() {
 	if wfc.IsRunning {
