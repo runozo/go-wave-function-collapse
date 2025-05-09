@@ -125,10 +125,10 @@ func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 // Returns:
 //   - nothing. It modifies the cell at the given index to have a collapsed state
 //     with a randomly chosen option.
-func (wfc *Wfc) CollapseCell(cellIndex int) {
+func (wfc *Wfc) CollapseCell(index int) {
 	// collapse a cell with least entropy
-	randomOption := wfc.Tiles[cellIndex].Options[rand.Intn(len(wfc.Tiles[cellIndex].Options))]
-	wfc.Tiles[cellIndex] = Tile{
+	randomOption := wfc.Tiles[index].Options[rand.Intn(len(wfc.Tiles[index].Options))]
+	wfc.Tiles[index] = Tile{
 		Options:   []string{randomOption},
 		Name:      randomOption,
 		Collapsed: true,
