@@ -135,6 +135,14 @@ func (wfc *Wfc) CollapseCell(cellIndex int) {
 	}
 }
 
+// GetAvailableOptions takes a cell index and a direction, and returns a slice of strings that represent all the available options for the given direction.
+//
+// Parameters:
+// - cellIndex: the index of the cell to retrieve the available options for.
+// - direction: a string representing the direction to retrieve the available options for. Can be "up", "right", "down", or "left".
+//
+// Returns:
+// - []string: a slice of strings representing the available options
 func (wfc *Wfc) GetAvailableOptions(cellIndex int, direction string) []string {
 	availableOptions := make([]string, 0, len(wfc.Tiles[cellIndex].Options))
 	for _, o := range wfc.Tiles[cellIndex].Options {
