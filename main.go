@@ -30,7 +30,7 @@ type Game struct {
 	height     int
 	assets     *assets.Assets
 	wfc        *wfc.Wfc
-	gif        *os.File
+	gifFile    *os.File
 	iterations int
 }
 
@@ -92,10 +92,10 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	var gif *os.File
+	var gifFile *os.File
 	if *savegif != "" {
 		var err error
-		gif, err = os.Create(*savegif)
+		gifFile, err = os.Create(*savegif)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -108,7 +108,7 @@ func main() {
 		height:     screenHeight,
 		wfc:        wfc.NewWfc(screenWidth/tileWidth+1, screenHeight/tileHeight+1, as.TileEntries),
 		iterations: *iterations,
-		gif:        gif,
+		gifFile:    gifFile,
 	}
 
 	// init screen

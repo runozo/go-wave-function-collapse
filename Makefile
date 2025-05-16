@@ -4,6 +4,12 @@ distdirname := ./dist
 distfilename := go-wave-function-collapse-${os}-${arch}
 distfullpath := ${distdirname}/${distfilename}
 
+
+.PHONY: build
+
+build:
+	go build -o ${distfullpath}
+
 .PHONY: prod
 
 prod:
@@ -19,6 +25,11 @@ clean:
 
 benchmark:
 	go test ./... -bench=.
+
+.PHONY: gif
+
+gif: build
+	${distfullpath} -gif=./gifs/gowfc.gif -iterations=1
 
 .PHONY: test
 
