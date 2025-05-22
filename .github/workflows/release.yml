@@ -1,7 +1,9 @@
 # .github/workflows/release.yaml
 
 on:
-  tegs:
+  push:
+    tags:
+      - '*'
 
 permissions:
   contents: write
