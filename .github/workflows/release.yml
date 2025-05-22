@@ -3,7 +3,7 @@
 on:
   push:
     tags:
-    - '*'
+      - 'v*'
 
 permissions:
   contents: write
@@ -28,6 +28,8 @@ jobs:
         with:
           # either 'goreleaser' (default) or 'goreleaser-pro'
           distribution: goreleaser
+          goarch:
+            - amd64
           # 'latest', 'nightly', or a semver
           version: "~> v2"
           args: release --clean
