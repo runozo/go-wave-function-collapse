@@ -1,8 +1,8 @@
 # .github/workflows/release.yaml
 
 on:
-  release:
-    types: [created]
+  tags:
+    - v*
 
 permissions:
     contents: write
@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: install libs
+      run: sudo apt install libx11-dev
     - uses: wangyoucao577/go-release-action@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
