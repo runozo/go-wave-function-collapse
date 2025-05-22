@@ -30,7 +30,6 @@ type Game struct {
 	height     int
 	assets     *assets.Assets
 	wfc        *wfc.Wfc
-	gifFile    *os.File
 	iterations int
 }
 
@@ -78,7 +77,6 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
-var savegif = flag.String("gif", "", "render animation to a gif file")
 var iterations = flag.Int("iterations", -1, "number of iterations before exit")
 
 func main() {
@@ -92,15 +90,6 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	var gifFile *os.File
-	if *savegif != "" {
-		var err error
-		gifFile, err = os.Create(*savegif)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
 	as := assets.NewAssets()
 	g := &Game{
 		assets:     as,
@@ -108,7 +97,6 @@ func main() {
 		height:     screenHeight,
 		wfc:        wfc.NewWfc(screenWidth/tileWidth+1, screenHeight/tileHeight+1, as.TileEntries),
 		iterations: *iterations,
-		gifFile:    gifFile,
 	}
 
 	// init screen
