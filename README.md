@@ -11,9 +11,11 @@ Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with 
 - Fast
 - Concurrent
 
+<!--
 ## Quickstart
 
 [Download](https://github.com/runozo/go-wave-function-collapse/releases/latest) a release suitable for your platform and run it.
+-->
 
 ## Run with Go
 
