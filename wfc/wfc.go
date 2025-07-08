@@ -125,15 +125,15 @@ func (wfc *Wfc) RandomOptionWithWeight(index int) string {
 
 	randomWeight := rand.Intn(totalWeight)
 
-	var steps int
+	totalWeight = 0
 	for _, option := range wfc.Tiles[index].Options {
-		steps += wfc.TileEntries[option].Weight
-		if randomWeight < steps {
+		totalWeight += wfc.TileEntries[option].Weight
+		if randomWeight < totalWeight {
 			return option
 		}
 	}
 	// should never reach here
-	return wfc.Tiles[index].Options[0]
+	return wfc.Tiles[index].Options[rand.Intn(len(wfc.Tiles[index].Options))]
 }
 
 // CollapseCell collapses a cell.

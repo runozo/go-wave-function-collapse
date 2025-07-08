@@ -47,7 +47,7 @@
         "y": 384,
         "width": 64,
         "height": 64,
-        "weight": 20
+        "weight": 500
     },
     {
         "name": "tileGrass2",
@@ -97,7 +97,7 @@
         "y": 320,
         "width": 64,
         "height": 64,
-        "weight": 20
+        "weight": 500
     },
     {
         "name": "tileGrass_roadCornerLL",
@@ -1395,7 +1395,7 @@
         "y": 0,
         "width": 64,
         "height": 64,
-        "weight": 20
+        "weight": 500
     },
     {
         "name": "tileSand2",
@@ -1445,7 +1445,7 @@
         "y": 448,
         "width": 64,
         "height": 64,
-        "weight": 20
+        "weight": 500
     },
     {
         "name": "tileSand_roadCornerLL",
