@@ -117,6 +117,25 @@ func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 	return minEntropyIndexes
 }
 
+func (wfc *Wfc) RandomOptionWithWeight(index int) string {
+	var totalWeight int
+	for _, option := range wfc.Tiles[index].Options {
+		totalWeight += wfc.TileEntries[option].Weight
+	}
+
+	randomWeight := rand.Intn(totalWeight)
+
+	var steps int
+	for _, option := range wfc.Tiles[index].Options {
+		steps += wfc.TileEntries[option].Weight
+		if randomWeight < steps {
+			return option
+		}
+	}
+	// should never reach here
+	return wfc.Tiles[index].Options[0]
+}
+
 // CollapseCell collapses a cell.
 //
 // Parameters:
@@ -127,7 +146,7 @@ func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 //     with a randomly chosen option.
 func (wfc *Wfc) CollapseCell(index int) {
 	// collapse a cell with least entropy
-	randomOption := wfc.Tiles[index].Options[rand.Intn(len(wfc.Tiles[index].Options))]
+	randomOption := wfc.RandomOptionWithWeight(index)
 	wfc.Tiles[index] = Tile{
 		Options:   []string{randomOption},
 		Name:      randomOption,
