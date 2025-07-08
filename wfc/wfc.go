@@ -9,6 +9,7 @@ import (
 	"github.com/runozo/go-wave-function-collapse/assets"
 )
 
+// The tile to be drawn on screen
 type Tile struct {
 	Collapsed bool
 	Name      string
