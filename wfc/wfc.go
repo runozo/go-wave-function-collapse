@@ -117,7 +117,7 @@ func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 	return minEntropyIndexes
 }
 
-// CollapseCell collapses a cell with least entropy.
+// CollapseCell collapses a cell.
 //
 // Parameters:
 // - cellIndex: the index of the cell to collapse.
