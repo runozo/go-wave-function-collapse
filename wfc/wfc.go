@@ -24,10 +24,26 @@ type Wfc struct {
 	numOfTilesY int
 }
 
+// NewWfc returns a new WFC with the given number of tiles in the X and Y directions, and the given tile entries.
+//
+// Parameters:
+// - numOfTilesX: the number of tiles in the X direction.
+// - numOfTilesY: the number of tiles in the Y direction.
+// - tileEntries: a map of tile names to TileEntries.
+//
+// Returns:
+// - *Wfc: a pointer to a new WFC.
 func NewWfc(numOfTilesX, numOfTilesY int, tileEntries map[string]assets.TileEntry) *Wfc {
+	// filter in only groud type tiles
+	filteredTileEntries := make(map[string]assets.TileEntry)
+	for k, v := range tileEntries {
+		if v.Type == "ground" {
+			filteredTileEntries[k] = v
+		}
+	}
 	wfc := &Wfc{
 		Tiles:       make([]Tile, numOfTilesX*numOfTilesY),
-		TileEntries: tileEntries,
+		TileEntries: filteredTileEntries,
 		numOfTilesX: numOfTilesX,
 		numOfTilesY: numOfTilesY,
 	}
@@ -74,6 +90,7 @@ func (wfc *Wfc) FilterOptions(orig, options []string) []string {
 
 // Reset resets all the tiles in the WFC to their initial state, with all options available.
 // It does not reset the TileEntries, so the same tile entries will be used as previously.
+
 func (wfc *Wfc) Reset() {
 	// create a slice of all the options available
 	initialOptions := []string{}
@@ -117,6 +134,21 @@ func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 	// log.Println("minEntropyIndexes", len(minEntropyIndexes), "minEntropy", minEntropy)
 	return minEntropyIndexes
 }
+
+// RandomOptionWithWeight selects a random option for a tile at the given index,
+// taking into account the weights of each option.
+//
+// It calculates the total weight of all available options, then chooses a random
+// weight within that total. The function iterates through the options, summing
+// their weights until the random weight is less than the cumulative weight, at
+// which point it returns the current option. This ensures that options with
+// higher weights have a higher probability of being selected.
+//
+// Parameters:
+// - index: the index of the tile for which to select an option.
+//
+// Returns:
+// - string: the randomly selected option based on weights.
 
 func (wfc *Wfc) RandomOptionWithWeight(index int) string {
 	var totalWeight int
