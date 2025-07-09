@@ -90,7 +90,7 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	as := assets.NewAssets()
+	as := assets.NewAssets("data"+string(os.PathSeparator)+"allSprites_default.png", "data"+string(os.PathSeparator)+"mapped_tiles.json")
 	g := &Game{
 		assets:     as,
 		width:      screenWidth,

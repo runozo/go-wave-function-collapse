@@ -1,26 +1,14 @@
 package assets
 
 import (
-	"embed"
 	"encoding/json"
 	"image"
 	_ "image/png"
-	"io/fs"
 	"log"
+	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
-
-const (
-	jsonSpriteMap = "mapped_tiles.json"
-	spriteSheet   = "allSprites_default.png"
-	xmlSpriteMap  = "mapped_tiles.xml"
-)
-
-//go:embed allSprites_default.png
-//go:embed allSprites_default.xml
-//go:embed mapped_tiles.json
-var assets embed.FS
 
 type Assets struct {
 	SpriteSheet *ebiten.Image
@@ -40,9 +28,9 @@ type TileEntry struct {
 	Weight      int                 `json:"weight"`
 }
 
-func NewAssets() *Assets {
-	var spriteSheet = mustLoadImage(spriteSheet)
-	var spriteMap = mustLoadJSONSpriteMap(jsonSpriteMap)
+func NewAssets(spriteSheetFileName, jsonSpriteMapFileName string) *Assets {
+	var spriteSheet = mustLoadImage(spriteSheetFileName)
+	var spriteMap = mustLoadJSONSpriteMap(jsonSpriteMapFileName)
 
 	return &Assets{
 		SpriteSheet: spriteSheet,
@@ -75,7 +63,7 @@ func (a *Assets) GetSprite(name string) *ebiten.Image {
 
 func mustLoadJSONSpriteMap(name string) map[string]TileEntry {
 	log.Println("Loading sprite map", "name", name)
-	byteValue, err := fs.ReadFile(assets, name)
+	byteValue, err := os.ReadFile(name)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -105,7 +93,7 @@ func mustLoadJSONSpriteMap(name string) map[string]TileEntry {
 // Returns:
 // - *ebiten.Image: the loaded image.
 func mustLoadImage(name string) *ebiten.Image {
-	dat, err := assets.Open(name)
+	dat, err := os.Open(name)
 	if err != nil {
 		log.Fatal(err)
 	}
