@@ -20,8 +20,6 @@ Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with 
 
 ## Run with Go
 
-```go mod tidy```
-
 ```go run main.go```
 
 ## Usage
