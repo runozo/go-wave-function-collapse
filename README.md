@@ -10,6 +10,7 @@ Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with 
 
 - Fast
 - Concurrent
+- Weighted random tile selection
 
 <!--
 ## Quickstart
