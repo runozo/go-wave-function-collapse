@@ -20,5 +20,8 @@ benchmark:
 test:
 	go test ./...
 
+headlessrun:
+	go run main.go -iterations=2
+
 run:
 	go run main.go
