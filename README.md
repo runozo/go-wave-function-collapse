@@ -4,7 +4,7 @@
 
 Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with [ebitengine](https://github.com/hajimehoshi/ebiten) game library.
 
-![GIF animation of WFC algorithm](gifs/gowfc.gif)
+![GIF animation of WFC algorithm](gifs/gowfc.webm)
 
 ## Features
 
