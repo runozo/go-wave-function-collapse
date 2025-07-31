@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	_ "image/png"
 	"log"
@@ -32,6 +33,9 @@ type Game struct {
 	wfc        *wfc.Wfc
 	iterations int
 }
+
+//go:embed data/*
+var embedfs embed.FS
 
 func (g *Game) Update() error {
 	if g.iterations > 0 && !g.wfc.IsRunning {
@@ -90,7 +94,18 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	as := assets.NewAssets("data"+string(os.PathSeparator)+"allSprites_default.png", "data"+string(os.PathSeparator)+"mapped_tiles.json")
+	// as := assets.NewAssets("data"+string(os.PathSeparator)+"allSprites_default.png", "data"+string(os.PathSeparator)+"mapped_tiles.json")
+	tilesheetData, err := embedfs.ReadFile("data/allSprites_default.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mappingData, err := embedfs.ReadFile("data/mapped_tiles.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	as := assets.NewAssets(tilesheetData, mappingData)
 	g := &Game{
 		assets:     as,
 		width:      screenWidth,
@@ -104,7 +119,7 @@ func main() {
 
 	go g.wfc.StartRender()
 
-	err := ebiten.RunGame(g)
+	err = ebiten.RunGame(g)
 
 	if err != nil {
 		panic(err)

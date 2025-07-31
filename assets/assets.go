@@ -1,11 +1,11 @@
 package assets
 
 import (
+	"bytes"
 	"encoding/json"
 	"image"
 	_ "image/png"
 	"log"
-	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -28,9 +28,11 @@ type TileEntry struct {
 	Weight      int                 `json:"weight"`
 }
 
-func NewAssets(spriteSheetFileName, jsonSpriteMapFileName string) *Assets {
-	var spriteSheet = mustLoadImage(spriteSheetFileName)
-	var spriteMap = mustLoadJSONSpriteMap(jsonSpriteMapFileName)
+// NewAssets takes a byte slice of a sprite sheet image and a byte slice of json data that describes the tiles in the sprite sheet.
+// It returns a pointer to an Assets struct containing the sprite sheet image and a map of tile names to TileEntries.
+func NewAssets(spriteSheetData, jsonData []byte) *Assets {
+	var spriteSheet = parseSpriteSheet(spriteSheetData)
+	var spriteMap = parseJSONData(jsonData)
 
 	return &Assets{
 		SpriteSheet: spriteSheet,
@@ -38,12 +40,8 @@ func NewAssets(spriteSheetFileName, jsonSpriteMapFileName string) *Assets {
 	}
 }
 
-// GetSprite retrieves the sprite image by name from the assets.
-//
-// Parameters:
-// - name: the name of the sprite to retrieve.
-// Returns:
-// - *ebiten.Image: the sprite image corresponding to the given name.
+// GetSprite returns the sub-image of the sprite sheet corresponding to the given
+// tile name. If the tile name is not found, it logs an error and returns nil.
 func (a *Assets) GetSprite(name string) *ebiten.Image {
 	// log.Println("Getting sprite", name)
 	subTexture, ok := a.TileEntries[name]
@@ -57,20 +55,19 @@ func (a *Assets) GetSprite(name string) *ebiten.Image {
 			)).(*ebiten.Image)
 	}
 
-	log.Println("Sprite not found", "name", name)
+	log.Println("GetSprite: sprite not found", name)
+
 	return nil
 }
 
-func mustLoadJSONSpriteMap(name string) map[string]TileEntry {
-	log.Println("Loading sprite map", "name", name)
-	byteValue, err := os.ReadFile(name)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+// parseJSONData takes a json byte slice and returns a map of tileEntries
+// each tileEntry is identified by its name and contains all the informations
+// needed to render the sprite (position, size, type, etc.)
+// the function logs when it is done and returns the map
+func parseJSONData(jsonData []byte) map[string]TileEntry {
 	// json is a slice of TileEntry
 	var tileEntries []TileEntry
-	if err := json.Unmarshal(byteValue, &tileEntries); err != nil {
+	if err := json.Unmarshal(jsonData, &tileEntries); err != nil {
 		log.Fatal(err)
 	}
 
@@ -79,24 +76,16 @@ func mustLoadJSONSpriteMap(name string) map[string]TileEntry {
 	for i := 0; i < len(tileEntries); i++ {
 		tileEntriesMap[tileEntries[i].Name] = tileEntries[i]
 	}
+
 	log.Println("Loaded sprite map", "len", len(tileEntriesMap))
+
 	return tileEntriesMap
 }
 
-// mustLoadImage loads an image from the given name and returns it as an *ebiten.Image.
-//
-// Parameters:
-// - name: the name of the image file to load.
-//
-// Returns:
-// - *ebiten.Image: the loaded image.
-func mustLoadImage(name string) *ebiten.Image {
-	dat, err := os.Open(name)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	img, _, err := image.Decode(dat)
+// parseSpriteSheet takes a byte slice of a sprite sheet image and returns an
+// *ebiten.Image of it. If the image can't be decoded, it logs a fatal error.
+func parseSpriteSheet(spritesheetData []byte) *ebiten.Image {
+	img, _, err := image.Decode(bytes.NewReader(spritesheetData))
 	if err != nil {
 		log.Fatal(err)
 	}
