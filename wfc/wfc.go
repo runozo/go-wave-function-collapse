@@ -295,9 +295,9 @@ func (wfc *Wfc) StartRender() {
 	wfc.IsRunning = true
 	wfc.Reset()
 	for wfc.Iterate(wfc.numOfTilesX, wfc.numOfTilesY) {
-		runtime.Gosched()
 		if !wfc.IsRunning {
 			return
 		}
+		runtime.Gosched()
 	}
 }
