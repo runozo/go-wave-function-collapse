@@ -4,6 +4,11 @@ distdirname := ./dist
 distfilename := go-wave-function-collapse-${os}-${arch}
 distfullpath := ${distdirname}/${distfilename}
 
+.PHONY: wasm
+
+wasm:
+	GOOS=js GOARCH=wasm go build -ldflags="-s -w -v" -o ./docs/wfc.wasm github.com/runozo/go-wave-function-collapse
+
 build:
 	go build -o ${distfullpath}
 
