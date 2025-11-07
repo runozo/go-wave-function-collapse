@@ -18,11 +18,13 @@ type Tile struct {
 }
 
 type Wfc struct {
-	Tiles       []Tile
-	TileEntries map[string]assets.TileEntry
-	IsRunning   bool
-	numOfTilesX int
-	numOfTilesY int
+	Tiles          []Tile
+	TileEntries    map[string]assets.TileEntry
+	IsRunning      bool
+	numOfTilesX    int
+	numOfTilesY    int
+	TotalTiles     int
+	ProcessedTiles int
 }
 
 // NewWfc returns a new WFC with the given number of tiles in the X and Y directions, and the given tile entries.
@@ -43,10 +45,13 @@ func NewWfc(numOfTilesX, numOfTilesY int, tileEntries map[string]assets.TileEntr
 		}
 	}
 	wfc := &Wfc{
-		Tiles:       make([]Tile, numOfTilesX*numOfTilesY),
-		TileEntries: filteredTileEntries,
-		numOfTilesX: numOfTilesX,
-		numOfTilesY: numOfTilesY,
+		Tiles:          make([]Tile, numOfTilesX*numOfTilesY),
+		TileEntries:    filteredTileEntries,
+		numOfTilesX:    numOfTilesX,
+		numOfTilesY:    numOfTilesY,
+		TotalTiles:     numOfTilesX * numOfTilesY,
+		IsRunning:      false,
+		ProcessedTiles: 0,
 	}
 	wfc.Reset()
 	return wfc
@@ -95,6 +100,7 @@ func (wfc *Wfc) FilterOptions(orig, options []string) []string {
 func (wfc *Wfc) Reset() {
 	// create a slice of all the options available
 	initialOptions := []string{}
+
 	for k, v := range wfc.TileEntries {
 		if len(v.Options) >= 4 {
 			// log.Println("appending", k)
@@ -109,6 +115,7 @@ func (wfc *Wfc) Reset() {
 			Options:   initialOptions,
 		}
 	}
+	wfc.ProcessedTiles = 0
 }
 
 // LeastEntropyCellIndexes returns the indexes of the cells with the least entropy.
@@ -250,11 +257,19 @@ func (wfc *Wfc) ElaborateCell(x, y int) {
 	}
 }
 
-// Iterate collapses one cell with least entropy, then elaborates all cells.
-// The collapsing and elaboration is done concurrently, but the elaboration
-// of each row is done sequentially to avoid race conditions.
-// If all cells are collapsed, it sets IsRunning to false and returns false.
-// Otherwise, it returns true.
+// Iterate iteratively collapses cells with the least entropy until no more collapsable cells are available or the rendering
+// process is stopped.
+//
+// It first checks if there are any more collapsable cells. If not, it logs a message and returns false.
+// If there are more collapsable cells, it randomly selects one of them and collapses it, then iteratively
+// elaborates the adjacent cells by filtering their available options based on the options of the adjacent cells.
+//
+// Parameters:
+// - numOfTilesX: the number of tiles in the X direction.
+// - numOfTilesY: the number of tiles in the Y direction.
+//
+// Returns:
+// - bool: true if the rendering process is still running, false otherwise.
 func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 	leastEntropyIndexes := wfc.LeastEntropyCellIndexes()
 
@@ -265,6 +280,7 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 	} else {
 		collapseIndex := leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))]
 		wfc.CollapseCell(collapseIndex)
+		wfc.ProcessedTiles++
 		var wg sync.WaitGroup
 		for y := 0; y < numOfTilesY; y++ {
 			wg.Add(numOfTilesX)
