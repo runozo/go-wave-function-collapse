@@ -21,6 +21,7 @@ type Wfc struct {
 	Tiles          []Tile
 	TileEntries    map[string]assets.TileEntry
 	IsRunning      bool
+	IsRendered     bool
 	numOfTilesX    int
 	numOfTilesY    int
 	TotalTiles     int
@@ -51,6 +52,7 @@ func NewWfc(numOfTilesX, numOfTilesY int, tileEntries map[string]assets.TileEntr
 		numOfTilesY:    numOfTilesY,
 		TotalTiles:     numOfTilesX * numOfTilesY,
 		IsRunning:      false,
+		IsRendered:     false,
 		ProcessedTiles: 0,
 	}
 	wfc.Reset()
@@ -304,6 +306,7 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 // process is stopped.
 
 func (wfc *Wfc) StartRender() {
+	wfc.IsRendered = false
 	if wfc.IsRunning {
 		log.Println("wfc is already running")
 		return
