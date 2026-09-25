@@ -1,0 +1,121 @@
+name: Release
+
+on:
+  push:
+    tags: [ "v*" ]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
+        cache: true
+
+    - name: Install xorg-dev
+      run: sudo apt-get update && sudo apt-get install -y xorg-dev xvfb
+    - name: Install libgl1-mesa-dev
+      run: sudo apt-get install -y libgl1-mesa-dev
+
+    - name: Vet
+      run: go vet ./...
+    - name: Test
+      run: xvfb-run go test ./...
+
+  build:
+    name: build ${{ matrix.goos }}/${{ matrix.goarch }}
+    needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Ebitengine requires CGO on Linux and macOS, so those targets are
+          # built on native runners. Windows is pure-Go and can be built with
+          # CGO disabled.
+          - { os: ubuntu-latest,  goos: linux,   goarch: amd64, cgo: "1" }
+          - { os: macos-latest,   goos: darwin,  goarch: amd64, cgo: "1" }
+          - { os: macos-latest,   goos: darwin,  goarch: arm64, cgo: "1" }
+          - { os: windows-latest, goos: windows, goarch: amd64, cgo: "0" }
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
+        cache: true
+
+    - name: Install Linux dependencies
+      if: matrix.goos == 'linux'
+      run: sudo apt-get update && sudo apt-get install -y xorg-dev libgl1-mesa-dev
+
+    - name: Build
+      shell: bash
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+        CGO_ENABLED: ${{ matrix.cgo }}
+      run: |
+        set -euo pipefail
+        ext=""
+        if [ "${GOOS}" = "windows" ]; then ext=".exe"; fi
+        mkdir -p dist
+        go build -trimpath -ldflags="-s -w" -o "dist/go-wave-function-collapse_${GOOS}_${GOARCH}${ext}" .
+
+    - name: Upload binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: bin-${{ matrix.goos }}-${{ matrix.goarch }}
+        path: dist/*
+        if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download binaries
+      uses: actions/download-artifact@v4
+      with:
+        path: binaries
+        merge-multiple: true
+
+    - name: Package archives
+      shell: bash
+      run: |
+        set -euo pipefail
+        mkdir -p out
+        for f in binaries/go-wave-function-collapse_*; do
+          base="$(basename "$f")"
+          case "$base" in
+            *_windows_*.exe)
+              cp "$f" go-wave-function-collapse.exe
+              python3 -m zipfile -c "out/${base%.exe}.zip" go-wave-function-collapse.exe
+              rm go-wave-function-collapse.exe
+              ;;
+            *)
+              cp "$f" go-wave-function-collapse
+              tar -czf "out/${base}.tar.gz" go-wave-function-collapse
+              rm go-wave-function-collapse
+              ;;
+          esac
+        done
+        cd out
+        sha256sum * > checksums.txt
+        ls -la
+
+    - name: Publish GitHub release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          out/*.tar.gz
+          out/*.zip
+          out/checksums.txt
+        generate_release_notes: true

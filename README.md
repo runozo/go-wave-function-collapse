@@ -1,10 +1,17 @@
 # go-wave-function-collapse
 
-[![goreleaser](https://github.com/runozo/go-wave-function-collapse/actions/workflows/go.yml/badge.svg)](https://github.com/runozo/go-wave-function-collapse/actions/workflows/go.yml)
+[![CI](https://github.com/runozo/go-wave-function-collapse/actions/workflows/main.yml/badge.svg)](https://github.com/runozo/go-wave-function-collapse/actions/workflows/main.yml)
+[![Release](https://github.com/runozo/go-wave-function-collapse/actions/workflows/release.yml/badge.svg)](https://github.com/runozo/go-wave-function-collapse/actions/workflows/release.yml)
 
 Wave Function Collapse algorithm, implemented in [Go](https://golang.org), with [ebitengine](https://github.com/hajimehoshi/ebiten) game library.
 
 ![GIF animation of WFC algorithm](gifs/gowfc.gif)
+
+## Live demo
+
+The WASM demo is rebuilt and deployed to GitHub Pages on every push to `main`:
+
+<https://runozo.github.io/go-wave-function-collapse/>
 
 ## Features
 
@@ -58,6 +65,23 @@ Reference A/B (Ryzen 5 5600, `GOMAXPROCS=12`, `-benchtime=2s -count=5`): the
 snapshot-based sweep (`ElaborateGrid`, one barrier for the whole grid) is about
 **1.76x faster** than the previous per-row sweep (~196 µs vs ~345 µs per sweep,
 no overlap across samples).
+
+## Releases
+
+Pushing a tag (e.g. `v1.0.0`) triggers the `Release` workflow, which builds on
+native runners (Ebitengine needs CGO on Linux/macOS) and publishes prebuilt
+archives plus `checksums.txt` on the GitHub Releases page:
+
+| OS | Arch |
+|---|---|
+| Linux | amd64 |
+| Windows | amd64 |
+| macOS | amd64, arm64 |
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
 
 ## Credits
 

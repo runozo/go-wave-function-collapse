@@ -7,7 +7,10 @@ distfullpath := ${distdirname}/${distfilename}
 .PHONY: wasm benchmark benchmark-compare test
 
 wasm:
-	GOOS=js GOARCH=wasm go build -ldflags="-s -w -v" -o ./docs/wfc.wasm github.com/runozo/go-wave-function-collapse
+	GOOS=js GOARCH=wasm go build -ldflags="-s -w" -o ./docs/wfc.wasm github.com/runozo/go-wave-function-collapse
+	@SRC="$$(go env GOROOT)/lib/wasm/wasm_exec.js"; \
+	 [ -f "$$SRC" ] || SRC="$$(go env GOROOT)/misc/wasm/wasm_exec.js"; \
+	 cp "$$SRC" ./docs/wasm_exec.js
 
 build:
 	go build -o ${distfullpath}
