@@ -17,7 +17,7 @@
 #   ./scripts/bench.sh a92eb05                       # A/B sweep benchmark
 set -euo pipefail
 
-BENCH_PATTERN="${BENCH_PATTERN:-BenchmarkElaborateCellSweep}"
+BENCH_PATTERN="${BENCH_PATTERN:-BenchmarkGeneration}"
 BENCH_TIME="${BENCH_TIME:-2s}"
 BENCH_COUNT="${BENCH_COUNT:-5}"
 

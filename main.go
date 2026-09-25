@@ -38,6 +38,11 @@ type Game struct {
 	assets     *assets.Assets
 	wfc        *wfc.Wfc
 	iterations int
+
+	// sprites and blank are precomputed once so Draw does not allocate or do
+	// map lookups on every frame, for every cell.
+	sprites map[string]*ebiten.Image
+	blank   *ebiten.Image
 }
 
 //go:embed data/*
@@ -76,10 +81,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		for x := 0; x < screenWidth; x += tileWidth {
 			ops := &ebiten.DrawImageOptions{}
 			ops.GeoM.Translate(float64(x), float64(y))
-			if g.wfc.Tiles[i].Name != "" {
-				screen.DrawImage(g.assets.GetSprite(g.wfc.Tiles[i].Name), ops)
+			if name := g.wfc.Tiles[i].Name; name != "" {
+				if sprite := g.sprites[name]; sprite != nil {
+					screen.DrawImage(sprite, ops)
+				}
 			} else {
-				screen.DrawImage(ebiten.NewImage(tileWidth, tileHeight), ops)
+				screen.DrawImage(g.blank, ops)
 			}
 			i++
 		}
@@ -118,12 +125,21 @@ func main() {
 	}
 
 	as := assets.NewAssets(tilesheetData, mappingData)
+
+	// Precompute every sprite once; Draw then just indexes the map.
+	sprites := make(map[string]*ebiten.Image, len(as.TileEntries))
+	for name := range as.TileEntries {
+		sprites[name] = as.GetSprite(name)
+	}
+
 	g := &Game{
 		assets:     as,
 		width:      screenWidth,
 		height:     screenHeight,
 		wfc:        wfc.NewWfc(screenWidth/tileWidth+1, screenHeight/tileHeight+1, as.TileEntries),
 		iterations: *iterations,
+		sprites:    sprites,
+		blank:      ebiten.NewImage(tileWidth, tileHeight),
 	}
 
 	// init screen

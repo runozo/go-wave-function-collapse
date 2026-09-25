@@ -2,19 +2,24 @@ package wfc
 
 import (
 	"log"
-	"runtime"
-	"sync"
-
+	"math/bits"
 	"math/rand"
+	"runtime"
 
 	"github.com/runozo/go-wave-function-collapse/assets"
 )
 
-// The tile to be drawn on screen
+// Tile is a cell of the wave function.
+//
+// The set of still-possible tiles is stored as a bitmask over tile IDs: bit i
+// set means the tile with ID i is still possible for this cell. With the
+// current tile set (40 ground tiles) a single uint64 holds the whole
+// superposition, so filtering and union become a handful of machine-word
+// operations instead of allocating and scanning string slices.
 type Tile struct {
 	Collapsed bool
 	Name      string
-	Options   []string
+	Mask      uint64
 }
 
 // IterateResult describes the outcome of a single Iterate call.
@@ -33,27 +38,55 @@ const (
 // generation after hitting a contradiction before giving up.
 const DefaultMaxRestarts = 50
 
+// MaxTiles is the maximum number of tiles supported by the bitmask
+// representation (one uint64 word).
+const MaxTiles = 64
+
+// Directions used by the compatibility tables.
+const (
+	dirUp = iota
+	dirRight
+	dirDown
+	dirLeft
+	numDirections
+)
+
+var dirNames = [numDirections]string{"up", "right", "down", "left"}
+
 type Wfc struct {
 	Tiles          []Tile
 	TileEntries    map[string]assets.TileEntry
 	IsRunning      bool
 	IsRendered     bool
-	numOfTilesX    int
-	numOfTilesY    int
 	TotalTiles     int
 	ProcessedTiles int
 	MaxRestarts    int
 
-	// attempts counts the restarts already performed for the current
-	// generation, used by Step to give up after MaxRestarts contradictions.
-	attempts int
+	numOfTilesX int
+	numOfTilesY int
+	attempts    int
 
-	// sweepBuffer is reused by ElaborateGrid as the read-only snapshot of Tiles
-	// for the duration of a concurrent sweep, avoiding per-sweep allocations.
-	sweepBuffer []Tile
+	// Precomputed tile metadata, indexed by tile ID.
+	names       []string
+	nameToID    map[string]int
+	weights     []int
+	compat      [][numDirections]uint64 // compat[id][dir] = tiles allowed in direction dir from id
+	initialMask uint64
+
+	// Worklist used by propagate to run arc-consistency from a collapsed cell.
+	queue   []int
+	inQueue []bool
+
+	// entropyBuffer is reused by LeastEntropyCellIndexes to avoid allocating a
+	// new slice on every collapse.
+	entropyBuffer []int
 }
 
 // NewWfc returns a new WFC with the given number of tiles in the X and Y directions, and the given tile entries.
+//
+// Only "ground" tiles with at least four direction options are considered, and
+// the compatibility between their sides is precomputed into bitmasks once, at
+// construction time.
 //
 // Parameters:
 // - numOfTilesX: the number of tiles in the X direction.
@@ -63,322 +96,296 @@ type Wfc struct {
 // Returns:
 // - *Wfc: a pointer to a new WFC.
 func NewWfc(numOfTilesX, numOfTilesY int, tileEntries map[string]assets.TileEntry) *Wfc {
-	// filter in only groud type tiles
-	filteredTileEntries := make(map[string]assets.TileEntry)
-	for k, v := range tileEntries {
-		if v.Type == "ground" {
-			filteredTileEntries[k] = v
-		}
-	}
 	wfc := &Wfc{
-		Tiles:          make([]Tile, numOfTilesX*numOfTilesY),
-		TileEntries:    filteredTileEntries,
-		numOfTilesX:    numOfTilesX,
-		numOfTilesY:    numOfTilesY,
-		TotalTiles:     numOfTilesX * numOfTilesY,
-		IsRunning:      false,
-		IsRendered:     false,
-		ProcessedTiles: 0,
-		MaxRestarts:    DefaultMaxRestarts,
+		Tiles:       make([]Tile, numOfTilesX*numOfTilesY),
+		TileEntries: tileEntries,
+		numOfTilesX: numOfTilesX,
+		numOfTilesY: numOfTilesY,
+		TotalTiles:  numOfTilesX * numOfTilesY,
+		IsRunning:   false,
+		IsRendered:  false,
+		MaxRestarts: DefaultMaxRestarts,
 	}
+	wfc.buildIndex()
 	wfc.Reset()
 	return wfc
 }
 
-// IntInSlice checks if a given integer is present in a slice of integers.
-//
-// Parameters:
-// - a: the integer to search for.
-// - slice: the slice of integers to search in.
-//
-// Returns:
-// - bool: true if the integer is found in the slice, false otherwise.
-func (wfc *Wfc) IntInSlice(a int, slice []int) bool {
-	for _, b := range slice {
-		if b == a {
-			return true
+// buildIndex assigns an integer ID to every usable tile and precomputes the
+// per-direction compatibility masks.
+func (wfc *Wfc) buildIndex() {
+	wfc.nameToID = make(map[string]int, len(wfc.TileEntries))
+	wfc.names = nil
+	wfc.weights = nil
+	wfc.compat = nil
+	wfc.initialMask = 0
+
+	for name, entry := range wfc.TileEntries {
+		if entry.Type != "ground" || len(entry.Options) < 4 {
+			continue
 		}
+		if len(wfc.names) >= MaxTiles {
+			log.Fatalf("wfc: too many tiles, the bitmask representation supports at most %d", MaxTiles)
+		}
+		id := len(wfc.names)
+		wfc.nameToID[name] = id
+		wfc.names = append(wfc.names, name)
+		wfc.weights = append(wfc.weights, entry.Weight)
+		wfc.compat = append(wfc.compat, [numDirections]uint64{})
+		wfc.initialMask |= 1 << uint(id)
 	}
-	return false
-}
 
-// FilterOptions filters the original options based on the provided options slice.
-//
-// It takes in two parameters:
-// - orig []string: the original options slice
-// - options []string: the options to filter by
-// Returns []string: the filtered options slice
-func (wfc *Wfc) FilterOptions(orig, options []string) []string {
-	filtered := make([]string, 0, len(orig))
-
-	for _, o := range orig {
-		for _, b := range options {
-			if b == o {
-				filtered = append(filtered, o)
-				break
+	for name, entry := range wfc.TileEntries {
+		id, ok := wfc.nameToID[name]
+		if !ok {
+			continue
+		}
+		for dir := 0; dir < numDirections; dir++ {
+			var mask uint64
+			for _, neighbor := range entry.Options[dirNames[dir]] {
+				if nid, ok := wfc.nameToID[neighbor]; ok {
+					mask |= 1 << uint(nid)
+				}
 			}
+			wfc.compat[id][dir] = mask
 		}
 	}
-	return filtered
+
+	wfc.queue = wfc.queue[:0]
+	wfc.inQueue = make([]bool, len(wfc.Tiles))
 }
 
 // Reset resets all the tiles in the WFC to their initial state, with all options available.
-// It does not reset the TileEntries, so the same tile entries will be used as previously.
-
+// It does not reset the precomputed tile metadata.
 func (wfc *Wfc) Reset() {
-	// create a slice of all the options available
-	initialOptions := []string{}
-
-	for k, v := range wfc.TileEntries {
-		if len(v.Options) >= 4 {
-			// log.Println("appending", k)
-			initialOptions = append(initialOptions, k)
-		}
-	}
-
-	// setup tiles with all the options enabled
-	for i := 0; i < len(wfc.Tiles); i++ {
-		wfc.Tiles[i] = Tile{
-			Collapsed: false,
-			Options:   initialOptions,
-		}
+	for i := range wfc.Tiles {
+		wfc.Tiles[i] = Tile{Mask: wfc.initialMask}
 	}
 	wfc.ProcessedTiles = 0
+
+	if len(wfc.inQueue) != len(wfc.Tiles) {
+		wfc.inQueue = make([]bool, len(wfc.Tiles))
+	} else {
+		for i := range wfc.inQueue {
+			wfc.inQueue[i] = false
+		}
+	}
+	wfc.queue = wfc.queue[:0]
 }
 
 // LeastEntropyCellIndexes returns the indexes of the cells with the least entropy.
 //
-// This function iterates through all the tiles and identifies those that are not
-// collapsed and have the fewest available options, which represents the least entropy.
-// It returns a slice of indexes corresponding to these cells. If multiple cells have
-// the same minimum entropy, all their indexes are included in the result.
+// Entropy is the number of still-possible tiles (population count of the
+// bitmask). All uncollapsed cells sharing the minimum are returned.
+//
+// The returned slice is backed by an internal, reused buffer: callers must
+// consume it before calling the method again.
 //
 // Returns:
-// - []int: a slice of integers representing the indexes of the cells with the least entropy.
-
+// - []int: the indexes of the cells with the least entropy.
 func (wfc *Wfc) LeastEntropyCellIndexes() []int {
-	minEntropy := len(wfc.TileEntries)
-	minEntropyIndexes := []int{}
-	for index, tile := range wfc.Tiles {
-		if !tile.Collapsed && len(tile.Options) < minEntropy {
-			minEntropy = len(tile.Options)
-			minEntropyIndexes = []int{index}
-		} else if !tile.Collapsed && len(tile.Options) == minEntropy {
-			minEntropyIndexes = append(minEntropyIndexes, index)
+	wfc.entropyBuffer = wfc.entropyBuffer[:0]
+	minEntropy := MaxTiles + 1
+	for i := range wfc.Tiles {
+		if wfc.Tiles[i].Collapsed {
+			continue
+		}
+		entropy := bits.OnesCount64(wfc.Tiles[i].Mask)
+		switch {
+		case entropy < minEntropy:
+			minEntropy = entropy
+			wfc.entropyBuffer = append(wfc.entropyBuffer[:0], i)
+		case entropy == minEntropy:
+			wfc.entropyBuffer = append(wfc.entropyBuffer, i)
 		}
 	}
-	// log.Println("minEntropyIndexes", len(minEntropyIndexes), "minEntropy", minEntropy)
-	return minEntropyIndexes
+	return wfc.entropyBuffer
 }
 
-// RandomOptionWithWeight selects a random option for a tile at the given index,
-// taking into account the weights of each option.
-//
-// It calculates the total weight of all available options, then chooses a random
-// weight within that total. The function iterates through the options, summing
-// their weights until the random weight is less than the cumulative weight, at
-// which point it returns the current option. This ensures that options with
-// higher weights have a higher probability of being selected.
+// randomOptionID selects a tile ID for the cell at the given index using a
+// weighted random choice over its remaining options. It returns -1 if the cell
+// has no options left (a contradiction).
+func (wfc *Wfc) randomOptionID(index int) int {
+	mask := wfc.Tiles[index].Mask
+	if mask == 0 {
+		return -1
+	}
+
+	totalWeight := 0
+	for m := mask; m != 0; m &= m - 1 {
+		totalWeight += wfc.weights[bits.TrailingZeros64(m)]
+	}
+
+	if totalWeight > 0 {
+		randomWeight := rand.Intn(totalWeight)
+		accumulated := 0
+		for m := mask; m != 0; m &= m - 1 {
+			id := bits.TrailingZeros64(m)
+			accumulated += wfc.weights[id]
+			if randomWeight < accumulated {
+				return id
+			}
+		}
+	}
+
+	// All weights are zero (or negative): fall back to a uniform choice.
+	remaining := rand.Intn(bits.OnesCount64(mask))
+	for m := mask; m != 0; m &= m - 1 {
+		if remaining == 0 {
+			return bits.TrailingZeros64(m)
+		}
+		remaining--
+	}
+	return -1
+}
+
+// RandomOptionWithWeight selects a random option for the tile at the given
+// index, taking into account the weights of each option.
 //
 // Parameters:
 // - index: the index of the tile for which to select an option.
 //
 // Returns:
-// - string: the randomly selected option based on weights.
-
+//   - string: the randomly selected option based on weights, or "" if the cell
+//     has no options left.
 func (wfc *Wfc) RandomOptionWithWeight(index int) string {
-	options := wfc.Tiles[index].Options
-	if len(options) == 0 {
-		// A cell with no options is a contradiction: return early instead of
-		// panicking on rand.Intn(0). Iterate detects this before collapsing.
+	id := wfc.randomOptionID(index)
+	if id < 0 {
 		return ""
 	}
-
-	var totalWeight int
-	for _, option := range options {
-		totalWeight += wfc.TileEntries[option].Weight
-	}
-
-	if totalWeight <= 0 {
-		// All weights are zero (or negative): fall back to a uniform choice.
-		return options[rand.Intn(len(options))]
-	}
-
-	randomWeight := rand.Intn(totalWeight)
-
-	totalWeight = 0
-	for _, option := range options {
-		totalWeight += wfc.TileEntries[option].Weight
-		if randomWeight < totalWeight {
-			return option
-		}
-	}
-	// should never reach here
-	return options[rand.Intn(len(options))]
+	return wfc.names[id]
 }
 
-// CollapseCell collapses a cell.
+// CollapseCell collapses a cell to a single, weighted-random option.
 //
 // Parameters:
-// - cellIndex: the index of the cell to collapse.
-//
-// Returns:
-//   - nothing. It modifies the cell at the given index to have a collapsed state
-//     with a randomly chosen option.
+// - index: the index of the cell to collapse.
 func (wfc *Wfc) CollapseCell(index int) {
-	if len(wfc.Tiles[index].Options) == 0 {
+	id := wfc.randomOptionID(index)
+	if id < 0 {
 		// Nothing to collapse: leave the cell as-is so the contradiction stays
 		// detectable instead of turning it into a collapsed, empty-named tile.
 		return
 	}
-	// collapse a cell with least entropy
-	randomOption := wfc.RandomOptionWithWeight(index)
 	wfc.Tiles[index] = Tile{
-		Options:   []string{randomOption},
-		Name:      randomOption,
 		Collapsed: true,
+		Name:      wfc.names[id],
+		Mask:      1 << uint(id),
 	}
 }
 
-// GetAvailableOptions takes a cell index and a direction, and returns a slice of strings that represent all the available options for the given direction.
-//
-// It reads the current (live) state of the grid. The concurrent sweep uses
-// ElaborateGrid instead, which reads from a stable snapshot.
-//
-// Parameters:
-// - cellIndex: the index of the cell to retrieve the available options for.
-// - direction: a string representing the direction to retrieve the available options for. Can be "up", "right", "down", or "left".
-//
-// Returns:
-// - []string: a slice of strings representing the available options
-func (wfc *Wfc) GetAvailableOptions(cellIndex int, direction string) []string {
-	return wfc.getAvailableOptions(wfc.Tiles, cellIndex, direction)
-}
-
-// getAvailableOptions is the read-only core of GetAvailableOptions. Neighbor
-// options are read from src, which during a concurrent sweep is a snapshot of
-// the grid taken before the sweep started.
-func (wfc *Wfc) getAvailableOptions(src []Tile, cellIndex int, direction string) []string {
-	availableOptions := make([]string, 0, len(src[cellIndex].Options))
-	for _, o := range src[cellIndex].Options {
-		availableOptions = append(availableOptions, wfc.TileEntries[o].Options[direction]...)
-	}
-	return availableOptions
-}
-
-// ElaborateCell takes an x and y coordinate and elaborates a cell by filtering
-// its available options based on the options of its adjacent cells.
-//
-// It reads and writes the live grid, so it is meant for serial use (tests and
-// single-threaded callers). The concurrent sweep must use ElaborateGrid.
-//
-// Parameters:
-// - x: the x coordinate of the cell to elaborate.
-// - y: the y coordinate of the cell to elaborate.
-//
-// Returns:
-//   - nothing. It modifies the options of the cell at the given x and y
-//     coordinates.
-func (wfc *Wfc) ElaborateCell(x, y int) {
-	wfc.elaborateCell(wfc.Tiles, wfc.numOfTilesX, wfc.numOfTilesY, x, y)
-}
-
-// elaborateCell filters the options of the cell at (x, y) using the neighbor
-// options read from src, and writes the result back into wfc.Tiles. Only the
-// cell at (x, y) is written, so distinct cells can be elaborated concurrently
-// as long as src is not being mutated.
-func (wfc *Wfc) elaborateCell(src []Tile, numOfTilesX, numOfTilesY, x, y int) {
-	index := y*numOfTilesX + x
-	if wfc.Tiles[index].Collapsed {
+// enqueue adds a cell to the propagation worklist if it is not already queued
+// and not collapsed.
+func (wfc *Wfc) enqueue(index int) {
+	if wfc.Tiles[index].Collapsed || wfc.inQueue[index] {
 		return
 	}
-	// Look UP
+	wfc.inQueue[index] = true
+	wfc.queue = append(wfc.queue, index)
+}
+
+// enqueueNeighbors queues the (up to four) orthogonal neighbors of a cell.
+func (wfc *Wfc) enqueueNeighbors(index int) {
+	x := index % wfc.numOfTilesX
+	y := index / wfc.numOfTilesX
 	if y > 0 {
-		wfc.Tiles[index].Options = wfc.FilterOptions(
-			wfc.Tiles[index].Options,
-			wfc.getAvailableOptions(src, (y-1)*numOfTilesX+x, "down"),
-		)
+		wfc.enqueue(index - wfc.numOfTilesX)
 	}
-	// Look RIGHT
-	if x < numOfTilesX-1 {
-		wfc.Tiles[index].Options = wfc.FilterOptions(
-			wfc.Tiles[index].Options,
-			wfc.getAvailableOptions(src, y*numOfTilesX+x+1, "left"),
-		)
+	if x < wfc.numOfTilesX-1 {
+		wfc.enqueue(index + 1)
 	}
-	// Look DOWN
-	if y < numOfTilesY-1 {
-		wfc.Tiles[index].Options = wfc.FilterOptions(
-			wfc.Tiles[index].Options,
-			wfc.getAvailableOptions(src, (y+1)*numOfTilesX+x, "up"),
-		)
+	if y < wfc.numOfTilesY-1 {
+		wfc.enqueue(index + wfc.numOfTilesX)
 	}
-	// Look LEFT
 	if x > 0 {
-		wfc.Tiles[index].Options = wfc.FilterOptions(
-			wfc.Tiles[index].Options,
-			wfc.getAvailableOptions(src, y*numOfTilesX+x-1, "right"),
-		)
+		wfc.enqueue(index - 1)
 	}
 }
 
-// ElaborateGrid performs a full-grid constraint propagation sweep in parallel.
-//
-// It is race-free: before launching the workers it takes a snapshot of Tiles
-// (reusing sweepBuffer) and every worker reads neighbor options only from that
-// snapshot, writing solely its own cell in wfc.Tiles. Because no options slice
-// is ever mutated in place (FilterOptions and CollapseCell always allocate a new
-// slice), a shallow snapshot is enough and stays stable for the whole sweep.
-//
-// Parameters:
-// - numOfTilesX: the number of tiles in the X direction.
-// - numOfTilesY: the number of tiles in the Y direction.
-func (wfc *Wfc) ElaborateGrid(numOfTilesX, numOfTilesY int) {
-	n := numOfTilesX * numOfTilesY
-	if len(wfc.sweepBuffer) != n {
-		wfc.sweepBuffer = make([]Tile, n)
+// neighborAllowed returns the tiles allowed for a cell adjacent to
+// neighborIndex, where dir is the direction from the neighbor to that cell.
+func (wfc *Wfc) neighborAllowed(neighborIndex, dir int) uint64 {
+	var allowed uint64
+	for m := wfc.Tiles[neighborIndex].Mask; m != 0; m &= m - 1 {
+		allowed |= wfc.compat[bits.TrailingZeros64(m)][dir]
 	}
-	copy(wfc.sweepBuffer, wfc.Tiles[:n])
+	return allowed
+}
 
-	var wg sync.WaitGroup
-	wg.Add(n)
-	for y := 0; y < numOfTilesY; y++ {
-		for x := 0; x < numOfTilesX; x++ {
-			go func(x, y int) {
-				defer wg.Done()
-				wfc.elaborateCell(wfc.sweepBuffer, numOfTilesX, numOfTilesY, x, y)
-			}(x, y)
+// allowedMask intersects the options of a cell with the constraints imposed by
+// its four neighbors.
+func (wfc *Wfc) allowedMask(index int) uint64 {
+	x := index % wfc.numOfTilesX
+	y := index / wfc.numOfTilesX
+	mask := wfc.Tiles[index].Mask
+	if y > 0 {
+		mask &= wfc.neighborAllowed(index-wfc.numOfTilesX, dirDown)
+	}
+	if x < wfc.numOfTilesX-1 {
+		mask &= wfc.neighborAllowed(index+1, dirLeft)
+	}
+	if y < wfc.numOfTilesY-1 {
+		mask &= wfc.neighborAllowed(index+wfc.numOfTilesX, dirUp)
+	}
+	if x > 0 {
+		mask &= wfc.neighborAllowed(index-1, dirRight)
+	}
+	return mask
+}
+
+// clearQueue empties the worklist, clearing its bookkeeping flags.
+func (wfc *Wfc) clearQueue() {
+	for _, index := range wfc.queue {
+		wfc.inQueue[index] = false
+	}
+	wfc.queue = wfc.queue[:0]
+}
+
+// propagate runs arc-consistency starting from the neighbors of seed: every
+// time a cell loses options, its neighbors are re-checked. It returns false as
+// soon as a cell is left with no options (a contradiction).
+//
+// This replaces the previous full-grid sweep: instead of re-elaborating every
+// cell after each collapse, only the cells actually affected are revisited.
+func (wfc *Wfc) propagate(seed int) bool {
+	wfc.queue = wfc.queue[:0]
+	wfc.enqueueNeighbors(seed)
+
+	for head := 0; head < len(wfc.queue); head++ {
+		index := wfc.queue[head]
+		wfc.inQueue[index] = false
+
+		newMask := wfc.allowedMask(index)
+		if newMask == wfc.Tiles[index].Mask {
+			continue
 		}
+		wfc.Tiles[index].Mask = newMask
+		if newMask == 0 {
+			wfc.clearQueue()
+			return false
+		}
+		wfc.enqueueNeighbors(index)
 	}
-	wg.Wait()
+
+	wfc.queue = wfc.queue[:0]
+	return true
 }
 
-// Iterate iteratively collapses cells with the least entropy until no more collapsable cells are available or the rendering
-// process is stopped.
-//
-// It first checks if there are any more collapsable cells. If not, it marks the map as rendered and returns Rendered.
-// If the least-entropy cells have no options left, the wave function has collapsed into a contradiction: it returns
-// Contradiction without collapsing anything, so the caller can restart the generation.
-// Otherwise it randomly selects one of the least-entropy cells and collapses it, then iteratively
-// elaborates the adjacent cells by filtering their available options based on the options of the adjacent cells.
-//
-// Parameters:
-// - numOfTilesX: the number of tiles in the X direction.
-// - numOfTilesY: the number of tiles in the Y direction.
+// Iterate collapses one least-entropy cell and propagates the constraints from
+// it until arc-consistency, detecting contradictions as soon as they appear.
 //
 // Returns:
 // - IterateResult: Rendered when complete, Contradiction when stuck, Iterating otherwise.
-func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) IterateResult {
+func (wfc *Wfc) Iterate() IterateResult {
 	leastEntropyIndexes := wfc.LeastEntropyCellIndexes()
 
 	if len(leastEntropyIndexes) == 0 {
-		// log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(wfc.Tiles))
 		wfc.IsRunning = false
 		wfc.IsRendered = true
 		return Rendered
 	}
 
-	if len(wfc.Tiles[leastEntropyIndexes[0]].Options) == 0 {
+	if wfc.Tiles[leastEntropyIndexes[0]].Mask == 0 {
 		// At least one cell has no options left: the constraint propagation
 		// reached an impossible state.
 		return Contradiction
@@ -387,7 +394,10 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) IterateResult {
 	collapseIndex := leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))]
 	wfc.CollapseCell(collapseIndex)
 	wfc.ProcessedTiles++
-	wfc.ElaborateGrid(numOfTilesX, numOfTilesY)
+
+	if !wfc.propagate(collapseIndex) {
+		return Contradiction
+	}
 	return Iterating
 }
 
@@ -412,7 +422,7 @@ func (wfc *Wfc) BeginRender() {
 // (e.g. Ebitengine's Update) to animate the collapse frame by frame, which is
 // required on single-threaded targets such as WebAssembly.
 func (wfc *Wfc) Step() IterateResult {
-	switch wfc.Iterate(wfc.numOfTilesX, wfc.numOfTilesY) {
+	switch wfc.Iterate() {
 	case Rendered:
 		return Rendered
 	case Contradiction:
