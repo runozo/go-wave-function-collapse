@@ -4,7 +4,7 @@ distdirname := ./dist
 distfilename := go-wave-function-collapse-${os}-${arch}
 distfullpath := ${distdirname}/${distfilename}
 
-.PHONY: wasm
+.PHONY: wasm benchmark benchmark-compare test
 
 wasm:
 	GOOS=js GOARCH=wasm go build -ldflags="-s -w -v" -o ./docs/wfc.wasm github.com/runozo/go-wave-function-collapse
@@ -20,7 +20,13 @@ clean:
 	rm -rf ${distdirname}
 
 benchmark:
-	go test ./... -bench=.
+	BENCH_PATTERN=. ./scripts/bench.sh
+
+# Compare the current tree against a git revision:
+#   make benchmark-compare REV=a92eb05
+benchmark-compare:
+	@test -n "$(REV)" || { echo "usage: make benchmark-compare REV=<git-rev>"; exit 1; }
+	./scripts/bench.sh $(REV)
 
 test:
 	go test ./...
