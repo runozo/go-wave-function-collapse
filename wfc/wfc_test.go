@@ -420,6 +420,108 @@ func TestStartRenderRestartsAndGivesUp(t *testing.T) {
 	}
 }
 
+// TestBeginRender verifies that BeginRender prepares a fresh generation without
+// running it.
+func TestBeginRender(t *testing.T) {
+	entries := map[string]assets.TileEntry{
+		"A": groundEntry("A", 1, optionsMap([]string{"A"}, []string{"A"}, []string{"A"}, []string{"A"})),
+	}
+	wfc := NewWfc(2, 2, entries)
+	wfc.ProcessedTiles = 7
+	wfc.IsRendered = true
+
+	wfc.BeginRender()
+
+	if !wfc.IsRunning {
+		t.Errorf("IsRunning = false, want true")
+	}
+	if wfc.IsRendered {
+		t.Errorf("IsRendered = true, want false")
+	}
+	if wfc.ProcessedTiles != 0 {
+		t.Errorf("ProcessedTiles = %d, want 0", wfc.ProcessedTiles)
+	}
+	if wfc.attempts != 0 {
+		t.Errorf("attempts = %d, want 0", wfc.attempts)
+	}
+}
+
+// TestStepProgress verifies that a single Step collapses one cell and reports
+// Iterating while the generation is still in progress.
+func TestStepProgress(t *testing.T) {
+	entries := map[string]assets.TileEntry{
+		"A": groundEntry("A", 1, optionsMap([]string{"A"}, []string{"A"}, []string{"A"}, []string{"A"})),
+		"B": groundEntry("B", 1, optionsMap([]string{"B"}, []string{"B"}, []string{"B"}, []string{"B"})),
+	}
+	wfc := NewWfc(1, 1, entries)
+	wfc.BeginRender()
+
+	if got := wfc.Step(); got != Iterating {
+		t.Fatalf("Step() = %v, want Iterating", got)
+	}
+	if !wfc.Tiles[0].Collapsed {
+		t.Errorf("cell not collapsed after Step")
+	}
+	if wfc.ProcessedTiles != 1 {
+		t.Errorf("ProcessedTiles = %d, want 1", wfc.ProcessedTiles)
+	}
+}
+
+// TestStepRendered verifies that Step reports Rendered once the grid is fully
+// collapsed and clears the running flag.
+func TestStepRendered(t *testing.T) {
+	wfc := &Wfc{
+		TileEntries: map[string]assets.TileEntry{"A": {Name: "A"}},
+		numOfTilesX: 1,
+		numOfTilesY: 1,
+		Tiles:       []Tile{{Options: []string{"A"}, Collapsed: true, Name: "A"}},
+		IsRunning:   true,
+	}
+
+	if got := wfc.Step(); got != Rendered {
+		t.Fatalf("Step() = %v, want Rendered", got)
+	}
+	if wfc.IsRunning {
+		t.Errorf("IsRunning = true, want false")
+	}
+	if !wfc.IsRendered {
+		t.Errorf("IsRendered = false, want true")
+	}
+}
+
+// TestStepRestartsAndGivesUp verifies that Step transparently restarts the
+// generation on contradictions and eventually gives up after MaxRestarts,
+// without ever panicking.
+func TestStepRestartsAndGivesUp(t *testing.T) {
+	// Both tiles have no compatible neighbor on the left/right, so whichever
+	// cell collapses first empties its neighbor: contradiction on every attempt.
+	entries := map[string]assets.TileEntry{
+		"A": groundEntry("A", 1, optionsMap([]string{}, []string{}, []string{}, []string{})),
+		"B": groundEntry("B", 1, optionsMap([]string{}, []string{}, []string{}, []string{})),
+	}
+	wfc := NewWfc(2, 1, entries)
+	wfc.MaxRestarts = 2
+	wfc.BeginRender()
+
+	result := Iterating
+	for steps := 0; result == Iterating && steps < 50; steps++ {
+		result = wfc.Step()
+	}
+
+	if result != Rendered {
+		t.Fatalf("Step() loop ended with %v, want Rendered", result)
+	}
+	if wfc.IsRunning {
+		t.Errorf("IsRunning = true, want false")
+	}
+	if !wfc.IsRendered {
+		t.Errorf("IsRendered = false, want true")
+	}
+	if wfc.attempts != wfc.MaxRestarts {
+		t.Errorf("attempts = %d, want %d", wfc.attempts, wfc.MaxRestarts)
+	}
+}
+
 // TestElaborateGridMatchesSerialFixpoint verifies that the concurrent,
 // snapshot-based sweep reaches the same arc-consistency fixpoint as the serial
 // ElaborateCell loop.

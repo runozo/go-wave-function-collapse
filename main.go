@@ -24,6 +24,12 @@ const (
 	ruleRIGHT    = 1
 	ruleDOWN     = 2
 	ruleLEFT     = 3
+
+	// stepsPerFrame is how many cells are collapsed per rendered frame when the
+	// generation is driven from the game loop. This keeps the collapse visible
+	// on single-threaded targets (WebAssembly), where a background goroutine
+	// would otherwise run to completion before the next frame is drawn.
+	stepsPerFrame = 2
 )
 
 type Game struct {
@@ -45,10 +51,16 @@ func (g *Game) Update() error {
 			os.Exit(0)
 		}
 	} else if g.iterations < 0 {
-		if ebiten.IsKeyPressed(ebiten.KeySpace) && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-			go g.wfc.StartRender()
+		// Drive the generation from the game loop, a few cells per frame, so the
+		// collapse is animated on every platform (including WebAssembly).
+		if g.wfc.IsRunning {
+			for i := 0; i < stepsPerFrame && g.wfc.IsRunning; i++ {
+				g.wfc.Step()
+			}
 		}
-
+		if inpututil.IsKeyJustPressed(ebiten.KeySpace) && !g.wfc.IsRunning {
+			g.wfc.BeginRender()
+		}
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
@@ -117,7 +129,10 @@ func main() {
 	// init screen
 	ebiten.SetFullscreen(true)
 
-	go g.wfc.StartRender()
+	if g.iterations < 0 {
+		// Interactive mode: start the generation; Update advances it frame by frame.
+		g.wfc.BeginRender()
+	}
 
 	err = ebiten.RunGame(g)
 

@@ -44,6 +44,10 @@ type Wfc struct {
 	ProcessedTiles int
 	MaxRestarts    int
 
+	// attempts counts the restarts already performed for the current
+	// generation, used by Step to give up after MaxRestarts contradictions.
+	attempts int
+
 	// sweepBuffer is reused by ElaborateGrid as the read-only snapshot of Tiles
 	// for the duration of a concurrent sweep, avoiding per-sweep allocations.
 	sweepBuffer []Tile
@@ -387,49 +391,65 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) IterateResult {
 	return Iterating
 }
 
+// BeginRender prepares a new generation without running it.
+//
+// It sets the running state, clears the rendered flag, resets the restart
+// counter and resets the grid to its initial superposition. Call Step to
+// advance the generation, or StartRender to run it to completion.
+func (wfc *Wfc) BeginRender() {
+	wfc.IsRunning = true
+	wfc.IsRendered = false
+	wfc.attempts = 0
+	wfc.Reset()
+}
+
+// Step advances the generation by a single Iterate call, transparently
+// restarting from scratch when a contradiction is hit.
+//
+// It returns the outcome of the last Iterate: Iterating while the generation
+// is still in progress, Rendered when the map is complete or when MaxRestarts
+// has been exhausted. This is the incremental building block used by game loops
+// (e.g. Ebitengine's Update) to animate the collapse frame by frame, which is
+// required on single-threaded targets such as WebAssembly.
+func (wfc *Wfc) Step() IterateResult {
+	switch wfc.Iterate(wfc.numOfTilesX, wfc.numOfTilesY) {
+	case Rendered:
+		return Rendered
+	case Contradiction:
+		if wfc.attempts >= wfc.MaxRestarts {
+			log.Println("wfc: max restarts reached, giving up")
+			wfc.IsRendered = true
+			wfc.IsRunning = false
+			return Rendered
+		}
+		wfc.attempts++
+		log.Printf("wfc: contradiction detected, restarting (%d/%d)", wfc.attempts, wfc.MaxRestarts)
+		wfc.Reset()
+		return Iterating
+	default:
+		return Iterating
+	}
+}
+
 // StartRender initializes and starts the rendering process using the Wave Function Collapse algorithm.
 //
 // This method first checks if the rendering is already running. If so, it logs a message and returns.
-// If not running, it sets the `IsRunning` flag to true and resets the state. Then, it iteratively
-// collapses cells with the least entropy until no more collapsable cells are available or the rendering
-// process is stopped.
+// If not running, it begins a new generation and iteratively collapses cells with the least entropy
+// until no more collapsable cells are available or the rendering process is stopped.
 //
 // If the propagation reaches a contradiction (a cell with no options left), the generation is
 // restarted from scratch, up to MaxRestarts times. When the limit is reached the map is left as-is
 // and the method gives up without panicking.
-
 func (wfc *Wfc) StartRender() {
 	if wfc.IsRunning {
 		log.Println("wfc is already running")
 		return
 	}
-	wfc.IsRunning = true
-	wfc.IsRendered = false
-
-	for attempt := 0; attempt <= wfc.MaxRestarts; attempt++ {
-		if attempt > 0 {
-			log.Printf("wfc: contradiction detected, restarting (%d/%d)", attempt, wfc.MaxRestarts)
+	wfc.BeginRender()
+	for wfc.Step() == Iterating {
+		if !wfc.IsRunning {
+			return
 		}
-		wfc.Reset()
-
-		for {
-			switch wfc.Iterate(wfc.numOfTilesX, wfc.numOfTilesY) {
-			case Rendered:
-				return
-			case Contradiction:
-				// Break the inner loop to restart the whole generation.
-				goto restart
-			case Iterating:
-				if !wfc.IsRunning {
-					return
-				}
-				runtime.Gosched()
-			}
-		}
-	restart:
+		runtime.Gosched()
 	}
-
-	log.Println("wfc: max restarts reached, giving up")
-	wfc.IsRendered = true
-	wfc.IsRunning = false
 }
