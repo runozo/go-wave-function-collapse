@@ -43,6 +43,10 @@ type Wfc struct {
 	TotalTiles     int
 	ProcessedTiles int
 	MaxRestarts    int
+
+	// sweepBuffer is reused by ElaborateGrid as the read-only snapshot of Tiles
+	// for the duration of a concurrent sweep, avoiding per-sweep allocations.
+	sweepBuffer []Tile
 }
 
 // NewWfc returns a new WFC with the given number of tiles in the X and Y directions, and the given tile entries.
@@ -234,6 +238,9 @@ func (wfc *Wfc) CollapseCell(index int) {
 
 // GetAvailableOptions takes a cell index and a direction, and returns a slice of strings that represent all the available options for the given direction.
 //
+// It reads the current (live) state of the grid. The concurrent sweep uses
+// ElaborateGrid instead, which reads from a stable snapshot.
+//
 // Parameters:
 // - cellIndex: the index of the cell to retrieve the available options for.
 // - direction: a string representing the direction to retrieve the available options for. Can be "up", "right", "down", or "left".
@@ -241,8 +248,15 @@ func (wfc *Wfc) CollapseCell(index int) {
 // Returns:
 // - []string: a slice of strings representing the available options
 func (wfc *Wfc) GetAvailableOptions(cellIndex int, direction string) []string {
-	availableOptions := make([]string, 0, len(wfc.Tiles[cellIndex].Options))
-	for _, o := range wfc.Tiles[cellIndex].Options {
+	return wfc.getAvailableOptions(wfc.Tiles, cellIndex, direction)
+}
+
+// getAvailableOptions is the read-only core of GetAvailableOptions. Neighbor
+// options are read from src, which during a concurrent sweep is a snapshot of
+// the grid taken before the sweep started.
+func (wfc *Wfc) getAvailableOptions(src []Tile, cellIndex int, direction string) []string {
+	availableOptions := make([]string, 0, len(src[cellIndex].Options))
+	for _, o := range src[cellIndex].Options {
 		availableOptions = append(availableOptions, wfc.TileEntries[o].Options[direction]...)
 	}
 	return availableOptions
@@ -250,6 +264,9 @@ func (wfc *Wfc) GetAvailableOptions(cellIndex int, direction string) []string {
 
 // ElaborateCell takes an x and y coordinate and elaborates a cell by filtering
 // its available options based on the options of its adjacent cells.
+//
+// It reads and writes the live grid, so it is meant for serial use (tests and
+// single-threaded callers). The concurrent sweep must use ElaborateGrid.
 //
 // Parameters:
 // - x: the x coordinate of the cell to elaborate.
@@ -259,39 +276,77 @@ func (wfc *Wfc) GetAvailableOptions(cellIndex int, direction string) []string {
 //   - nothing. It modifies the options of the cell at the given x and y
 //     coordinates.
 func (wfc *Wfc) ElaborateCell(x, y int) {
-	numOfTilesX := wfc.numOfTilesX
-	numOfTilesY := wfc.numOfTilesY
+	wfc.elaborateCell(wfc.Tiles, wfc.numOfTilesX, wfc.numOfTilesY, x, y)
+}
+
+// elaborateCell filters the options of the cell at (x, y) using the neighbor
+// options read from src, and writes the result back into wfc.Tiles. Only the
+// cell at (x, y) is written, so distinct cells can be elaborated concurrently
+// as long as src is not being mutated.
+func (wfc *Wfc) elaborateCell(src []Tile, numOfTilesX, numOfTilesY, x, y int) {
 	index := y*numOfTilesX + x
-	if !wfc.Tiles[index].Collapsed {
-		// Look UP
-		if y > 0 {
-			wfc.Tiles[index].Options = wfc.FilterOptions(
-				wfc.Tiles[index].Options,
-				wfc.GetAvailableOptions((y-1)*numOfTilesX+x, "down"),
-			)
-		}
-		// Look RIGHT
-		if x < numOfTilesX-1 {
-			wfc.Tiles[index].Options = wfc.FilterOptions(
-				wfc.Tiles[index].Options,
-				wfc.GetAvailableOptions(y*numOfTilesX+x+1, "left"),
-			)
-		}
-		// Look DOWN
-		if y < numOfTilesY-1 {
-			wfc.Tiles[index].Options = wfc.FilterOptions(
-				wfc.Tiles[index].Options,
-				wfc.GetAvailableOptions((y+1)*numOfTilesX+x, "up"),
-			)
-		}
-		// Look LEFT
-		if x > 0 {
-			wfc.Tiles[index].Options = wfc.FilterOptions(
-				wfc.Tiles[index].Options,
-				wfc.GetAvailableOptions(y*numOfTilesX+x-1, "right"),
-			)
+	if wfc.Tiles[index].Collapsed {
+		return
+	}
+	// Look UP
+	if y > 0 {
+		wfc.Tiles[index].Options = wfc.FilterOptions(
+			wfc.Tiles[index].Options,
+			wfc.getAvailableOptions(src, (y-1)*numOfTilesX+x, "down"),
+		)
+	}
+	// Look RIGHT
+	if x < numOfTilesX-1 {
+		wfc.Tiles[index].Options = wfc.FilterOptions(
+			wfc.Tiles[index].Options,
+			wfc.getAvailableOptions(src, y*numOfTilesX+x+1, "left"),
+		)
+	}
+	// Look DOWN
+	if y < numOfTilesY-1 {
+		wfc.Tiles[index].Options = wfc.FilterOptions(
+			wfc.Tiles[index].Options,
+			wfc.getAvailableOptions(src, (y+1)*numOfTilesX+x, "up"),
+		)
+	}
+	// Look LEFT
+	if x > 0 {
+		wfc.Tiles[index].Options = wfc.FilterOptions(
+			wfc.Tiles[index].Options,
+			wfc.getAvailableOptions(src, y*numOfTilesX+x-1, "right"),
+		)
+	}
+}
+
+// ElaborateGrid performs a full-grid constraint propagation sweep in parallel.
+//
+// It is race-free: before launching the workers it takes a snapshot of Tiles
+// (reusing sweepBuffer) and every worker reads neighbor options only from that
+// snapshot, writing solely its own cell in wfc.Tiles. Because no options slice
+// is ever mutated in place (FilterOptions and CollapseCell always allocate a new
+// slice), a shallow snapshot is enough and stays stable for the whole sweep.
+//
+// Parameters:
+// - numOfTilesX: the number of tiles in the X direction.
+// - numOfTilesY: the number of tiles in the Y direction.
+func (wfc *Wfc) ElaborateGrid(numOfTilesX, numOfTilesY int) {
+	n := numOfTilesX * numOfTilesY
+	if len(wfc.sweepBuffer) != n {
+		wfc.sweepBuffer = make([]Tile, n)
+	}
+	copy(wfc.sweepBuffer, wfc.Tiles[:n])
+
+	var wg sync.WaitGroup
+	wg.Add(n)
+	for y := 0; y < numOfTilesY; y++ {
+		for x := 0; x < numOfTilesX; x++ {
+			go func(x, y int) {
+				defer wg.Done()
+				wfc.elaborateCell(wfc.sweepBuffer, numOfTilesX, numOfTilesY, x, y)
+			}(x, y)
 		}
 	}
+	wg.Wait()
 }
 
 // Iterate iteratively collapses cells with the least entropy until no more collapsable cells are available or the rendering
@@ -328,17 +383,7 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) IterateResult {
 	collapseIndex := leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))]
 	wfc.CollapseCell(collapseIndex)
 	wfc.ProcessedTiles++
-	var wg sync.WaitGroup
-	for y := 0; y < numOfTilesY; y++ {
-		wg.Add(numOfTilesX)
-		for x := 0; x < numOfTilesX; x++ {
-			go func(x, y int) {
-				defer wg.Done()
-				wfc.ElaborateCell(x, y)
-			}(x, y)
-		}
-		wg.Wait()
-	}
+	wfc.ElaborateGrid(numOfTilesX, numOfTilesY)
 	return Iterating
 }
 

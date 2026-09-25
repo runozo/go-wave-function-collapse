@@ -1,7 +1,6 @@
 package wfc
 
 import (
-	"sync"
 	"testing"
 
 	"github.com/runozo/go-wave-function-collapse/assets"
@@ -421,6 +420,51 @@ func TestStartRenderRestartsAndGivesUp(t *testing.T) {
 	}
 }
 
+// TestElaborateGridMatchesSerialFixpoint verifies that the concurrent,
+// snapshot-based sweep reaches the same arc-consistency fixpoint as the serial
+// ElaborateCell loop.
+func TestElaborateGridMatchesSerialFixpoint(t *testing.T) {
+	entries := map[string]assets.TileEntry{
+		"A": groundEntry("A", 1, optionsMap([]string{"A"}, []string{"A"}, []string{"A"}, []string{"A"})),
+		"B": groundEntry("B", 1, optionsMap([]string{"B"}, []string{"B"}, []string{"B"}, []string{"B"})),
+	}
+	const width, height = 4, 3
+
+	newGrid := func() *Wfc {
+		wfc := &Wfc{
+			TileEntries: entries,
+			numOfTilesX: width,
+			numOfTilesY: height,
+			Tiles:       make([]Tile, width*height),
+		}
+		for i := range wfc.Tiles {
+			wfc.Tiles[i] = Tile{Options: []string{"A", "B"}}
+		}
+		// Collapse the top-left corner to "A": the constraint must propagate.
+		wfc.Tiles[0] = Tile{Options: []string{"A"}, Name: "A", Collapsed: true}
+		return wfc
+	}
+
+	concurrent := newGrid()
+	serial := newGrid()
+
+	for i := 0; i < width*height; i++ {
+		concurrent.ElaborateGrid(width, height)
+		for y := 0; y < height; y++ {
+			for x := 0; x < width; x++ {
+				serial.ElaborateCell(x, y)
+			}
+		}
+	}
+
+	for i := range concurrent.Tiles {
+		if !sliceEqual(concurrent.Tiles[i].Options, serial.Tiles[i].Options) {
+			t.Fatalf("cell %d: concurrent %v != serial %v",
+				i, concurrent.Tiles[i].Options, serial.Tiles[i].Options)
+		}
+	}
+}
+
 // BenchmarkElaborateCellSweep measures the concurrent full-grid propagation
 // sweep performed after every collapse in Iterate.
 func BenchmarkElaborateCellSweep(b *testing.B) {
@@ -437,16 +481,6 @@ func BenchmarkElaborateCellSweep(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		var wg sync.WaitGroup
-		for y := 0; y < height; y++ {
-			wg.Add(width)
-			for x := 0; x < width; x++ {
-				go func(x, y int) {
-					defer wg.Done()
-					wfc.ElaborateCell(x, y)
-				}(x, y)
-			}
-			wg.Wait()
-		}
+		wfc.ElaborateGrid(width, height)
 	}
 }
