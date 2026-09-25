@@ -17,6 +17,22 @@ type Tile struct {
 	Options   []string
 }
 
+// IterateResult describes the outcome of a single Iterate call.
+type IterateResult int
+
+const (
+	// Iterating means the generation is still in progress and more cells can be collapsed.
+	Iterating IterateResult = iota
+	// Rendered means every cell has been collapsed and the map is complete.
+	Rendered
+	// Contradiction means at least one uncollapsed cell has no options left.
+	Contradiction
+)
+
+// DefaultMaxRestarts is the default number of times StartRender restarts a
+// generation after hitting a contradiction before giving up.
+const DefaultMaxRestarts = 50
+
 type Wfc struct {
 	Tiles          []Tile
 	TileEntries    map[string]assets.TileEntry
@@ -26,6 +42,7 @@ type Wfc struct {
 	numOfTilesY    int
 	TotalTiles     int
 	ProcessedTiles int
+	MaxRestarts    int
 }
 
 // NewWfc returns a new WFC with the given number of tiles in the X and Y directions, and the given tile entries.
@@ -54,6 +71,7 @@ func NewWfc(numOfTilesX, numOfTilesY int, tileEntries map[string]assets.TileEntr
 		IsRunning:      false,
 		IsRendered:     false,
 		ProcessedTiles: 0,
+		MaxRestarts:    DefaultMaxRestarts,
 	}
 	wfc.Reset()
 	return wfc
@@ -161,22 +179,34 @@ func (wfc *Wfc) LeastEntropyCellIndexes() []int {
 // - string: the randomly selected option based on weights.
 
 func (wfc *Wfc) RandomOptionWithWeight(index int) string {
+	options := wfc.Tiles[index].Options
+	if len(options) == 0 {
+		// A cell with no options is a contradiction: return early instead of
+		// panicking on rand.Intn(0). Iterate detects this before collapsing.
+		return ""
+	}
+
 	var totalWeight int
-	for _, option := range wfc.Tiles[index].Options {
+	for _, option := range options {
 		totalWeight += wfc.TileEntries[option].Weight
+	}
+
+	if totalWeight <= 0 {
+		// All weights are zero (or negative): fall back to a uniform choice.
+		return options[rand.Intn(len(options))]
 	}
 
 	randomWeight := rand.Intn(totalWeight)
 
 	totalWeight = 0
-	for _, option := range wfc.Tiles[index].Options {
+	for _, option := range options {
 		totalWeight += wfc.TileEntries[option].Weight
 		if randomWeight < totalWeight {
 			return option
 		}
 	}
 	// should never reach here
-	return wfc.Tiles[index].Options[rand.Intn(len(wfc.Tiles[index].Options))]
+	return options[rand.Intn(len(options))]
 }
 
 // CollapseCell collapses a cell.
@@ -188,6 +218,11 @@ func (wfc *Wfc) RandomOptionWithWeight(index int) string {
 //   - nothing. It modifies the cell at the given index to have a collapsed state
 //     with a randomly chosen option.
 func (wfc *Wfc) CollapseCell(index int) {
+	if len(wfc.Tiles[index].Options) == 0 {
+		// Nothing to collapse: leave the cell as-is so the contradiction stays
+		// detectable instead of turning it into a collapsed, empty-named tile.
+		return
+	}
 	// collapse a cell with least entropy
 	randomOption := wfc.RandomOptionWithWeight(index)
 	wfc.Tiles[index] = Tile{
@@ -262,8 +297,10 @@ func (wfc *Wfc) ElaborateCell(x, y int) {
 // Iterate iteratively collapses cells with the least entropy until no more collapsable cells are available or the rendering
 // process is stopped.
 //
-// It first checks if there are any more collapsable cells. If not, it logs a message and returns false.
-// If there are more collapsable cells, it randomly selects one of them and collapses it, then iteratively
+// It first checks if there are any more collapsable cells. If not, it marks the map as rendered and returns Rendered.
+// If the least-entropy cells have no options left, the wave function has collapsed into a contradiction: it returns
+// Contradiction without collapsing anything, so the caller can restart the generation.
+// Otherwise it randomly selects one of the least-entropy cells and collapses it, then iteratively
 // elaborates the adjacent cells by filtering their available options based on the options of the adjacent cells.
 //
 // Parameters:
@@ -271,32 +308,38 @@ func (wfc *Wfc) ElaborateCell(x, y int) {
 // - numOfTilesY: the number of tiles in the Y direction.
 //
 // Returns:
-// - bool: true if the rendering process is still running, false otherwise.
-func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
+// - IterateResult: Rendered when complete, Contradiction when stuck, Iterating otherwise.
+func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) IterateResult {
 	leastEntropyIndexes := wfc.LeastEntropyCellIndexes()
 
 	if len(leastEntropyIndexes) == 0 {
 		// log.Println("Playfiled is rendered. No more collapsable cells.", "tiles involved", len(wfc.Tiles))
 		wfc.IsRunning = false
 		wfc.IsRendered = true
-		return false
-	} else {
-		collapseIndex := leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))]
-		wfc.CollapseCell(collapseIndex)
-		wfc.ProcessedTiles++
-		var wg sync.WaitGroup
-		for y := 0; y < numOfTilesY; y++ {
-			wg.Add(numOfTilesX)
-			for x := 0; x < numOfTilesX; x++ {
-				go func(x, y int) {
-					defer wg.Done()
-					wfc.ElaborateCell(x, y)
-				}(x, y)
-			}
-			wg.Wait()
-		}
+		return Rendered
 	}
-	return true
+
+	if len(wfc.Tiles[leastEntropyIndexes[0]].Options) == 0 {
+		// At least one cell has no options left: the constraint propagation
+		// reached an impossible state.
+		return Contradiction
+	}
+
+	collapseIndex := leastEntropyIndexes[rand.Intn(len(leastEntropyIndexes))]
+	wfc.CollapseCell(collapseIndex)
+	wfc.ProcessedTiles++
+	var wg sync.WaitGroup
+	for y := 0; y < numOfTilesY; y++ {
+		wg.Add(numOfTilesX)
+		for x := 0; x < numOfTilesX; x++ {
+			go func(x, y int) {
+				defer wg.Done()
+				wfc.ElaborateCell(x, y)
+			}(x, y)
+		}
+		wg.Wait()
+	}
+	return Iterating
 }
 
 // StartRender initializes and starts the rendering process using the Wave Function Collapse algorithm.
@@ -305,19 +348,43 @@ func (wfc *Wfc) Iterate(numOfTilesX, numOfTilesY int) bool {
 // If not running, it sets the `IsRunning` flag to true and resets the state. Then, it iteratively
 // collapses cells with the least entropy until no more collapsable cells are available or the rendering
 // process is stopped.
+//
+// If the propagation reaches a contradiction (a cell with no options left), the generation is
+// restarted from scratch, up to MaxRestarts times. When the limit is reached the map is left as-is
+// and the method gives up without panicking.
 
 func (wfc *Wfc) StartRender() {
-	wfc.IsRendered = false
 	if wfc.IsRunning {
 		log.Println("wfc is already running")
 		return
 	}
 	wfc.IsRunning = true
-	wfc.Reset()
-	for wfc.Iterate(wfc.numOfTilesX, wfc.numOfTilesY) {
-		if !wfc.IsRunning {
-			return
+	wfc.IsRendered = false
+
+	for attempt := 0; attempt <= wfc.MaxRestarts; attempt++ {
+		if attempt > 0 {
+			log.Printf("wfc: contradiction detected, restarting (%d/%d)", attempt, wfc.MaxRestarts)
 		}
-		runtime.Gosched()
+		wfc.Reset()
+
+		for {
+			switch wfc.Iterate(wfc.numOfTilesX, wfc.numOfTilesY) {
+			case Rendered:
+				return
+			case Contradiction:
+				// Break the inner loop to restart the whole generation.
+				goto restart
+			case Iterating:
+				if !wfc.IsRunning {
+					return
+				}
+				runtime.Gosched()
+			}
+		}
+	restart:
 	}
+
+	log.Println("wfc: max restarts reached, giving up")
+	wfc.IsRendered = true
+	wfc.IsRunning = false
 }
