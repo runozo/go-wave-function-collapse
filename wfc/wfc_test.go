@@ -447,15 +447,3 @@ func loadRealTileEntries(tb testing.TB) map[string]assets.TileEntry {
 	}
 	return entries
 }
-
-// BenchmarkGeneration measures a full map generation (all cells collapsed) on
-// the same 31x18 grid used by the application, with the real tile set.
-func BenchmarkGeneration(b *testing.B) {
-	entries := loadRealTileEntries(b)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := NewWfc(31, 18, entries)
-		w.StartRender()
-	}
-}

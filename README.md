@@ -66,8 +66,27 @@ Measured with `BenchmarkGeneration` (Ryzen 5 5600, `GOMAXPROCS=12`, Go 1.27,
 
 ## Benchmarks
 
-The main benchmark is `BenchmarkGeneration`: a full map generation on the 31x18
-grid used by the application, with the real tile set.
+The benchmarks live in `wfc/bench_test.go` and use the real tile set on the same
+31x18 grid as the application.
+
+| Benchmark | Measures |
+|---|---|
+| `BenchmarkNewWfc` | construction: compatibility masks + initial reset |
+| `BenchmarkReset` | resetting the grid to the initial superposition |
+| `BenchmarkLeastEntropyCellIndexes` | entropy scan |
+| `BenchmarkRandomOptionWithWeight` | weighted tile selection |
+| `BenchmarkCollapseCell` | collapsing one cell |
+| `BenchmarkNeighborAllowed` | union over a neighbor's options |
+| `BenchmarkAllowedMask` | intersecting a cell with its four neighbors |
+| `BenchmarkPropagate` | arc-consistency cascade from a collapsed cell |
+| `BenchmarkIterate` | one collapse + propagation step (first step on a fresh grid) |
+| `BenchmarkGeneration` | a full 31x18 generation |
+| `BenchmarkGenerationSizes` | full generation at 31x18, 62x36 and 124x72 |
+
+`BenchmarkNeighborAllowed` and `BenchmarkAllowedMask` target the internal hot
+path. `BenchmarkPropagate` and `BenchmarkIterate` run on a fresh grid, so they
+measure the largest cascade; the average step is `BenchmarkGeneration` divided
+by the number of cells.
 
 ```sh
 # All benchmarks on the current tree
